@@ -1,0 +1,45 @@
+
+
+
+
+----------------------- Table of Contents -----------------
+
+
+---- Purpose/Functionality
+---- Discussion
+---- User interaction
+---- Ask a ChatBot
+---- Work still to do
+
+--------------------------------------------------------
+
+---- Purpose/Functionality --------------------------------------------------------------------------
+
+    This shows some buttons and things that can be done with them.
+    Other than that it does not do much
+
+........Widget included:
+
+            QPushButton
+
+---- User interaction
+        now written
+
+---- Discussion
+
+
+    Out of date...... This shows loops being used to layout labels which indicate their own row column position.
+
+    The last row of buttons is a box layout inside the larger grid layout
+
+
+---- Ask a ChatBot --------------------------------------------------------------------------
+
+            I have a QPushButton......
+
+---- Work still to do --------------------------------------------------------------------------
+
+    Lots, including this section
+
+
+---- eof

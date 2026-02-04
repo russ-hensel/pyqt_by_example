@@ -1,0 +1,74 @@
+
+
+
+
+
+KEY_WORDS:      some stuff from the m fitz book graph graphing
+MODULE:         fitz_module
+CLASS_NAME:     fitz_5_tab still need CLASS
+WIDGETS:        some widgets
+STATUS:         partly works
+MODULE/CLASS:   joe_module.Joe()
+TAB_TITLE:      DataMapper
+
+
+Code adapted from 35. Plotting with PyQtGraph
+
+This covers 2 tabs one a static graph the other a live graph
+
+----------------------- Table of Contents -----------------
+
+
+----Purpose/Functionality
+........Widgets included
+---- User interaction
+---- Discussion
+---- Ask a ChatBot
+---- Ideas for Improvement
+
+
+
+----------------------- Contents -----------------------
+
+----Purpose/Functionality
+    Graph using PlotWidget, either statically or dynamically.
+    Add elements like titles.......
+
+
+........Widgets included
+         pg.PlotWidget()
+
+
+
+---- Interaction
+
+        Context Menu  right click on the graph
+
+        <start>     start the dynamic graphing
+        <stop>      stop the dynamic graphing
+
+        <clear>     clear the data
+        <plot>      plot the data
+
+
+        Plus the usual <inspect> <breakpoint>
+
+
+
+---- Discussion
+
+---- Ask a ChatBot --------------------------------------------------------------------------
+
+            I have a .......
+
+
+---- Work still to do --------------------------------------------------------------------------
+
+    Lots, including this section
+
+
+
+
+
+
+----eof --------------------------------------------

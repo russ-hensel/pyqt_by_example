@@ -1,0 +1,62 @@
+
+ 
+
+----------------------- Table of Contents -----------------
+ 
+
+---- Purpose/Functionality
+........Widgets included
+---- User interaction
+---- Discussion
+---- Ask a ChatBot
+---- Ideas for Extension
+
+ ----------------------- Contents -----------------
+
+
+---- Purpose/Functionality --------------------------------------------------------------------------
+
+        demo the qt widget for list QListWidget
+
+
+........Widgets included:
+
+            QListWidget
+
+---- User interaction
+
+        click on a row
+        
+        the usual ...
+        
+        
+
+---- Discussion
+
+        this tab is very incomplete 
+        
+        note that there are editable listboxes and non editable ones 
+
+ 
+---- Ask a ChatBot
+
+
+        I have a QListWidget. What signals is this widget set up to emit and what arguments are emitted for each signal.
+
+        I have a QListWidget. What can I do to change its visual appearance.
+
+        I have a QListWidget.  What can I do to change the way it manages input?
+
+ 
+---- Ideas for Extension
+
+ 
+
+    more modifications at runtime
+
+    set selctions
+
+    scroll
+
+
+---- eof

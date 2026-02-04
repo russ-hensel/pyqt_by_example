@@ -1,0 +1,150 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Jan 22 10:06:04 2025
+
+@author: russ
+"""
+
+Dock Widget
+QBoxLayoutTab   QBoxLayoutTab  tab box layout
+
+tab_combo_box   done
+
+data mapper   not done
+
+....
+
+
+tab_dialog etch
+
+tab_edit_widgets
+fitz_1    ManyWidgets
+fitz_2
+fitz_3   MouseEvents
+
+fitz_4    """
+KEY_WORDS:  Fitz chapter 21. A simple Model View — a Todo List
+CLASS_NAME: Fitz_4_Tab
+WIDGETS:    QAbstractListModel QListView DecorationRole
+STATUS:     works
+TAB_TITLE:  QAbstractListModel
+
+
+KEY_WORDS:      some stuff rsh custom for stuffdb edit and criteria  new_base
+CLASS_NAME:     CustomCriteriaWidgetTab
+WIDGETS:        CQLineEditCriteria CQDateCriteria
+STATUS:         runs_correctly_5_10      demo_complete_2_10   !! review_key_words   !! review_help_0_10
+TAB_TITLE:      RSHCustomCriteriaWidgets
+
+
+
+stagetwo    -- new tab
+stagethree  -- more review
+stagefour   -- done for now
+
+----------------------------------------------------------------------
+STATUS:         !! runs    runs_correctly      demo_complete_2_10
+STATUS:         !! runs    runs_correctly      demo_complete_2_10   !! review_key_words   !! review_help
+
+STATUS:         runs_correctly_5_10      demo_complete_2_10   !! review_key_words   !! review_help_0_10
+----------------------------
+
+# --------------------
+if __name__ == "__main__":
+    #----- run the full app
+    import main
+# --------------------
+
+
+---------------------
+
+import tab_base
+
+ # ----------------------------
+ class GridLayoutTab( tab_base.TabBase  ) :
+     def __init__(self):
+         """
+         the usual
+             grid_layout_tab.GridLayoutTab
+         """
+---------------------------------
+        self.mutate_dict[0]     = self.mutate_0
+        self.mutate_dict[1]     = self.mutate_1
+        # self.mutate_dict[2]    = self.mutate_2
+        # self.mutate_dict[3]    = self.mutate_3
+        # self.mutate_dict[4]    = self.mutate_4
+
+ ---------------------
+        inslude
+
+
+        self._build_gui()
+
+
+
+-------------------------------
+
+
+    #----------------------------
+    def _build_gui_widgets(self, main_layout  ):
+        """
+        the usual, build the gui with the widgets of interest
+        and the buttons for examples
+        """
+        layout              = QVBoxLayout(   )
+
+        main_layout.addLayout( layout )
+        button_layout        = QHBoxLayout(   )
+
+
+
+------------------------------
+
+
+        # ---- mutate
+        widget = QPushButton("mutate\n")
+        self.button_ex_1         = widget
+        widget.clicked.connect( lambda: self.mutate( ) )
+        button_layout.addWidget( widget )
+
+--------------------------------
+
+# ---- xxx
+
+
+    # ------------------------------------
+    def mutate_0( self ):
+        """
+        read it -- mutate the widgets
+        """
+        self.append_function_msg( "mutate_0" )
+
+        msg    = "so far not implemented "
+        self.append_msg( msg,   )
+
+        self.append_msg( "<<-- done" )
+
+    # ------------------------------------
+    def mutate_1( self ):
+        """
+        read it -- mutate the widgets
+        """
+        self.append_function_msg( "mutate_1" )
+
+        msg    = "so far not implemented "
+        self.append_msg( msg,  )
+
+        self.append_msg( "mutate_1 done" )
+
+
+logging.debug( "call was: logging.debug" )
+
+
+logging.debug( msg )
+
+msg        = f"{}"
+
+
+
+23a   comes up but widgets list missing

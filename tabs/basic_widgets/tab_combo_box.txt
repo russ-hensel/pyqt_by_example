@@ -1,0 +1,44 @@
+
+  
+ 
+
+----------------------- Table of Contents -----------------
+
+
+----Purpose/Functionality
+........Widgets included
+---- User interaction
+---- Discussion
+---- Ask a ChatBot
+---- Ideas for Improvement
+
+  
+----------------------- Contents ---------------------------------------
+
+---- Purpose/Functionality--------------------------------------------------------------------------
+
+    Show the coding of a QComboBox
+        There are two combo boxes, one is set up to allow the user to type in text
+        the other only allows items from the list to be chosen.
+
+        Various attributes are set in the _build_tab method and through other actions
+        in the GUI
+
+
+........Widgets included:
+
+            QComboBox
+
+---- Ask a ChatBot
+
+
+    I have a QComboBox. What signals is this widget set up to emit and what arguments are emitted for each signal.
+
+    I have a QComboBox. What can I do to change its visual appearance.
+
+
+---- Ideas for Improvement ---------------------------------------------
+
+    Just more....
+
+---- eof

@@ -1,0 +1,222 @@
+
+
+Beware of dup with _1  for now just document the differences
+
+
+
+This tab is related to working with a join of two tables using a single
+model widget.
+
+
+----------------------- Table of Contents -----------------
+
+
+----Purpose/Functionality
+
+---- Discussion
+---- User interaction
+---- Questions
+Widgets included:
+ 
+---- Links 
+---- Ask a ChatBot ----
+
+
+---- Ideas for Improvement
+--------------------------------------------------------
+
+---- Purpose/Functionality--------------------------------------------------------------------------
+
+With the widgets on this tab we can do full select and update cycles on single tables but
+while see it join with a second table.
+
+    * Primary widgets
+
+The code is found in  QSqlRelationalTableModelTab and focus on the use of  QSqlRelationalTableModel  and QTableView.
+
+
+
+---- Interractions
+
+    * <select_all> selects all the records with the join
+
+    * <select_some> selects some the records see the code and console output
+
+    * <insert_record> what it says see the code and console output
+
+    *Inspect <inspect>
+        the usual
+
+    *Breakpoint <breakpoint>
+        the usual
+
+---- Discussion
+
+    in the relational model there is a primary table ( here people ) and a secondary table ( here people_phones )
+    the relational model can do an update, but only on the primary table.  So to add a phone number to a person we
+    need to add to people_phones and this is the wrong join for this.  So perhaps do another tab the other way around?
+    
+---- Interaction
+    column header click to sort
+    alternate shading of rows
+    double click to edit 
+    
+    
+    headings
+    
+    <>                    change the headings
+    
+
+
+    Notice:
+    
+    
+      
+........Widgets included:
+
+        No visual widgets but uses...
+
+---- Questions
+
+        can we do the join the other way around
+
+
+........Widgets included:
+
+        No visual widgets but uses...
+
+
+---- Links 
+
+Working with QSqlRelationalTableModel
+https://www.educative.io/courses/a-guide-to-pyqt6-for-beginners/working-with-qsqlrelationaltablemodel
+
+Using the SQL Model Classes - Qt for Python
+https://doc.qt.io/qtforpython-6/overviews/sql-model.html
+
+python - Updating a relational column in QSqlRelationalTableModel (PyQt6) - Stack Overflow
+https://stackoverflow.com/questions/72576673/updating-a-relational-column-in-qsqlrelationaltablemodel-pyqt6
+
+
+
+---- Ask a ChatBot --------------------------------------------------------------------------
+
+         can i make the row disappear from the view without deleting it from the db?
+                --- yes QSortFilterProxyModel
+                --- or  Use model.setData() to Mark Rows as "Hidden"
+
+        I am programming in Python QT5 I have:
+
+
+        CREATE TABLE people (
+                id              INTEGER PRIMARY KEY AUTOINCREMENT,
+                name            TEXT NOT NULL,
+                age             INTEGER,
+                family_relation TEXT
+            )
+
+
+        CREATE TABLE people_phones (
+                id              INTEGER PRIMARY KEY AUTOINCREMENT,
+                person_id       INTEGER,
+                phone_number    TEXT,
+                zone            TEXT,
+                FOREIGN KEY(person_id) REFERENCES people(id) ON DELETE CASCADE
+            )
+
+        and the code:
+        
+        model           = QSqlRelationalTableModel( self ) # with a view  QTableView()
+ 
+        model.setTable( "people_phones" )
+
+        model.setRelation( self.model.fieldIndex( "person_id" ),
+                          QSqlRelation( "people", "id", "name" ) )
+     
+
+        I would like to add a row to people_phones table where the person_id is 2001
+            and the phone_number is 123-456-7890
+            
+        I have tried this but have trouble with the person_id part of the update.
+        
+        I do not want to do a direct update of the table, if possible I want to go thru
+        the   QSqlRelationalTableModel or some extension/modification of it.  
+            
+        Can I do this? and if so How ( code please )
+
+
+        self.model.fieldIndex("person_id") does not return a valid field, this column seems
+        to be hidden, is there a way to get at it?
+        
+        # Force the hidden column to be visible
+self.model.setJoinMode(QSqlRelationalTableModel.LeftJoin)
+self.model.select()
+        
+        Python with QT5
+        When using a  QSqlRelationalTableModel I want to update the foreign key
+        when adding a record, but do not seem to be able to get at it.
+        
+        Can I do this?
+        
+        
+ ---------------------
+ 
+  Test without the relation by setting model.setRelation() to None temporarily to isolate the issue.
+
+        with no relation it saves ok, but with the relation the people_id does not get set.
+        has its name somehow been hidden?  I is the column I join on and does not visually
+        appear in the view.
+
+
+Yes, when you set a relation in QSqlRelationalTableModel, the behavior of the column you use for the relation changes:
+
+    Mapped Column Hidden: The actual column used for the relation (person_id in this case) is replaced in the view by the related column (name from the people table). By default, the person_id column becomes hidden in the view.
+
+    Data Mapping Issue: When you set the person_id value directly in the model, it might not propagate correctly because QSqlRelationalTableModel expects the person_id value to be derived from the related table (people) rather than being manually set.
+
+Fix: Use the Related Field to Set person_id
+
+You need to set the related field (name in the people table) instead of directly setting person_id. Here's how you can do it:
+
+# Add a new row
+row = model.rowCount()
+model.insertRow(row)
+
+# Set the related field (name from the people table)
+model.setData(model.index(row, model.fieldIndex("name")), "John Doe")  # Replace with the actual name
+
+# Set other fields
+model.setData(model.index(row, model.fieldIndex("phone_number")), "123-456-7890")
+
+# Submit changes
+if not model.submitAll():
+    print("Error saving data:", model.lastError().text())
+else:
+    print("Data added successfully.")
+
+Verify Column Visibility in the View
+
+To check if person_id is hidden:
+
+for column in range(model.columnCount()):
+    header = model.headerData(column, Qt.Horizontal)
+    print(f"Column {column}: {header}")
+
+If person_id does not appear in the headers, it means the relational column (name) has replaced it.
+
+
+        right name has replaced it 
+
+model.setRelation(model.fieldIndex("person_id"), QSqlRelation("people", "id", "name"))
+
+
+
+---- Work still to do  --------------------------------------------------------------------------
+
+    * more Update, and add delete functionality
+
+
+
+
+
+----eof --------------------------------------------

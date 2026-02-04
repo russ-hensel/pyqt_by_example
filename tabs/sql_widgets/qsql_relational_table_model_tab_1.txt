@@ -1,0 +1,62 @@
+
+
+This tab is related to working with a join of two tables using a single
+model widget.
+
+
+----------------------- Table of Contents -----------------
+
+
+----Purpose/Functionality
+
+---- Discussion
+---- Questions
+
+
+---- Work still to do
+
+--------------------------------------------------------
+
+---- Purpose/Functionality--------------------------------------------------------------------------
+
+With the widgets on this tab we can do full select and update cycles on single tables but
+while see it join with a second table.
+
+    * Primary widgets
+
+The code is found in  QSqlRelationalTableModelTab and focus on the use of  QSqlRelationalTableModel  and QTableView.
+
+    * <select_all> selects all the records with the join
+
+    * <select_some> selects some the records see the code and console output
+
+    * <insert_record> what it says see the code and console output
+
+    *Inspect <inspect>
+        the usual
+
+    *Breakpoint <breakpoint>
+        the usual
+
+---- Discussion
+
+    in the relational model there is a primary table ( here people ) and a secondary table ( here people_phones )
+    the relational model can do an update, but only on the primary table.  So to add a phone number to a person we
+    need to add to people_phones and this is the wrong join for this.  So perhaps do another tab the other way around?
+
+
+---- Questions
+
+        can we do the join the other way around
+
+
+
+---- Work still to do  --------------------------------------------------------------------------
+
+    * more Update, and add delete functionality
+
+
+
+
+
+----eof --------------------------------------------

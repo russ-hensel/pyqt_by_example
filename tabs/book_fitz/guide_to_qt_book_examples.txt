@@ -1,0 +1,110 @@
+
+
+
+A little experiment with the code related to :
+
+
+Create GUI Applications with Python & Qt5 (5th Edition, PyQt5): The hands-on guide to making apps with Python: Fitzpatrick, Dr Martin: 9798831846126: Amazon.com: Books
+https://www.amazon.com/Create-Applications-Python-PyQt5-hands/dp/B0B287MRPN
+
+
+
+Martin Fitzpatrick – Python tutorials, projects and books
+https://blog.martinfitzpatrick.com/
+
+Contact
+https://martinfitzpatrick.com/contact
+
+Python GUIs Forum - The Python GUIs Community
+https://forum.pythonguis.com/
+
+Martin Fitzpatrick – Python tutorials, projects and books
+https://blog.martinfitzpatrick.com/2/
+
+DiffCast: Hands-free Python Screencast Creator
+https://blog.martinfitzpatrick.com/diffcast-python-screencast-creator/
+
+Martin Fitzpatrick, Python GUI Developer - Available for hire
+https://www.pythonguis.com/hire/
+
+
+
+
+-------------------- start a note to martin here
+
+
+Martin ( Dr. Fitzpatrick ):
+
+I would like to draw your attention to a python module: qt_fitz_book.py
+that I wrote and can be found on the web at:
+
+        russ-hensel/qt_by_example: Examples of how qt widgets work
+        https://github.com/russ-hensel/qt_by_example
+
+        a screenshot of one of the tabs:
+
+        https://github.com/russ-hensel/qt_by_example/wiki/BookExamples
+
+The particular app is fairly small but embedded in a lot of other code,
+I think if you get the whole repo. Then qt_fitz_book.py should run.
+
+( this is not install, just download, and run from an environment where qt5 is installed )
+
+I write you about this because it is base strongly on your code examples
+and some reading of your qt5 book.
+
+I think this all falls under fair use as the code is at least modestly transformed
+but I would still be interest of you opinion about it in a number of respects:
+
+    -- do you feel this violates your interests, legally or morally?
+    -- would you care to see more?
+    -- the project is too big for me, is it ok if I invite others including on your forum?
+https://github.com/russ-hensel/qt_by_example/wiki/BookExamples
+If you do not mind more work in this direction, there are a host of other details
+that may be of interest:
+
+        -- who is Russ H?
+        -- why is it code the way it is?
+        -- what is the larger point, if any?
+
+-- who is Russ H
+
+    Old time programmer, Fortran in 1963, professional in SQLWindows and
+    Java at the end.  Been messing with Python since 2000 as a very part
+    time hobby.  Have other interests.  Retired from working for others.
+
+-- why is the code the way it is?
+
+    I code for myself, so either this it is the way I like it or I am too
+    ignorant to know any better ( often I do know better but I do it this way because )
+    If I worked with other I would do it differently, how about an immediate
+    application of black of similar.  More reasons, buts lets be brief.
+    And I know this code needs a lot more work.
+
+-- what is the larger point, if any?
+
+    I am a teacher from way back ( and 10 years teaching High School ) so there
+    is a teaching aspect in much of what I do.  Often this is teaching myself
+    but I would also like to share.
+
+    I use an apps like this ( see qt_examples.py and qt_sql_examples.py ) as ways
+    of teaching myself aspects of Python and trying to make sure they work.
+    I try to make "copy and paste" ready code that I can move into my "real"
+    work with minimum editing.  Again there is more, but again I am keeping
+    it brief.
+
+So in conclusion:
+
+        What do you think?
+        Any advice?
+        Would you like to communicate more?
+
+     Russ Hensel
+
+        russ-hensel (russ_hensel)
+        https://github.com/russ-hensel
+        russ.hensel@gmail.com
+
+
+
+

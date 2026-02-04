@@ -1,0 +1,335 @@
+
+
+This application is intended to demo/document code working with
+Qt Widgets, Qt Sql Widgets, and closely related objects.
+
+
+----------------------- Table of Contents -----------------
+
+---- GUI
+
+---- Help
+
+---- QTSql
+
+---- Purpose/Functionality
+---- Finding a Widget
+---- Tracing the code
+---- Mutate
+---- QtWidgets
+
+---- qt_sql_widgets -- work in pipeline
+
+---- QtWidgets Old
+---- Code Style
+---- Parameters
+
+---- Author and Credits
+
+
+
+--------------------------------------------------------
+
+---- Purpose/Functionality--------------------------------------------------------------------------
+
+This application in intended to show how to use Qt widgets largely through
+a running application, inspection of the code behind it, and some documentation ( like this file ).
+
+Most of the widgets have some visual aspect, but especially for the sql widgets
+they also have some important non visual aspects.  The code should illustrate
+both.
+
+---- Finding a Widget
+
+    The application opens with two tabs ope, neither is directly related to
+    showing how a widget works.
+    
+    You need to search for widgets -- this is the purpose of the first tab.
+    It implements a key word search for widgets -- a mini google inside the
+    application.
+    
+    So enter one or more terms ( hit enter or press <search> and you will
+    get a lits of tabs that illustrate that widget. 
+    
+    Click on the item in the list that seems best for what you want and
+    you will be moved to that tab ( which may first be opened )
+    
+    Search terms might be 
+    
+            *the name of the widget ( ex: QLineEdit )
+            *a generic name ( ex: text or text edit )
+            *a suggestion of its use ( ex: input )
+            
+    Search is insensitive to capitalization and somewhat insensitive
+    to plurals.
+    
+    If one search does not work try another.
+   
+---- Finding the code
+    see tracing the code below 
+
+---- Mutate
+              
+
+Use of widgets involves several different programming aspects:
+
+    Widget creation and the setting of widget properties.  These
+    properties govern widget appearance and behavior.
+
+    Connection widget events to actions
+
+    Reading of widget state, getting information about the widgets.
+
+    Placement of the widgets on windows.
+
+All of this involves a lot of code.  We will illustrate as much of it
+as we have energy for, hopefully what is here will be useful to you.
+
+The widgets have been divided into group that are shown on an individual
+tab.  Some tabs illustrate more than one type of widget.  In some cases
+a single widget may be shown on more than one tab.
+
+Each tab is itself a descendant of QWidget and coded in its own class.
+Hopefully this keep the code for a single widget in a fairly small easy
+to understand space.
+
+Of course to illustrate the use of widgets we need to use some widget
+to "hold" our illustrations.  This code may also be of use.  For example
+the construction of tabs is illustrated by the framework of this application
+
+Individual tabs ( sometime as their own classes extended from QWidget )
+illustrating the use of some   widgets.
+
+May be detailed help on each tab.
+
+There are also other helper classes defined, use find to find where used.
+
+----GUI--------------------------------------------------------------------------
+
+Each topic gets its own tab which is coded in its own object
+to make examination of the code easier than if this whole thing
+was in one giant namespace.
+
+Each Tab has its own help file, this this the General Help for all
+the tabs.
+
+ 
+
+Typical Tab Functionality:
+
+    The tabs are divided into three may areas:
+    
+    1.  the widges of interest.
+    2.  buttons for interaction with the widgets (typically labele with the name
+        of the method they call 
+    3.  An area to report on what is happening in the tab, information that is
+        also printed to your console.
+
+    Usually a tab displays some widgets of interest and some buttons
+    to interact with underlying objects.  The buttons are often labeled
+    with the name of the function they call, this is a bit ugly but
+    makes it easier to find the code called by the button.
+
+    Common buttons
+
+        print something     buttons do not say this but any time you press
+                            a button keep your eye on the console output
+
+        <mutate>            most widgets have a lot of state and minipulation of this
+                            state at runtime is very useful.  The mutate button loop
+                            through a series of mutations of the widgets that
+                            may be of interest.  The number of mutations on
+                            each tab varies.  While the button says mutate it
+                            may also display state 
+
+        <inspect>           this pulls up an gui version of wat
+
+        <breakpoint>        breaks into the debugger in the tab object you are viewing
+                            this can be very useful to find the code for the tab
+                            and can let you add additional breakpoints from your
+                            ide.  Very useful when running from Spyder.
+                            
+                            
+        <print>             old style button for reporting state, now
+                            merge into mutate.  will be deleted                   
+
+ 
+
+---- Help ------------------------
+
+    From the menu in the upper left of each window are sub menus for
+    access to help
+
+        .... General Help ... this document
+        .... CurrentTab Help ... help about the tabpage that is open
+
+            Readme.MD
+            Developer Notes
+
+    A feature of the current tab Help is the section called:
+        Ask a ChatBot -- these are questions that a ChatBot can be
+                         asked to give you further insight
+
+
+---- Tracing the code
+
+    Each tabpage is in it own module often with just one class and typically only 300 to 600 lines, divided into
+    many methods.
+    
+    When you search for a tab the results displays the module to be used and the class in that object.
+
+    When you interact watch the gui, and check the console.
+
+    If you wonder why the tab page looks the way it does see _build_gui()
+        in other words to see how the object is built see:  _build_gui for the object
+
+    Buttons are usually labeled with the method they call, and when a method is called
+    it prints its name in the console.
+    
+    A very easy way to find/edit the module is to use the breakpoint button.  In most
+    ide this will open the module and put you in debug mode ( exit it by using the continue
+    function of the debugger )
+
+    The coding style is on the verbose side to make things clear, the formatting is
+    non-standard, run black or something on it if you want. ( you need not tell me how wrong I am )
+
+    I have tried to be consistent in naming so that function describe what they do, or
+    what triggered them.
+
+    Names attempt to be consistent so once you learn your way around one tab it should
+    help with other tabs.
+
+    Generally there are methods that are run when:
+        You push a button
+        You click or right click an object
+
+        see the individual help for each object
+
+    Other methods have names that are pretty good giveaways as to what they do.
+
+    Methods often execute something like:
+
+        self.append_function_msg( "mutate_0" )
+        where this argument is the name of the method, should make finding code easy.
+
+  
+
+----Code Style--------------------------------------------------------------------------
+
+    The code style is formatted the way i like it, far from PEP 8, run black... on it if you want.
+
+    The style is a bit pedantic, some code could be more compact, I am going for clarity here.
+
+    I have tried to use good names.... to make the code friendly to cut and paste...
+
+
+----QTSql--------------------------------------------------------------------------
+
+About QT SQL Widgets
+
+    The QT SQL widgets implement a ORM for a database in a version
+    of a Model View setup.
+
+    That is the database is accessed trough some sort of object ( the ORM )
+    and often viewed through another object the view.
+
+    So for example the TableModel is an ORM to a single table and
+    the TableView is a widget that makes the TableModel visible
+
+    see:
+
+
+
+Next bit is garbled:
+
+ 
+
+
+Tabs by widget -- now in gui delete me soon 
+
+    QTableWidget
+
+        Holds and display data without any SQL
+        interface, does not need a view
+
+    QTableView
+        build_tvrmd_tab
+
+    QSqlQueryModel
+        not yet
+        seems to run a query can we loop thru one at a time
+
+    QSqlTableModel
+         !!QSqlTableModel with Pagination:
+
+        If you still want to use a model for display but are concerned about loading all rows into
+
+
+      memory at once, you can implement pagination. This involves querying and displaying only a           subset        of rows at a time.
+
+
+
+
+---- Parameters
+    Some aspects of the program are controlled by a module called parameters ( parameters.py )
+    For now the documentation of the parameters is in the code of the module.
+
+    It is early in this process much is broken
+
+
+ 
+
+Overall App Illustrates:
+    Illustrates:
+        A main window  ( code in: QtWidgetExamplesInTabs or whatever i decide is a better name )
+        TabNotebook with a lot of individual tabs
+            Tabs show the ability to create, name, move, and close
+            plus other stuff shown in the code.
+
+
+
+Individual Tabs:
+
+   
+    Each tab is documented internally by comments, by text printed to the console when you
+    interact with the tab, and by a text file document, like this, for each tab.
+
+ 
+    if lower case with underscores they the text is the method name being called
+
+
+
+Reading the code:
+
+
+    I sometimes have a Search comment at the top of the code to help you find code of interest
+
+            Try them, and read the docs for more information.
+
+
+---- Author and Credits
+
+
+        My Repositories
+        https://github.com/russ-hensel?tab=repositories
+
+
+        Icons may be sourced from:
+
+            fugue-icons · PyPI
+            https://pypi.org/project/fugue-icons/
+
+            p.yusukekamiyamane - Free stock icons + pixel fonts
+            https://p.yusukekamiyamane.com/
+
+            Hi, I’m Yusuke Kamiyamane. Freelance designer, developer and factotum based in Tokyo, Japan.
+
+
+            Contact information
+
+            Bonheur Un 202, 3-1-64, Midori-cho, Koganei-shi, Tokyo, 184-0003, Japan
+            +81 90 2940 5661 (Japanese)
+            p@yusukekamiyamane.com
+
+
+================= eof ===============

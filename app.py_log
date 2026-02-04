@@ -1,0 +1,2 @@
+2026-02-02 11:07:49,148 - CRITICAL - Root logger is set up. Modules can now log using logging.getLogger().
+2026-02-02 11:07:49,149 - INFO - config_logger call was: logging.info

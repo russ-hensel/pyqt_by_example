@@ -1,0 +1,25 @@
+# my virtual env ( uv )
+cd   ~/virtual_env
+source theprof_qt5/bin/activate
+
+
+
+# installs -----------------
+uv pip install  pyqt5
+uv pip install  spyder
+
+uv pip install  wat-inspector
+
+uv pip install  pyqtgraph
+uv pip install  matplotlib
+
+
+# future use -----------------
+uv pip install
+uv pip install
+uv pip install
+
+
+
+
+ # --------------------- notes

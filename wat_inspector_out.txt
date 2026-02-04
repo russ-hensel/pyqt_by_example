@@ -1,0 +1,11 @@
+Results filtered on height
+
+  def hasHeightForWidth(…) # hasHeightForWidth(self) -> bool
+  def height(…) # height(self) -> int
+  def heightForWidth(…) # heightForWidth(self, a0: int) -> int
+  def heightMM(…) # heightMM(self) -> int
+  def maximumHeight(…) # maximumHeight(self) -> int
+  def minimumHeight(…) # minimumHeight(self) -> int
+  def setFixedHeight(…) # setFixedHeight(self, h: int)
+  def setMaximumHeight(…) # setMaximumHeight(self, maxh: int)
+  def setMinimumHeight(…) # setMinimumHeight(self, minh: int)

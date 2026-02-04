@@ -1,0 +1,76 @@
+help for the text edit tab
+
+
+Status:  pretty much working 
+
+ 
+
+
+----------------------- Table of Contents -----------------
+ 
+
+---- Purpose/Functionality
+........Widgets included
+---- User interaction
+---- Discussion
+---- Ask a ChatBot
+---- Ideas for Extension
+
+
+
+
+
+ 
+
+
+---- Purpose/Functionality--------------------------------------------------------------------------
+
+    Show the use of a QTextEdit a multiline text input widget.
+    With a context menu
+
+---- User interaction
+
+    Try editing actions in the widget
+    
+    Right click for the context menu
+
+    Button lables should give some clue as to what they do.  See the code, and what documentation
+    is there 
+
+
+    And of course it has the usual inspect and breakpoint features
+
+
+---- Discussion
+    Note that we have enought methods implemented here to make
+    a mini text editor.  This widget is quite powerfull 
+    
+    This is a text edit tab with buttons that show some of the things you can do including
+    searching up and down in the text.
+
+........Widgets included:
+
+            QTextEdit
+                a bit like a QLineEdit but multiline and a bit more complicaed
+
+---- Ask a ChatBot
+
+
+            I have a QTextEdit. What signals is this widget set up to emit and what arguments are emitted for each signal.
+
+            I have a QTextEdit. What can I do to change its visual appearance.
+
+            I have a QTextEdit. What can I do to change the way it manages input?
+
+            I have a QTextEdit. How can I manipulate the text in it ?
+            
+            
+---- Ideas for Extension     
+
+    even more text editor like functions
+    
+    i think this guy may suppor some sort of html  look into that        
+            
+            
+# ---- eof             
+            

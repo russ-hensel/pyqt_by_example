@@ -1,0 +1,91 @@
+
+
+This tab is related to working with a single table at a time, and coordination
+between tables by using multiple qt widgets.
+
+ 
+
+----------------------- Table of Contents -----------------
+
+
+
+---- Purpose/Functionality
+........Widgets included
+---- User interaction
+---- Discussion
+---- Questions
+---- Ask a ChatBot
+---- Ideas for Improvement
+
+ 
+
+--------------------------------------------------------
+
+---- Purpose/Functionality --------------------------------------------------------------------------
+
+With the widgets on this tab we can do full select and update cycles on single tables at a time
+or coordinator actions on multiple tables by using multiple widgets.
+
+A note on SQL widgets.
+
+    In pyqt using widgets we usually have 2 ( or more ) cooperating widgets.  One is an
+    ORM and interacts with the database, it is often called a "Model".  It is not visual and does not interact with
+    the user.  The second widget ( or set of widgets ) is visual and interacts with the user in
+    the case of this tab it is called a "View".
+
+    So to use these we normally connect one widget to another.  There are many ways of doing
+    this.  So far in this set of examples I have only done the simplest.  -- I should write a
+    little guide to the methods I have used so far. --- What this example does is connect an
+    SQL data access widger or orm to a SQL view.  To be precise a QSqlTableModel   and a
+    QTableView the connection is in the code: "view.setModel( model  )"
+
+
+The code is found in QSqlTableModelTab and focus on the use of QSqlTableModel and QTableView
+
+---- Widget Creation --------------------------------------------------------------------------
+
+    see _build_gui as usual, with the SQL widget build in _build_model
+
+        of note
+
+            set up the update method
+            set up clicked behaviour
+            set headers
+            control column visibility
+            read it....
+
+
+---- User interaction --------------------------------------------------------------------------
+
+    * Clicking on a row in the people table  widget   causes a reselect in the people_phones widget
+        this is somewhat like a join of the two tables
+
+        that is the id of the person ( column 0 ) is used to select rows in the people_phones.person_id
+
+    * Click on column headers for sorting.
+
+
+    Buttons:
+
+        * <select_all> selects all the records in both tables
+
+        *Inspect <inspect>
+            the usual
+
+        *Breakpoint <breakpoint>
+            the usual
+
+
+---- Questions
+
+        can we do the join the other way around
+
+---- Work still to do  --------------------------------------------------------------------------
+
+    *Add, Update, and delete functionality
+
+
+
+
+
+----eof --------------------------------------------

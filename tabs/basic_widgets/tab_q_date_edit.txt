@@ -1,0 +1,43 @@
+
+
+
+
+
+
+----------------------- Table of Contents -----------------
+
+
+---- Purpose/Functionality
+---- Ask a ChatBot
+---- Work still to do
+
+--------------------------------------------------------
+
+---- Purpose/Functionality --------------------------------------------------------------------------
+
+        demo the qt widgets for date and Time input/output
+
+........Widgets included:
+
+            QDateEdit ...
+
+
+
+
+---- Ask a ChatBot
+
+
+            I have a QDateEdit. What signals is this widget set up to emit and what arguments are emitted for each signal.
+
+            I have a QDateEdit. What can I do to change its visual appearance.
+
+            I have a QDateEdit.  What can I do to change the way it manages input?
+
+
+
+---- Work still to do  --------------------------------------------------------------------------
+
+
+
+
+---- eof
