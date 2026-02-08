@@ -13,7 +13,7 @@ HOW_COMPLETE:   25  #  AND A COMMENT 2025-07-02:DAV
 
 
 """
-
+WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/Documentation-Not-Written"
 
 # --------------------
 if __name__ == "__main__":
@@ -30,19 +30,19 @@ from functools import partial
 from subprocess import PIPE, STDOUT, Popen, run
 
 import wat
-from PyQt5 import QtGui
-from PyQt5.QtCore import (QDate,
+from qtpy import QtGui
+from qtpy.QtCore import (QDate,
                           QDateTime,
                           QModelIndex,
                           QSize,
                           Qt,
                           QTime,
                           QTimer)
-from PyQt5.QtGui import QColor, QPalette, QTextCursor, QTextDocument
+from qtpy.QtGui import QColor, QPalette, QTextCursor, QTextDocument
 
-from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
+from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 
-from PyQt5.QtWidgets import (QAction,
+from qtpy.QtWidgets import (QAction,
                              QApplication,
                              QButtonGroup,
                              QCheckBox,
@@ -94,7 +94,11 @@ class QListWidgetTab( tab_base.TabBase ) :
         tab_list_widget.py
         """
         super().__init__()
-        self.module_file       = __file__      # save for help file usage
+        self.module_file        = __file__      # save for help file usage
+
+        global WIKI_LINK
+        self.wiki_link          = WIKI_LINK
+
         self.mutate_dict[0]     = self.mutate_0
         self.mutate_dict[1]     = self.mutate_1
         self.mutate_dict[2]     = self.mutate_2

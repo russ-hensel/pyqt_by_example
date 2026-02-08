@@ -22,20 +22,21 @@ import functools
 import sqlite3
 
 # ---- QtCore
-from PyQt5.QtCore import (QAbstractTableModel,
+from qtpy.QtCore import (QAbstractTableModel,
                           QDate,
                           QModelIndex,
                           QRectF,
                           Qt,
                           QTimer,
-                          pyqtSlot)
-from PyQt5.QtGui import (QIntValidator,
+                          Slot)   # in place off pyqtSlot
+
+from qtpy.QtGui import (QIntValidator,
                          QPainter,
                          QPixmap,
                          QStandardItem,
                          QStandardItemModel)
 # ---- QtSql
-from PyQt5.QtSql import (QSqlDatabase,
+from qtpy.QtSql import (QSqlDatabase,
                          QSqlQuery,
                          QSqlQueryModel,
                          QSqlRecord,
@@ -48,7 +49,7 @@ from PyQt5.QtSql import (QSqlDatabase,
 # ----QtWidgets layouts
 # ----QtWidgets big
 # ----QtWidgets
-from PyQt5.QtWidgets import (QAction,
+from qtpy.QtWidgets import (QAction,
                              QActionGroup,
                              QApplication,
                              QButtonGroup,
@@ -83,7 +84,7 @@ from PyQt5.QtWidgets import (QAction,
                              QVBoxLayout,
                              QWidget)
 
-#from PyQt5.QtCore import QAbstractTableModel, Qt
+#from qtpy.QtCore import QAbstractTableModel, Qt
 
 
 

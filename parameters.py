@@ -25,7 +25,6 @@ import in_spect_env
 global PARAMETERS
 PARAMETERS   = None
 
-
 # ========================================
 class Parameters( ):
     """
@@ -39,9 +38,9 @@ class Parameters( ):
             if you comment all out all modes you get the default mode which should
             run, perhaps not in the way you want
         """
-        self.mode_dev_debug()
+        #self.mode_dev_debug()
         #self.mode_russ_on_theprof()
-        #self.new_user_mode()
+        self.new_user_mode()
         #self.millhouse_1_mode()
 
         # two of my computers
@@ -51,7 +50,6 @@ class Parameters( ):
 
         # --- add on for testing, use as desired edit mode for your needs
         #self.plus_test_mode()
-
 
     # ---- ---->> Methods:  one for each mode
     # -------
@@ -190,6 +188,10 @@ class Parameters( ):
         a new user may experiment here.
         """
         self.mode               = "mode new_user"
+        self.auto_run           = True
+
+        # ---- min_complete
+        self.min_complete    = 10  # minimum value for HOW_COMPLETE
 
         # self.dir_for_tabs       = [ "./tabs",
         #                             "/mnt/WIN_D/russ/0000/python00/python3/_projects/stuffdb",
@@ -378,13 +380,9 @@ class Parameters( ):
 
         self.logger_id          = "qt_ex"         # id of app in logging file
 
-
         self.breakpoint_ok      = True  # enable breakpoin button
 
-
-
         self.auto_run           = True
-
 
         # ---- database there are 2 ........
 
@@ -455,11 +453,7 @@ class Parameters( ):
                             'StuffDB',
                             'TBD',
                             'Tools',
-
                         ]
-
-
-
 
     # -------
     def __init__( self, ):
@@ -482,6 +476,7 @@ class Parameters( ):
             print( "__init__ probably an error")
 
         #rint( self ) # for debugging
+
     # ---------------------
     def to_columns( self, current_str, item_list, format_list = [ "{: <30}", "{:<30}" ], indent = "    "  ):
         """

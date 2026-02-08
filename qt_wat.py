@@ -11,7 +11,7 @@ Note the setup code that allows it to work.
 import sys
 import time
 
-from PyQt5.QtWidgets import (QAction,
+from qtpy.QtWidgets import (QAction,
                              QApplication,
                              QDateEdit,
                              QMainWindow,

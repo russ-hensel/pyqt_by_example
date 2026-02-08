@@ -15,7 +15,7 @@ import os
 import socket
 
 VERBOSE   = 10
-
+APP_DIR   = "/pyqt_by_example"
 
 # adjust according to where I am -- in progress
 hostname              = socket.gethostname()
@@ -39,8 +39,8 @@ if VERBOSE > 20:
 
 
 try:
-    # ---- next needs to match the app --- think we can get this as well
-    ix   = cwd.index( "/qt5_by_example")
+    # ---- next needs to match the app
+    ix   = cwd.index( APP_DIR )
     print( ix )
 
     src_root   = cwd[ : ix   ]
@@ -87,6 +87,7 @@ sys.path.insert( 1, f"{src_root}/rshlib/app_services/" )
 
 
 sys.path.insert( 1, f"{src_root}/rshlib/in_spect" )
+sys.path.insert( 1, f"{src_root}/rshlib/utils" )
 
 sys.path.insert( 1, f"./tabs/basic_widgets" )
 sys.path.insert( 1, f"./tabs/book_fitz" )
@@ -102,6 +103,7 @@ sys.path.insert( 1, f"{src_root}/qt5_by_example/tabs"  )
 # /mnt/WIN_D/russ/0000/python00/python3/qt5_by_example/tabs/
 
 sys.path.insert( 1, f"{src_root}/stuffdb/data_dict_src" )
+sys.path.insert( 1, f"{src_root}/stuffdb/sql" )
 #/mnt/WIN_D/Russ/0000/python00/python3/qt5_by_example
 # /mnt/WIN_D/Russ/0000/python00/python3/qt_by_example
 

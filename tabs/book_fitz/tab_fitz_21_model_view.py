@@ -13,10 +13,10 @@ TAB_TITLE:  Fitz Chapt 21 / Model View
 DESCRIPTION:    Code motivated by Fitz Chapt 21 A simple Model View — a Todo List
 HOW_COMPLETE:   15  #  AND A COMMENT -- <10 major probs  <15 runs but <20 fair not finished  <=25 not to shabby
 """
-WIKI_LINK      =  "https://github.com/russ-hensel/qt5_by_example/wiki/Fitz-21-Model-View"
+WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/Fitz-21-Model-View"
 """
-
- "/mnt/WIN_D/Russ/0000/python00/python3/_examples/python_book_code/book_pyqt5_src/model-views/todo_1.py",
+Notes:
+"/mnt/WIN_D/Russ/0000/python00/python3/_examples/python_book_code/book_pyqt5_src/model-views/todo_1.py",
 "/mnt/WIN_D/Russ/0000/python00/python3/_examples/python_book_code/book_pyqt5_src/model-views/todo_1b.py",
 "/mnt/WIN_D/Russ/0000/python00/python3/_examples/python_book_code/book_pyqt5_src/model-views/todo_2.py",
 "/mnt/WIN_D/Russ/0000/python00/python3/_examples/python_book_code/book_pyqt5_src/model-views/todo_3.py",
@@ -33,7 +33,6 @@ largely the last
 if __name__ == "__main__":
     #----- run the full app
     import main
-    #qt_fitz_book.main()
 # --------------------
 
 
@@ -48,8 +47,8 @@ from functools import partial
 from subprocess import PIPE, STDOUT, Popen, run
 
 import wat
-from PyQt5 import QtGui
-from PyQt5.QtCore import (QAbstractListModel,
+from qtpy import QtGui
+from qtpy.QtCore import (QAbstractListModel,
                           QDate,
                           QDateTime,
                           QModelIndex,
@@ -57,13 +56,13 @@ from PyQt5.QtCore import (QAbstractListModel,
                           Qt,
                           QTime,
                           QTimer)
-from PyQt5.QtGui import QColor, QImage, QPalette, QTextCursor, QTextDocument
+from qtpy.QtGui import QColor, QImage, QPalette, QTextCursor, QTextDocument
 # sql
-from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
+from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 # widgets biger
 # widgets -- small
 # layouts
-from PyQt5.QtWidgets import (QAction,
+from qtpy.QtWidgets import (QAction,
                              QApplication,
                              QButtonGroup,
                              QCheckBox,

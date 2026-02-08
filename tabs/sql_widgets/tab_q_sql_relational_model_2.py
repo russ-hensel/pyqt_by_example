@@ -39,15 +39,15 @@ from platform import python_version
 from subprocess import PIPE, STDOUT, Popen, run
 
 #from app_global import AppGlobal
-from PyQt5 import QtGui
-from PyQt5.QtCore import (QDate,
+from qtpy import QtGui
+from qtpy.QtCore import (QDate,
                           QModelIndex,
                           QSize,
                           QSortFilterProxyModel,
                           Qt,
                           QTimer)
 # sql
-from PyQt5.QtSql import (QSqlDatabase,
+from qtpy.QtSql import (QSqlDatabase,
                          QSqlField,
                          QSqlQuery,
                          QSqlQueryModel,
@@ -56,7 +56,7 @@ from PyQt5.QtSql import (QSqlDatabase,
                          QSqlRelationalDelegate,
                          QSqlRelationalTableModel,
                          QSqlTableModel)
-from PyQt5.QtWidgets import (QAbstractItemView,
+from qtpy.QtWidgets import (QAbstractItemView,
                              QAction,
                              QApplication,
                              QButtonGroup,
@@ -95,11 +95,9 @@ import utils_for_tabs as uft
 import wat_inspector
 import tab_base
 
-
 INDENT        = uft.INDENT
 BEGIN_MARK_1  = uft.BEGIN_MARK_2
 BEGIN_MARK_2  = uft.BEGIN_MARK_2
-
 
 #-----------------------------------------------
 class QSqlRelationalTableModelTab_2( tab_base.TabBase  ):
@@ -117,8 +115,6 @@ class QSqlRelationalTableModelTab_2( tab_base.TabBase  ):
         # self.mutate_dict[2]    = self.mutate_2
         # self.mutate_dict[3]    = self.mutate_3
         # self.mutate_dict[4]    = self.mutate_4
-
-
 
         self.relation      = ( "", "", "",  )
         self.relation      = ( "persons", "id", "name" )
@@ -292,7 +288,7 @@ class QSqlRelationalTableModelTab_2( tab_base.TabBase  ):
 
                # try to add foreigh key now broken
         #debug_var   = self.model.fieldIndex( "person_id" )   # field name to number
-        model.setJoinMode( QSqlRelationalTableModel.LeftJoin )  # claud thinks this might help
+        model.setJoinMode( QSqlRelationalTableModel.JoinMode.LeftJoin )  # claud thinks this might help
         model.setRelation(
             self.model.fieldIndex( "person_id" ),    # column in primary table used for join
                 QSqlRelation( *self.relation )
@@ -316,7 +312,7 @@ class QSqlRelationalTableModelTab_2( tab_base.TabBase  ):
             )
 
         # self.model.setEditStrategy(QSqlRelationalTableModel.OnFieldChange)
-        model.setEditStrategy( QSqlRelationalTableModel.OnManualSubmit )
+        model.setEditStrategy( QSqlTableModel.EditStrategy.OnManualSubmit )
 
         # !?? mayebe not
         self.select_all()
@@ -656,8 +652,8 @@ class QSqlRelationalTableModelTab_2( tab_base.TabBase  ):
         """ """
         self.append_function_msg( "get_selected_rows" )
 
-        # from PyQt5.QtWidgets import QTableView, QAbstractItemView
-        # from PyQt5.QtCore import Qt
+        # from qtpy.QtWidgets import QTableView, QAbstractItemView
+        # from qtpy.QtCore import Qt
 
         view            = self.view
         # Assuming `view` is your QTableView
@@ -678,7 +674,7 @@ class QSqlRelationalTableModelTab_2( tab_base.TabBase  ):
         """
         self.append_function_msg( "delete_selected_row" )
 
-        #from PyQt5.QtSql import QSqlRelationalTableModel
+        #from qtpy.QtSql import QSqlRelationalTableModel
 
         view            = self.view
 

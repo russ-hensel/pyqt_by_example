@@ -16,8 +16,8 @@ qt_wat_app.py
 import sys
 from functools import partial
 
-from PyQt5 import QtGui
-from PyQt5.QtWidgets import (QApplication,
+from qtpy import QtGui
+from qtpy.QtWidgets import (QApplication,
                              QButtonGroup,
                              QCheckBox,
                              QComboBox,

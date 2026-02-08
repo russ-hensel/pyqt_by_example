@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+
+# ---- tof
 """
-
-
 self.help_file_name     =  "sql_query_model_tab.txt"
 
 KEY_WORDS:      sql query model select update delete crud rh
@@ -12,27 +12,21 @@ STATUS:         works -- but unclear what it is trying to do and seems incomplet
 TAB_TITLE:      SqlQuery / Model
 HOW_COMPLETE:   5  #  AND A COMMENT
 """
-WIKI_LINK      =  "https://github.com/russ-hensel/qt5_by_example/wiki/What-We-Know-About-QSqlQuery"
+WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-About-QSqlQuery"
 """
-What We Know About QSqlQuery · russ-hensel/qt5_by_example Wiki
-https://github.com/russ-hensel/qt5_by_example/wiki/What-We-Know-About-QSqlQuery
+What We Know About QSqlQuery · russ-hensel/pyqt_by_example Wiki
+https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-About-QSqlQuery
 
 or
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
-    import main
-    #qt_fitz_book.main()
+    import mai
 # --------------------
 
 """
-# ---- tof
-# --------------------
-if __name__ == "__main__":
-    #----- run the full app
-    import main
-    #qt_fitz_book.main()
-# --------------------
+
+
 
 
 import inspect
@@ -48,8 +42,8 @@ from subprocess import PIPE, STDOUT, Popen, run
 
 import pyqtgraph as pg  # import PyQtGraph after PyQt5
 import wat
-from PyQt5 import QtGui
-from PyQt5.QtCore import (QAbstractListModel,
+from qtpy import QtGui
+from qtpy.QtCore import (QAbstractListModel,
                           QDate,
                           QDateTime,
                           QModelIndex,
@@ -57,10 +51,10 @@ from PyQt5.QtCore import (QAbstractListModel,
                           Qt,
                           QTime,
                           QTimer)
-from PyQt5.QtGui import QColor, QImage, QPalette, QTextCursor, QTextDocument
+from qtpy.QtGui import QColor, QImage, QPalette, QTextCursor, QTextDocument
 # sql
 # sql
-from PyQt5.QtSql import (QSqlDatabase,
+from qtpy.QtSql import (QSqlDatabase,
                          QSqlQuery,
                          QSqlQueryModel,
                          QSqlRelation,
@@ -70,7 +64,7 @@ from PyQt5.QtSql import (QSqlDatabase,
 # widgets biger
 # widgets -- small
 # layouts
-from PyQt5.QtWidgets import (QAction,
+from qtpy.QtWidgets import (QAction,
                              QApplication,
                              QButtonGroup,
                              QCheckBox,

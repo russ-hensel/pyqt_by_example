@@ -19,6 +19,8 @@ DESCRIPTION:    Various Misc Widgets
 HOW_COMPLETE:   20  #  AND A COMMENT
 
 """
+WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/Documentation-Not-Written"
+
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
@@ -36,21 +38,22 @@ from functools import partial
 from subprocess import PIPE, STDOUT, Popen, run
 
 import wat
-from PyQt5 import QtGui
-from PyQt5.QtCore import (QDate,
+
+from qtpy import QtGui
+from qtpy.QtCore import (QDate,
                           QDateTime,
                           QModelIndex,
                           QSize,
                           Qt,
                           QTime,
                           QTimer)
-from PyQt5.QtGui import QColor, QPalette, QTextCursor, QTextDocument
+from qtpy.QtGui import QColor, QPalette, QTextCursor, QTextDocument
 # sql
-from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
+from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 # widgets biger
 # widgets -- small
 # layouts
-from PyQt5.QtWidgets import (QAction,
+from qtpy.QtWidgets import (QAction,
                              QApplication,
                              QButtonGroup,
                              QCheckBox,
@@ -101,6 +104,9 @@ class MiscWidgetTab(  tab_base.TabBase  ):
 
         self.module_file        = __file__      # save for help file usage
         self.help_file_name     =  "misc_widget_tab.txt"
+
+        global WIKI_LINK
+        self.wiki_link          = WIKI_LINK
 
         self.mutate_dict[0]    = self.mutate_0
         # self.mutate_dict[1]    = self.mutate_1

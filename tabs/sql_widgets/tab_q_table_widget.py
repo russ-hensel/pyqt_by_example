@@ -32,17 +32,17 @@ from functools import partial
 from subprocess import PIPE, STDOUT, Popen, run
 
 import wat
-from PyQt5 import QtGui
-from PyQt5.QtCore import (QDate,
+from qtpy import QtGui
+from qtpy.QtCore import (QDate,
                           QDateTime,
                           QModelIndex,
                           QSize,
                           Qt,
                           QTime,
                           QTimer)
-from PyQt5.QtGui import QColor, QPalette, QTextCursor, QTextDocument
-from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
-from PyQt5.QtWidgets import (QAbstractItemView,
+from qtpy.QtGui import QColor, QPalette, QTextCursor, QTextDocument
+from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
+from qtpy.QtWidgets import (QAbstractItemView,
                              QAction,
                              QApplication,
                              QButtonGroup,
@@ -497,7 +497,7 @@ class QTableWidgetTab( tab_base.TabBase  ):
             table.setHorizontalHeaderItem( ix_col, QTableWidgetItem( i_header_text )  )
           #  table.setHorizontalHeaderItem( ix_col, QTableWidgetItem( i_column.col_head_text )  )
 
-    #from PyQt5.QtWidgets import QApplication, QTableWidget, QTableWidgetItem, QHeaderView
+    #from qtpy.QtWidgets import QApplication, QTableWidget, QTableWidgetItem, QHeaderView
 
         table.setColumnWidth(2, 10)  # Set specific width for a column
 

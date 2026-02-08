@@ -1,2 +1,69 @@
-2026-02-02 11:07:49,148 - CRITICAL - Root logger is set up. Modules can now log using logging.getLogger().
-2026-02-02 11:07:49,149 - INFO - config_logger call was: logging.info
+2026-02-08 12:33:14,262 - CRITICAL - Root logger is set up. Modules can now log using logging.getLogger().
+2026-02-08 12:33:14,263 - INFO - config_logger call was: logging.info
+2026-02-08 12:33:14,271 - CRITICAL - KeyWordIndexer.loop_thru()
+2026-02-08 12:33:14,271 - CRITICAL - get_key_words just got key words key_words = 'tabs/sql_widgets/tab_q_sql_query.py  QSqlQuery / Reference  QSqlQuery  sql query select insert delete update      rh'
+2026-02-08 12:33:14,272 - INFO - check_id_for_error elapsed perf_counter 4.1127001168206334e-05
+2026-02-08 12:33:14,272 - CRITICAL - get_key_words just got key words key_words = 'tabs/real_python/tab_real_python_calc.py  RP: python-pyqt- / gui-calculator  QHBoxLayout QVBoxLayout QGridLayout QFormLayout  QPushButton, QLabel, QHBoxLayout  QGridLayout RealPython rh'
+2026-02-08 12:33:14,273 - INFO - check_id_for_error elapsed perf_counter 3.7756995880045e-05
+2026-02-08 12:33:14,273 - CRITICAL - get_key_words just got key words key_words = 'tabs/layouts/tab_grid_layout_window.py  GridLayout / Windows  GridLayout QSpacerItem  column columnspan span  rh'
+2026-02-08 12:33:14,273 - INFO - check_id_for_error elapsed perf_counter 3.0347000574693084e-05
+2026-02-08 12:33:14,274 - CRITICAL - get_key_words just got key words key_words = 'tabs/more/tab_progress_dialog.py  Progress Dialog / Two Threads  QWidget QThread  progress dialog QThread thread helper message box'
+2026-02-08 12:33:14,274 - INFO - check_id_for_error elapsed perf_counter 3.4042997867800295e-05
+2026-02-08 12:33:14,274 - CRITICAL - get_key_words just got key words key_words = 'tabs/more/tab_progress_dialog_gui_iterator.py  Progress Dialog / Gui Iterator  QWidget QThread  progress dialog to threads message box'
+2026-02-08 12:33:14,275 - INFO - check_id_for_error elapsed perf_counter 4.703299782704562e-05
+2026-02-08 12:33:14,275 - CRITICAL - get_key_words just got key words key_words = 'tabs/more/tab_matplotlib.py  Matplotlib / Integration  QWidget imports from matplotlib  Example of a matplotlib  matplot mathplot mathplotlib math  mat plot lib graph'
+2026-02-08 12:33:14,276 - INFO - check_id_for_error elapsed perf_counter 4.4067994167562574e-05
+2026-02-08 12:33:14,276 - CRITICAL - get_key_words just got key words key_words = 'tabs/more/tab_progress_dialog_one_thread.py  Progress Dialog / OneThread  QWidget QCoreApplication processEvents StopIteration  progress dialog modal helper message box processEvents QCoreApplication'
+2026-02-08 12:33:14,277 - INFO - check_id_for_error elapsed perf_counter 4.2798004869837314e-05
+2026-02-08 12:33:14,277 - CRITICAL - get_key_words just got key words key_words = 'tabs/basic_widgets/tab_text_edit_mixin.py  TextEditMixinTab / Mixin Experiment  TextEditMixin  russ mix in contextMenu'
+2026-02-08 12:33:14,278 - INFO - check_id_for_error elapsed perf_counter 3.674600156955421e-05
+2026-02-08 12:33:14,278 - CRITICAL - get_key_words just got key words key_words = 'tabs/basic_widgets/tab_q_groupbox.py  QGroupBox / Reference  QGroupBox  StyleSheet  group collect widgets'
+2026-02-08 12:33:14,279 - INFO - check_id_for_error elapsed perf_counter 4.514300235314295e-05
+2026-02-08 12:33:14,279 - CRITICAL - get_key_words just got key words key_words = 'tabs/basic_widgets/tab_q_context_menu.py  QMenu / as a context menu  QMenu QtCore.Qt.CustomContextMenu  context menu custom right click'
+2026-02-08 12:33:14,280 - INFO - check_id_for_error elapsed perf_counter 4.458799958229065e-05
+2026-02-08 12:33:14,280 - CRITICAL - get_key_words just got key words key_words = 'tabs/basic_widgets/tab_q_line_edit.py  QLineEdit / Reference  QLineEdit  lineEdit     text'
+2026-02-08 12:33:14,280 - INFO - check_id_for_error elapsed perf_counter 3.6602003092411906e-05
+2026-02-08 12:33:14,281 - CRITICAL - get_key_words just got key words key_words = 'tabs/basic_widgets/tab_q_spin_box.py  QSpinBox  / Reference  QSpinBox QDoubleSpinBox  integer float double'
+2026-02-08 12:33:14,281 - INFO - check_id_for_error elapsed perf_counter 3.8676997064612806e-05
+2026-02-08 12:33:14,282 - CRITICAL - get_key_words just got key words key_words = 'tabs/basic_widgets/tab_q_push_button.py  QPushButton / Reference  QPushButton  pressed press PushBtton click connect rsh pushbutton'
+2026-02-08 12:33:14,282 - INFO - check_id_for_error elapsed perf_counter 5.136899562785402e-05
+2026-02-08 12:33:14,283 - CRITICAL - get_key_words just got key words key_words = 'tabs/basic_widgets/tab_q_combo_box.py  QComboBox / Reference  QComboBox  combo box or drop down list box ddl   rh testme rr'
+2026-02-08 12:33:14,283 - INFO - check_id_for_error elapsed perf_counter 4.8328998673241585e-05
+2026-02-08 12:33:14,283 - CRITICAL - get_key_words just got key words key_words = 'tabs/basic_widgets/tab_q__no_mutate_context__menu.py  QMenu no Mutate / context menu  QMenu QtCore.Qt.CustomContextMenu  context menu custom right click no mutate constant two leel'
+2026-02-08 12:33:14,284 - INFO - check_id_for_error elapsed perf_counter 5.184399924473837e-05
+2026-02-08 12:33:14,285 - CRITICAL - get_key_words just got key words key_words = 'tabs/basic_widgets/tab_q_tool_tip.py  QToolTip / and Hover  QToolTip  hover'
+2026-02-08 12:33:14,285 - INFO - check_id_for_error elapsed perf_counter 5.232999683357775e-05
+2026-02-08 12:33:14,286 - CRITICAL - get_key_words just got key words key_words = 'tabs/basic_widgets/tab_q_list_widget.py  QListWidget Reference  QListWidget  list widget  dc'
+2026-02-08 12:33:14,286 - INFO - check_id_for_error elapsed perf_counter 4.684399755205959e-05
+2026-02-08 12:33:14,287 - CRITICAL - get_key_words just got key words key_words = 'tabs/basic_widgets/tab_q_check_box.py  QCheckBox Reference  QCheckBox  QCheckBox  checkbox check box dc'
+2026-02-08 12:33:14,287 - INFO - check_id_for_error elapsed perf_counter 4.591899778461084e-05
+2026-02-08 12:33:14,287 - CRITICAL - get_key_words just got key words key_words = 'tabs/basic_widgets/tab_q_text_edit.py  QTextEdit / Reference  QTextEdit  Example of a text edit for string input fix rh'
+2026-02-08 12:33:14,288 - INFO - check_id_for_error elapsed perf_counter 5.2656003390438855e-05
+2026-02-08 12:33:14,288 - CRITICAL - get_key_words just got key words key_words = 'tabs/basic_widgets/tab_misc_widgets.py  Misc / Widgets  QHBoxLayout QVBoxLayout QLabel QPushButton QCheckBox QLineEdit QLineEdit QRadioButton  lots multiple misc widgets many return pressed push button'
+2026-02-08 12:33:14,289 - INFO - check_id_for_error elapsed perf_counter 6.581799971172586e-05
+2026-02-08 12:33:14,290 - CRITICAL - get_key_words just got key words key_words = 'tabs/basic_widgets/tab_q_file_dialog.py  QFileDialog / QDirectoryDialog  QFileDialog QDirectoryDialog  file directory path dialog'
+2026-02-08 12:33:14,290 - INFO - check_id_for_error elapsed perf_counter 5.4259995522443205e-05
+2026-02-08 12:33:14,291 - CRITICAL - get_key_words just got key words key_words = 'tabs/basic_widgets/tab_q_date_edit.py  QDateEdit QDateTimeEdit / Reference  QDateEdit  CalendarPopup QDateTimeEdit  date edit time drop down'
+2026-02-08 12:33:14,291 - INFO - check_id_for_error elapsed perf_counter 5.2883005992043763e-05
+2026-02-08 12:33:14,292 - CRITICAL - get_key_words just got key words key_words = 'tabs/basic_widgets/tab_q_ex_dialogs.py  QDialogsTab / various  QMessageBox QDialog  dialog questionBox  Message Box'
+2026-02-08 12:33:14,293 - INFO - check_id_for_error elapsed perf_counter 6.8015004217159e-05
+2026-02-08 12:33:14,293 - CRITICAL - get_key_words just got key words key_words = 'tabs/book_fitz/tab_fitz_7_widgets_list.py  Fitz Chapt  7 / Widgets widgets_list  QCheckBox QComboBox QDateEdit QDateTimeEdit QDial QDoubleSpinBox QFontComboBox QLCDNumber QLineEdit  book many misc simple widgets ddl rsh'
+2026-02-08 12:33:14,294 - INFO - check_id_for_error elapsed perf_counter 7.268899935297668e-05
+2026-02-08 12:33:14,294 - CRITICAL - get_key_words just got key words key_words = 'tabs/book_fitz/tab_fitz_35_plot_widget.py  Fitz_Chapt 35 / Plot Widget x A_Tab  PlotWidget PyQtGraph pg.PlotWidget pg.mkPen  Grid Range  line graph  with points of static data chapter     rsh'
+2026-02-08 12:33:14,295 - INFO - check_id_for_error elapsed perf_counter 6.566599768120795e-05
+2026-02-08 12:33:14,295 - CRITICAL - get_key_words just got key words key_words = 'tabs/book_fitz/tab_fitz_21_model_view.py  Fitz Chapt 21 / Model View  QAbstractListModel QListView DecorationRole  chapter      simple Model View  Todo List   rsh'
+2026-02-08 12:33:14,296 - INFO - check_id_for_error elapsed perf_counter 7.186700531747192e-05
+2026-02-08 12:33:14,297 - CRITICAL - get_key_words just got key words key_words = 'tabs/book_fitz/tab_fitz_7_widgets_n.py  Fitz Chapt  7 / Widgets N  QCheckBox QPixmap QLabel QComboBox  fitzz chapter book lables with images   7   rsh'
+2026-02-08 12:33:14,298 - INFO - check_id_for_error elapsed perf_counter 7.974599429871887e-05
+2026-02-08 12:33:14,298 - CRITICAL - get_key_words just got key words key_words = 'tabs/book_fitz/tab_fitz_22_model_view.py  Fitz Chapt 22 / Table Model  QAbstractTableModel  QTableView DecorationRole    BackgroundRole QIcon TextAlignmentRole  chapter View  formating fitzz rsh'
+2026-02-08 12:33:14,299 - INFO - check_id_for_error elapsed perf_counter 8.820199582260102e-05
+2026-02-08 12:33:14,300 - CRITICAL - get_key_words just got key words key_words = 'tabs/book_fitz/tab_fitz_12_events.py  Fitz Chapt 12 / MouseEvents  QMenu Qt.LeftButton contextMenuEvent  book mouse events right click context menu fitzz'
+2026-02-08 12:33:14,301 - INFO - check_id_for_error elapsed perf_counter 8.806600089883432e-05
+2026-02-08 12:33:14,302 - CRITICAL - get_key_words just got key words key_words = 'tabs/book_fitz/tab_fitz_23_table_model.py  Fitz Chapt 23 / TableModel  QTableView() QSqlTableModel  Querying SQL databases with Qt models   rsh'
+2026-02-08 12:33:14,303 - INFO - check_id_for_error elapsed perf_counter 9.456900443183258e-05
+2026-02-08 12:33:14,304 - CRITICAL - get_key_words just got key words key_words = 'tabs/book_fitz/tab_fitz_23_query_model.py  Fitz Chapt 23 / SqlModel  QTableView QSqlQueryModel QSqlQuery  chapter   C  Generic queries with QSqlQueryModel sql where  fitzz'
+2026-02-08 12:33:14,305 - INFO - check_id_for_error elapsed perf_counter 9.963000047719106e-05
+2026-02-08 12:33:14,306 - CRITICAL - get_key_words just got key words key_words = 'tabs/book_fitz/tab_fitz_35_qt_graph.py  Fitz Chapt 35 / Dynamic Plot  QTimer pg.PlotWidget pg.mkPen  book a dynamic graph  fitzz'
+2026-02-08 12:33:14,307 - INFO - check_id_for_error elapsed perf_counter 9.401600254932418e-05
+2026-02-08 12:51:12,961 - INFO - InfoAbout._search <ia_parameters.Parameters object at 0x72413d3e55b0>
+2026-02-08 12:51:12,962 - INFO - ------------- InfoAbout create objects ------------------

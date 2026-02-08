@@ -14,11 +14,11 @@ os.chdir(script_dir)
 print(os.getcwd())  # Prints the new working directory
 
 import adjust_path
-import qt5_by_example
+import pyqt_by_example
 
 
 print( f"sys.argv  = >>>{sys.argv}<<< ")
 
-qt5_by_example.main()
+pyqt_by_example.main()
 
 

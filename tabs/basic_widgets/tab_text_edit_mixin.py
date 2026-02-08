@@ -14,7 +14,8 @@ TAB_TITLE:      TextEditMixinTab / Mixin Experiment
 DESCRIPTION:    Experiment with extending a text edit via a Mixin
 HOW_COMPLETE:   20  #  AND A COMMENT -- <10 major probs  <15 runs but <20 fair not finished  <=25 not to shabby
 """
-WIKI_LINK      =  "https://github.com/russ-hensel/qt5_by_example/wiki/Russ-Experiments"
+
+WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/Documentation-Not-Written"
 
 """
 Some Notes:
@@ -30,9 +31,9 @@ if __name__ == "__main__":
 
 import inspect
 import subprocess
-import sys
-import time
-from datetime import datetime
+# import sys
+# import time
+# from datetime import datetime
 from functools import partial
 from subprocess import PIPE, STDOUT, Popen, run
 import webbrowser
@@ -41,24 +42,24 @@ import webbrowser
 import wat
 
 
-from PyQt5.QtWidgets import QApplication, QTextEdit, QMenu
-from PyQt5.QtCore import Qt, QPoint, QTimer
-from PyQt5.QtGui import QContextMenuEvent
-from PyQt5.QtCore import QPoint
-from PyQt5 import QtCore
-from PyQt5 import QtGui
-from PyQt5.QtCore import (QDate,
+from qtpy.QtWidgets import QApplication, QTextEdit, QMenu
+from qtpy.QtCore import Qt, QPoint, QTimer
+from qtpy.QtGui import QContextMenuEvent
+from qtpy.QtCore import QPoint
+from qtpy import QtCore
+from qtpy import QtGui
+from qtpy.QtCore import (QDate,
                           QDateTime,
                           QModelIndex,
                           QSize,
                           Qt,
                           QTime,
                           QTimer)
-from PyQt5.QtGui import QColor, QPalette, QTextCursor, QTextDocument
+from qtpy.QtGui import QColor, QPalette, QTextCursor, QTextDocument
 # sql
-from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
+from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 
-from PyQt5.QtWidgets import (QAction,
+from qtpy.QtWidgets import (QAction,
                              QApplication,
                              QButtonGroup,
                              QCheckBox,

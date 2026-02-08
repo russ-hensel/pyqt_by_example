@@ -14,7 +14,7 @@ TAB_TITLE:      GridLayout / Windows
 DESCRIPTION:    A reference for the QGridLayout widget
 HOW_COMPLETE:   20  #  AND A COMMENT -- <10 major probs  <15 runs but <20 fair not finished  <=25 not to shabby
 """
-WIKI_LINK      =  "https://github.com/russ-hensel/qt5_by_example/wiki/What-We-Know-About-QGridLayout"
+WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-About-QGridLayout"
 
 
 chat = """
@@ -36,7 +36,6 @@ in gridwindow_1
 if __name__ == "__main__":
     #----- run the full app
     import main
-    #qt_widgets.main( )
 # --------------------
 
 import inspect
@@ -50,20 +49,20 @@ from subprocess import PIPE, STDOUT, Popen, run
 import wat
 
 
-from PyQt5.QtWidgets import QSpacerItem, QSizePolicy
-from PyQt5 import QtGui
-from PyQt5.QtCore import (QDate,
+from qtpy.QtWidgets import QSpacerItem, QSizePolicy
+from qtpy import QtGui
+from qtpy.QtCore import (QDate,
                           QDateTime,
                           QModelIndex,
                           QSize,
                           Qt,
                           QTime,
                           QTimer)
-from PyQt5.QtGui import QColor, QPalette, QTextCursor, QTextDocument
+from qtpy.QtGui import QColor, QPalette, QTextCursor, QTextDocument
 
-from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
+from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 
-from PyQt5.QtWidgets import (QAction,
+from qtpy.QtWidgets import (QAction,
                              QApplication,
                              QButtonGroup,
                              QCheckBox,

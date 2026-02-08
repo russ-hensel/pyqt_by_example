@@ -13,7 +13,7 @@ TAB_TITLE:      Fitz Chapt 22 / Table Model
 DESCRIPTION:    Code modeled on FitzBook ...
 HOW_COMPLETE:   15  #  AND A COMMENT -- <10 major probs  <15 runs but <20 fair not finished  <=25 not to shabby
 """
-WIKI_LINK      =  "https://github.com/russ-hensel/qt5_by_example/wiki/fitz-22-model-view"
+WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/fitz-22-model-view"
 """
 looked at
 "/mnt/WIN_D/Russ/0000/python00/python3/_examples/python_book_code/book_pyqt5_src/model-views/tableview_demo.py",
@@ -39,7 +39,6 @@ largely the last
 if __name__ == "__main__":
     #----- run the full app
     import main
-    #qt_fitz_book.main()
 # --------------------
 
 
@@ -54,8 +53,8 @@ from functools import partial
 from subprocess import PIPE, STDOUT, Popen, run
 
 import wat
-from PyQt5 import QtGui
-from PyQt5.QtCore import (QAbstractListModel,
+from qtpy import QtGui
+from qtpy.QtCore import (QAbstractListModel,
                           QAbstractTableModel,
                           QDate,
                           QDateTime,
@@ -64,13 +63,13 @@ from PyQt5.QtCore import (QAbstractListModel,
                           Qt,
                           QTime,
                           QTimer)
-from PyQt5.QtGui import QColor, QImage, QPalette, QTextCursor, QTextDocument, QIcon
+from qtpy.QtGui import QColor, QImage, QPalette, QTextCursor, QTextDocument, QIcon
 # sql
-from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
+from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 # widgets biger
 # widgets -- small
 # layouts
-from PyQt5.QtWidgets import (QAction,
+from qtpy.QtWidgets import (QAction,
                              QApplication,
                              QButtonGroup,
                              QCheckBox,

@@ -13,8 +13,8 @@ TAB_TITLE:      Progress Dialog / Gui Iterator
 DESCRIPTION:    A demonstration of a progress dialog tracking a task running in a worker thread
 HOW_COMPLETE:   20  #  AND A COMMENT -- <10 major probs  <15 runs but <20 fair not finished  <=25 not to shabby
 """
-WIKI_LINK      = "https://github.com/russ-hensel/qt5_by_example/wiki/What-We-Know-About-Progress-Dialogs"
-WIKI_LINK      = "https://github.com/russ-hensel/qt5_by_example/wiki/What-We-Know-About-Progress-Dialogs-Gui-Iterator"
+WIKI_LINK      = "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-About-Progress-Dialogs"
+WIKI_LINK      = "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-About-Progress-Dialogs-Gui-Iterator"
 """
 
 
@@ -67,30 +67,30 @@ import wat
 
 
 
-from PyQt5.QtCore import QCoreApplication
-from PyQt5 import QtGui
+from qtpy.QtCore import QCoreApplication
+from qtpy import QtGui
 
 
-from PyQt5.QtWidgets import (
+from qtpy.QtWidgets import (
     QApplication, QMainWindow, QPushButton, QVBoxLayout,
     QWidget, QDialog, QTextEdit, QHBoxLayout
     )
 
-#from PyQt5.QtCore import QThread, pyqtSignal
+#from qtpy.QtCore import QThread, pyqtSignal
 
-from PyQt5.QtCore import (QDate,
+from qtpy.QtCore import (QDate,
                           QDateTime,
                           QModelIndex,
                           QSize,
                           Qt,
                           QTime,
                           QTimer)
-from PyQt5.QtGui import QColor, QPalette, QTextCursor, QTextDocument
+from qtpy.QtGui import QColor, QPalette, QTextCursor, QTextDocument
 
-# from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
+# from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QFileDialog
-from PyQt5.QtWidgets import (QAction,
+from qtpy.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QFileDialog
+from qtpy.QtWidgets import (QAction,
                              QApplication,
                              QButtonGroup,
                              QCheckBox,

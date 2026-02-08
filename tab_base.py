@@ -31,8 +31,9 @@ from subprocess import PIPE, STDOUT, Popen, run
 import webbrowser
 #import wat
 from pathlib import Path
-from PyQt5 import QtGui
-from PyQt5.QtCore import (QAbstractListModel,
+
+from qtpy import QtGui
+from qtpy.QtCore import (QAbstractListModel,
                           QAbstractTableModel,
                           QDate,
                           QDateTime,
@@ -41,11 +42,11 @@ from PyQt5.QtCore import (QAbstractListModel,
                           Qt,
                           QTime,
                           QTimer)
-from PyQt5.QtGui import QColor, QImage, QPalette, QTextCursor, QTextDocument, QIcon
+from qtpy.QtGui import QColor, QImage, QPalette, QTextCursor, QTextDocument, QIcon
 
-from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel, QSqlQueryModel
+from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel, QSqlQueryModel
 
-from PyQt5.QtWidgets import (QAction,
+from qtpy.QtWidgets import (QAction,
                              QApplication,
                              QButtonGroup,
                              QCheckBox,
@@ -237,7 +238,7 @@ class TabBase( QWidget ):
 
          """
 
-        splits                 = self.module_file .split( "/" )
+        splits                 = self.module_file.split( "/" )
         #self.help_file_name    = splits[ 1 ].replace( ".", "__") + ".txt"
         #self.help_file_name    = splits[ 1 ] + ".txt"
 

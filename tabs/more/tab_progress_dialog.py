@@ -15,8 +15,7 @@ DESCRIPTION:    A demonstration of a progress dialog tracking a task running in 
 HOW_COMPLETE:   20  #  AND A COMMENT -- <10 major probs  <15 runs but <20 fair not finished  <=25 not to shabby
 """
 
-WIKI_LINK      =  "https://github.com/russ-hensel/qt5_by_example/wiki/What-We-Know-About-Progress-Dialogs-Two-Threads"
-
+WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-About-Progress-Dialogs-Two-Threads"
 
 # --------------------
 if __name__ == "__main__":
@@ -39,29 +38,29 @@ import wat
 
 
 
-from PyQt5 import QtGui
+from qtpy import QtGui
 
 
-from PyQt5.QtWidgets import (
+from qtpy.QtWidgets import (
     QApplication, QMainWindow, QPushButton, QVBoxLayout,
     QWidget, QDialog, QTextEdit, QHBoxLayout
 )
-from PyQt5.QtCore import QThread, pyqtSignal
+from qtpy.QtCore import QThread, Signal
 
 
-from PyQt5.QtCore import (QDate,
+from qtpy.QtCore import (QDate,
                           QDateTime,
                           QModelIndex,
                           QSize,
                           Qt,
                           QTime,
                           QTimer)
-from PyQt5.QtGui import QColor, QPalette, QTextCursor, QTextDocument
+from qtpy.QtGui import QColor, QPalette, QTextCursor, QTextDocument
 # sql
-from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
+from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QFileDialog
-from PyQt5.QtWidgets import (QAction,
+from qtpy.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QFileDialog
+from qtpy.QtWidgets import (QAction,
                              QApplication,
                              QButtonGroup,
                              QCheckBox,
@@ -111,8 +110,8 @@ print_func_header   = uft.print_func_header
 
 #--------------------------------------
 class HelperThread( QThread ):
-    update_signal       = pyqtSignal(str)
-    finished_signal     = pyqtSignal()
+    update_signal       = Signal(str)
+    finished_signal     = Signal()
 
     #-------------------------
     def __init__(self, task_function, task_function_arg ):
@@ -309,7 +308,6 @@ class ProgressDialogTab( tab_base.TabBase ):
 
         self.append_msg( tab_base.DONE_MSG )
 
-
     # ------------------------------------
     def open_progress_dialog(self):
         """ """
@@ -387,35 +385,7 @@ class ProgressDialogTab( tab_base.TabBase ):
         # msg    = "mess with q_push_button_1"
         # self.append_msg( msg, )
 
-        # widget        = self.q_push_button_1
-        #     # it is often convenient to use a local variable,
-        #     # you will see this a lot in our code, it does not seem to
-        #     # be typical but we think it should be
-
-        # msg    = "q_push_button_1 set a tooltip"
-        # self.append_msg( msg, )
-
-        # widget.setToolTip( "this is a tool tip" )
-        # widget.setText( "text set in \nmutate_1()" )
-        #     # note \n
-        # widget.width     = 200
-
-        # # ---- change widget
-        # msg    = "some changes to q_push_button_2"
-        # self.append_msg( msg, clear = False )
-
-        # # ---- self.q_push_button_2
-        # widget        = self.q_push_button_2
-        # # msg    = "setChecked(True )"
-        # self.append_msg( msg, )
-
-
-        # msg        = f"{self.q_push_button_1.isChecked() = } "
-        # self.append_msg( msg, )
-
-
         self.append_msg( tab_base.DONE_MSG )
-
 
     # ------------------------------------
     def inspect(self):
@@ -455,3 +425,5 @@ class ProgressDialogTab( tab_base.TabBase ):
         self.append_msg( tab_base.DONE_MSG )
 
 # ---- eof
+
+

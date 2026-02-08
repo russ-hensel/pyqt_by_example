@@ -8,7 +8,7 @@ A basic app for qt5
 
 # ---- imports
 import sys
-from qtpy.QtWidgets import QApplication, QMainWindow, QPushButton, QLineEdit, QVBoxLayout, QWidget
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QLineEdit, QVBoxLayout, QWidget
 
 class MainWindow( QMainWindow ):
     def __init__(self):

@@ -14,8 +14,7 @@ DESCRIPTION:    Code motivated by Fitz 35 Dynamic Plot
 HOW_COMPLETE:   15  #  AND A COMMENT
 
 """
-WIKI_LINK      =  "https://github.com/russ-hensel/qt5_by_example/wiki/What-We-Know-About-QPushButtons"
-
+WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/Documentation-Not-Written"
 """
 
 
@@ -43,7 +42,6 @@ largely the last
 if __name__ == "__main__":
     #----- run the full app
     import main
-    #qt_fitz_book.main()
 # --------------------
 
 
@@ -60,8 +58,8 @@ from subprocess import PIPE, STDOUT, Popen, run
 
 import pyqtgraph as pg  # import PyQtGraph after PyQt5
 import wat
-from PyQt5 import QtGui
-from PyQt5.QtCore import (QAbstractListModel,
+from qtpy import QtGui
+from qtpy.QtCore import (QAbstractListModel,
                           QDate,
                           QDateTime,
                           QModelIndex,
@@ -69,13 +67,13 @@ from PyQt5.QtCore import (QAbstractListModel,
                           Qt,
                           QTime,
                           QTimer)
-from PyQt5.QtGui import QColor, QImage, QPalette, QTextCursor, QTextDocument
+from qtpy.QtGui import QColor, QImage, QPalette, QTextCursor, QTextDocument
 # sql
-from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
+from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 # widgets biger
 # widgets -- small
 # layouts
-from PyQt5.QtWidgets import (QAction,
+from qtpy.QtWidgets import (QAction,
                              QApplication,
                              QButtonGroup,
                              QCheckBox,
@@ -135,11 +133,8 @@ class Fitz_6_Tab( tab_base.TabBase ) :
         super().__init__()
         self.module_file        = __file__      # save for help file usage
 
-
         global WIKI_LINK
         self.wiki_link          = WIKI_LINK
-
-
 
         self.mutate_dict[0]     = self.mutate_0
         self.mutate_dict[1]     = self.mutate_1

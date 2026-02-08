@@ -33,8 +33,8 @@ from functools import partial
 from subprocess import PIPE, STDOUT, Popen, run
 
 import wat
-from PyQt5 import QtGui
-from PyQt5.QtCore import (QDate,
+from qtpy import QtGui
+from qtpy.QtCore import (QDate,
                           QDateTime,
                           QModelIndex,
                           QSize,
@@ -43,20 +43,20 @@ from PyQt5.QtCore import (QDate,
                           QTimer)
 
 
-from PyQt5.QtWidgets import QApplication, QTableView, QStyledItemDelegate
-from PyQt5.QtSql import QSqlDatabase, QSqlTableModel
-from PyQt5.QtCore import Qt
+from qtpy.QtWidgets import QApplication, QTableView, QStyledItemDelegate
+from qtpy.QtSql import QSqlDatabase, QSqlTableModel
+from qtpy.QtCore import Qt
 
 
-from PyQt5.QtGui import QColor, QPalette, QTextCursor, QTextDocument, QBrush
+from qtpy.QtGui import QColor, QPalette, QTextCursor, QTextDocument, QBrush
 
-from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
+from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 
-from PyQt5.QtWidgets import (  QDialog, )
-from PyQt5.QtWidgets import (  QSpinBox, )
-from PyQt5.QtWidgets import ( QHBoxLayout, QFormLayout, )
-from PyQt5.QtWidgets import ( QSpinBox, QComboBox, QDialogButtonBox, QMessageBox, )
-from PyQt5.QtWidgets import (QAction,
+from qtpy.QtWidgets import (  QDialog, )
+from qtpy.QtWidgets import (  QSpinBox, )
+from qtpy.QtWidgets import ( QHBoxLayout, QFormLayout, )
+from qtpy.QtWidgets import ( QSpinBox, QComboBox, QDialogButtonBox, QMessageBox, )
+from qtpy.QtWidgets import (QAction,
                              QApplication,
                              QButtonGroup,
                              QCheckBox,

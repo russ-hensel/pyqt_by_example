@@ -13,8 +13,8 @@ TAB_TITLE:      Progress Dialog / OneThread
 DESCRIPTION:    A demonstration of a progress dialog tracking a task running in the gui thread
 HOW_COMPLETE:   20  #  AND A COMMENT -- <10 major probs  <15 runs but <20 fair not finished  <=25 not to shabby
 """
-WIKI_LINK      =  "https://github.com/russ-hensel/qt5_by_example/wiki/What-We-Know-About-Progress-Dialogs"
-WIKI_LINK      =  "https://github.com/russ-hensel/qt5_by_example/wiki/What-We-Know-About-Progress-Dialogs-One-Thread"
+WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-About-Progress-Dialogs"
+WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-About-Progress-Dialogs-One-Thread"
 
 
 """
@@ -39,32 +39,30 @@ from subprocess import PIPE, STDOUT, Popen, run
 from pathlib import Path
 import wat
 
+from qtpy.QtCore import QCoreApplication
+# from qtpy import QtGui
 
 
-from PyQt5.QtCore import QCoreApplication
-from PyQt5 import QtGui
-
-
-from PyQt5.QtWidgets import (
+from qtpy.QtWidgets import (
     QApplication, QMainWindow, QPushButton, QVBoxLayout,
     QWidget, QDialog, QTextEdit, QHBoxLayout
 )
-from PyQt5.QtCore import QThread, pyqtSignal
+# from qtpy.QtCore import QThread, Signal
 
 
-from PyQt5.QtCore import (QDate,
+from qtpy.QtCore import (QDate,
                           QDateTime,
                           QModelIndex,
                           QSize,
                           Qt,
                           QTime,
                           QTimer)
-from PyQt5.QtGui import QColor, QPalette, QTextCursor, QTextDocument
+from qtpy.QtGui import QColor, QPalette, QTextCursor, QTextDocument
 # sql
-from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
+from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QFileDialog
-from PyQt5.QtWidgets import (QAction,
+from qtpy.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QFileDialog
+from qtpy.QtWidgets import (QAction,
                              QApplication,
                              QButtonGroup,
                              QCheckBox,
@@ -213,7 +211,6 @@ class ProgressDialog(QDialog):
             self.halt_btn.clicked.disconnect()
             self.halt_btn.clicked.connect(self.accept)
 
-
 #-------------------------------------
 class ProgressDialogOneThreadTab( tab_base.TabBase ):
     """
@@ -307,7 +304,7 @@ class ProgressDialogOneThreadTab( tab_base.TabBase ):
 
         self.append_msg( tab_base.DONE_MSG )
 
-
+    # ------------------------------------
     def open_progress_dialog(self):
         """ """
         self.launch_btn.setEnabled(False) # CRITICAL: Prevent re-entrancy
@@ -406,13 +403,10 @@ class ProgressDialogOneThreadTab( tab_base.TabBase ):
         # # msg    = "setChecked(True )"
         # self.append_msg( msg, )
 
-
         # msg        = f"{self.q_push_button_1.isChecked() = } "
         # self.append_msg( msg, )
 
-
         self.append_msg( tab_base.DONE_MSG )
-
 
     # ------------------------------------
     def inspect(self):
@@ -452,3 +446,6 @@ class ProgressDialogOneThreadTab( tab_base.TabBase ):
         self.append_msg( tab_base.DONE_MSG )
 
 # ---- eof
+
+
+

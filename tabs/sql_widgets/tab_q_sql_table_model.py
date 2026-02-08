@@ -30,23 +30,23 @@ from functools import partial
 from subprocess import PIPE, STDOUT, Popen, run
 
 import wat
-from PyQt5 import QtGui
-from PyQt5.QtCore import (QDate,
+from qtpy import QtGui
+from qtpy.QtCore import (QDate,
                           QDateTime,
                           QModelIndex,
                           QSize,
                           Qt,
                           QTime,
                           QTimer)
-from PyQt5.QtGui import QColor, QPalette, QTextCursor, QTextDocument
+from qtpy.QtGui import QColor, QPalette, QTextCursor, QTextDocument
 
-from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
+from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 
-from PyQt5.QtWidgets import (  QDialog, )
-from PyQt5.QtWidgets import (  QSpinBox, )
-from PyQt5.QtWidgets import ( QHBoxLayout, QFormLayout, )
-from PyQt5.QtWidgets import ( QSpinBox, QComboBox, QDialogButtonBox, QMessageBox, )
-from PyQt5.QtWidgets import (QAction,
+from qtpy.QtWidgets import (  QDialog, )
+from qtpy.QtWidgets import (  QSpinBox, )
+from qtpy.QtWidgets import ( QHBoxLayout, QFormLayout, )
+from qtpy.QtWidgets import ( QSpinBox, QComboBox, QDialogButtonBox, QMessageBox, )
+from qtpy.QtWidgets import (QAction,
                              QApplication,
                              QButtonGroup,
                              QCheckBox,

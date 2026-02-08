@@ -12,9 +12,9 @@ which need to move out
 import importlib
 import sys
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QColor, QPalette
-from PyQt5.QtSql import (QSqlDatabase,
+from qtpy.QtCore import Qt
+from qtpy.QtGui import QColor, QPalette
+from qtpy.QtSql import (QSqlDatabase,
                          QSqlDriver,
                          QSqlQuery,
                          QSqlRecord,
@@ -24,7 +24,7 @@ from PyQt5.QtSql import (QSqlDatabase,
                          QSqlTableModel)
 # ----QtWidgets layouts
 # ---- tof
-from PyQt5.QtWidgets import (QApplication,
+from qtpy.QtWidgets import (QApplication,
                              QButtonGroup,
                              QCheckBox,
                              QComboBox,

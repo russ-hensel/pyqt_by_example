@@ -25,7 +25,7 @@ HOW_COMPLETE:   15  #  AND A COMMENT
 DESCRIPTION:    Various widgets from the second half of the chapter
 
 """
-WIKI_LINK      =  "https://github.com/russ-hensel/qt5_by_example/wiki/Fitz-7-Widgets-N"
+WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/Fitz-7-Widgets-N"
 
 # --------------------
 if __name__ == "__main__":
@@ -44,21 +44,21 @@ from functools import partial
 from subprocess import PIPE, STDOUT, Popen, run
 
 import wat
-from PyQt5 import QtGui
-from PyQt5.QtCore import (QDate,
+from qtpy import QtGui
+from qtpy.QtCore import (QDate,
                           QDateTime,
                           QModelIndex,
                           QSize,
                           Qt,
                           QTime,
                           QTimer)
-from PyQt5.QtGui import QColor, QPalette, QPixmap, QTextCursor, QTextDocument
+from qtpy.QtGui import QColor, QPalette, QPixmap, QTextCursor, QTextDocument
 # sql
-from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
+from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 # widgets biger
 # widgets -- small
 # layouts
-from PyQt5.QtWidgets import (QAction,
+from qtpy.QtWidgets import (QAction,
                              QApplication,
                              QButtonGroup,
                              QCheckBox,

@@ -13,7 +13,7 @@ Matplotlib Integration · russ-hensel/qt5_by_example Wiki
 https://github.com/russ-hensel/qt5_by_example/wiki/Matplotlib-Integration
 
 """
-WIKI_LINK      = "https://github.com/russ-hensel/qt5_by_example/wiki/Matplotlib-Integration"
+WIKI_LINK      = "https://github.com/russ-hensel/pyqt_by_example/wiki/Matplotlib-Integration"
 
 # --------------------
 if __name__ == "__main__":
@@ -32,19 +32,19 @@ from functools import partial
 from subprocess import PIPE, STDOUT, Popen, run
 
 import wat
-from PyQt5 import QtGui
-from PyQt5.QtCore import (QDate,
+from qtpy import QtGui
+from qtpy.QtCore import (QDate,
                           QDateTime,
                           QModelIndex,
                           QSize,
                           Qt,
                           QTime,
                           QTimer)
-from PyQt5.QtGui import QColor, QPalette, QTextCursor, QTextDocument
+from qtpy.QtGui import QColor, QPalette, QTextCursor, QTextDocument
 # sql
-from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
+from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 
-from PyQt5.QtWidgets import (QAction,
+from qtpy.QtWidgets import (QAction,
                              QApplication,
                              QButtonGroup,
                              QCheckBox,
@@ -75,7 +75,7 @@ from PyQt5.QtWidgets import (QAction,
 
 
 # import sys
-# from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget
+# from qtpy.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure

@@ -33,8 +33,8 @@ from functools import partial
 from subprocess import PIPE, STDOUT, Popen, run
 
 import wat
-from PyQt5 import QtGui
-from PyQt5.QtCore import (QAbstractTableModel,
+from qtpy import QtGui
+from qtpy.QtCore import (QAbstractTableModel,
                           QDate,
                           QDateTime,
                           QModelIndex,
@@ -45,11 +45,11 @@ from PyQt5.QtCore import (QAbstractTableModel,
                           QTime,
                           QTimer,
                           pyqtSlot)
-from PyQt5.QtGui import QColor, QPalette, QTextCursor, QTextDocument
+from qtpy.QtGui import QColor, QPalette, QTextCursor, QTextDocument
 
-from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
+from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 
-from PyQt5.QtWidgets import (QAction,
+from qtpy.QtWidgets import (QAction,
                              QApplication,
                              QButtonGroup,
                              QCheckBox,

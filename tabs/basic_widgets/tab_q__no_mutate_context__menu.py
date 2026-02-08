@@ -17,7 +17,7 @@ DESCRIPTION:    A QMenu as a constant context menu
 HOW_COMPLETE:   20  #  just works really need editing  -- <10 major probs  <15 runs but <20 fair not finished  <=25 not to shabby
 """
 
-WIKI_LINK      =  "https://github.com/russ-hensel/qt5_by_example/wiki/What-We-Know-About-CustomContextMenu"
+WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-About-CustomContextMenu"
 
 
 

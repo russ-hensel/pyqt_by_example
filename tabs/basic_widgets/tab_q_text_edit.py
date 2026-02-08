@@ -11,21 +11,17 @@ DESCRIPTION:    A reference for the QTextEdit widget
 HOW_COMPLETE:   25  #  AND A COMMENT
 
 """
-WIKI_LINK      =  "https://github.com/russ-hensel/qt5_by_example/wiki/What-We-Know-About-QTextEdit"
+WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-About-QTextEdit"
 
 """
-What We Know About QTextEdit · russ-hensel/qt5_by_example Wiki
-https://github.com/russ-hensel/qt5_by_example/wiki/What-We-Know-About-QTextEdit
-
+scratch
 
 """
-
 
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
     import main
-
 # --------------------
 
 
@@ -39,20 +35,20 @@ from subprocess import PIPE, STDOUT, Popen, run
 
 import wat
 
-from PyQt5 import QtCore
-from PyQt5 import QtGui
-from PyQt5.QtCore import (QDate,
+from qtpy import QtCore
+from qtpy import QtGui
+from qtpy.QtCore import (QDate,
                           QDateTime,
                           QModelIndex,
                           QSize,
                           Qt,
                           QTime,
                           QTimer)
-from PyQt5.QtGui import QColor, QPalette, QTextCursor, QTextDocument
+from qtpy.QtGui import QColor, QPalette, QTextCursor, QTextDocument
 # sql
-from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
+from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 
-from PyQt5.QtWidgets import (QAction,
+from qtpy.QtWidgets import (QAction,
                              QApplication,
                              QButtonGroup,
                              QCheckBox,

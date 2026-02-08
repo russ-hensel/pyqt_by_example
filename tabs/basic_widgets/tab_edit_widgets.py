@@ -15,6 +15,7 @@ TAB_TITLE:      EditWidgets
          self.help_file_name     =  "find_this_file.txt"
 
 """
+WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/Documentation-Not-Written"
 
 # ---- search
 """
@@ -29,16 +30,9 @@ TAB_TITLE:      EditWidgets
 if __name__ == "__main__":
     #----- run the full app
     import main
-    #main.main()
 # --------------------
 
 
-# # --------------------
-# if __name__ == "__main__":
-#     #----- run the full app
-#     import qt_fitz_book
-#     qt_fitz_book.main()
-# # --------------------
 
 import traceback
 import glob
@@ -57,8 +51,8 @@ from subprocess import PIPE, STDOUT, Popen, run
 
 import pyqtgraph as pg  # import PyQtGraph after PyQt5
 import wat
-from PyQt5 import QtGui
-from PyQt5.QtCore import (QAbstractListModel,
+from qtpy import QtGui
+from qtpy.QtCore import (QAbstractListModel,
                           QAbstractTableModel,
                           QDate,
                           QDateTime,
@@ -67,10 +61,10 @@ from PyQt5.QtCore import (QAbstractListModel,
                           Qt,
                           QTime,
                           QTimer)
-from PyQt5.QtGui import QColor, QImage, QPalette, QTextCursor, QTextDocument
+from qtpy.QtGui import QColor, QImage, QPalette, QTextCursor, QTextDocument
 # sql
-from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
-from PyQt5.QtWidgets import (QAction,
+from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
+from qtpy.QtWidgets import (QAction,
                              QApplication,
                              QButtonGroup,
                              QCheckBox,
@@ -144,7 +138,11 @@ class EditWidgetTab( tab_base.TabBase ) :
 
         """
         super().__init__()
-        self.help_file_name     =  uft.to_help_file_name( __name__ )
+        self.module_file       = __file__      # save for help file usage
+        self.help_file_name    =  uft.to_help_file_name( __name__ )
+
+        global WIKI_LINK
+        self.wiki_link          = WIKI_LINK
 
         self.mutate_dict[0]    = self.mutate_0
         self.mutate_dict[1]    = self.mutate_1

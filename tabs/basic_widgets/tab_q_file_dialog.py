@@ -14,7 +14,7 @@ TAB_TITLE:      QFileDialog / QDirectoryDialog
 DESCRIPTION:    A reference for the QFileDialog and QDirectoryDialog
 HOW_COMPLETE:   20  #  AND A COMMENT -- <10 major probs  <15 runs but <20 fair not finished  <=25 not to shabby
 """
-WIKI_LINK      =  "https://github.com/russ-hensel/qt5_by_example/wiki/What-We-Know-About-QFileDialogs-QDirectoryDialogs"
+WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-About-QFileDialogs-QDirectoryDialogs"
 
 
 # --------------------
@@ -24,31 +24,32 @@ if __name__ == "__main__":
 # --------------------------------
 
 # ---- import
-import inspect
-import subprocess
-import os
-import sys
-import time
-from datetime import datetime
-from functools import partial
+# import inspect
+# import subprocess
+# import os
+# import sys
+# import time
+# from datetime import datetime
+# from functools import partial
 from subprocess import PIPE, STDOUT, Popen, run
 from pathlib import Path
 import wat
-from PyQt5 import QtGui
 
-from PyQt5.QtCore import (QDate,
+#  from qtpy import QtGui
+
+from qtpy.QtCore import (QDate,
                           QDateTime,
                           QModelIndex,
                           QSize,
                           Qt,
                           QTime,
                           QTimer)
-from PyQt5.QtGui import QColor, QPalette, QTextCursor, QTextDocument
+from qtpy.QtGui import QColor, QPalette, QTextCursor, QTextDocument
 # sql
-from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
+from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QFileDialog
-from PyQt5.QtWidgets import (QAction,
+from qtpy.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QFileDialog
+from qtpy.QtWidgets import (QAction,
                              QApplication,
                              QButtonGroup,
                              QCheckBox,

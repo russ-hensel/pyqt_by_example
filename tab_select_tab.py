@@ -22,21 +22,21 @@ from subprocess import PIPE, STDOUT, Popen, run
 
 import key_words
 import wat
-from PyQt5 import QtGui
-from PyQt5.QtCore import (QDate,
+from qtpy import QtGui
+from qtpy.QtCore import (QDate,
                           QDateTime,
                           QModelIndex,
                           QSize,
                           Qt,
                           QTime,
                           QTimer)
-from PyQt5.QtGui import QColor, QPalette, QTextCursor, QTextDocument
+from qtpy.QtGui import QColor, QPalette, QTextCursor, QTextDocument
 # sql
-from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
+from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 # widgets biger
 # widgets -- small
 # layouts
-from PyQt5.QtWidgets import (QAction,
+from qtpy.QtWidgets import (QAction,
                              QApplication,
                              QButtonGroup,
                              QCheckBox,
@@ -179,7 +179,7 @@ class Search_Tab( QWidget ) :
         model.setTable( "tabs" )
         model.setFilter( "id = -99" )  # afte set table to be effiective
 
-        model.setEditStrategy( QSqlTableModel.OnManualSubmit) # = never
+        model.setEditStrategy( QSqlTableModel.EditStrategy.OnManualSubmit ) # = never QSqlTableModel.EditStrategy.OnManualSubmit
 
         # COMMENT  out to default  Set column headers	model.setHorizontalHeaderLabels([...])
 

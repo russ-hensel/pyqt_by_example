@@ -17,7 +17,7 @@ HOW_COMPLETE:   25  #  AND A COMMENT 2025  06 27 wip   contents needs review
 DESCRIPTION:    Code motivated by Fitz Chapt 12 Events, needs completion...
 
 """
-WIKI_LINK      =  "https://github.com/russ-hensel/qt5_by_example/wiki/Fitz-Chapt-12-Events"
+WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/Fitz-Chapt-12-Events"
 """
 chapt 12
 Listing 61. basic/events_1.py
@@ -37,7 +37,6 @@ Listing 64. basic/events_4.py
 if __name__ == "__main__":
     #----- run the full app
     import main
-    #main.main()
 # --------------------
 
 
@@ -50,21 +49,21 @@ from functools import partial
 from subprocess import PIPE, STDOUT, Popen, run
 
 import wat
-from PyQt5 import QtGui
-from PyQt5.QtCore import (QDate,
+from qtpy import QtGui
+from qtpy.QtCore import (QDate,
                           QDateTime,
                           QModelIndex,
                           QSize,
                           Qt,
                           QTime,
                           QTimer)
-from PyQt5.QtGui import QColor, QPalette, QTextCursor, QTextDocument
+from qtpy.QtGui import QColor, QPalette, QTextCursor, QTextDocument
 # sql
-from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
+from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 # widgets biger
 # widgets -- small
 # layouts
-from PyQt5.QtWidgets import (QAction,
+from qtpy.QtWidgets import (QAction,
                              QApplication,
                              QButtonGroup,
                              QCheckBox,

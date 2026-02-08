@@ -13,7 +13,7 @@ TAB_TITLE:      Fitz Chapt 23 / SqlModel
 HOW_COMPLETE:   20  #  AND A COMMENT -- <10 major probs  <15 runs but <20 fair not finished  <=25 not to shabby
 DESCRIPTION:    Code motivated by Fitz Chapt 23 Sql with QSqlQueryModel
 """
-WIKI_LINK      =  "https://github.com/russ-hensel/qt5_by_example/wiki/Fitz-23-Query_Model"
+WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/Fitz-23-Query_Model"
 
 """
 looked at
@@ -64,8 +64,8 @@ from functools import partial
 from subprocess import PIPE, STDOUT, Popen, run
 
 import wat
-from PyQt5 import QtGui
-from PyQt5.QtCore import (QAbstractListModel,
+from qtpy import QtGui
+from qtpy.QtCore import (QAbstractListModel,
                           QAbstractTableModel,
                           QDate,
                           QDateTime,
@@ -74,13 +74,13 @@ from PyQt5.QtCore import (QAbstractListModel,
                           Qt,
                           QTime,
                           QTimer)
-from PyQt5.QtGui import QColor, QImage, QPalette, QTextCursor, QTextDocument, QIcon
+from qtpy.QtGui import QColor, QImage, QPalette, QTextCursor, QTextDocument, QIcon
 # sql
-from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel, QSqlQueryModel
+from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel, QSqlQueryModel
 # widgets biger
 # widgets -- small
 # layouts
-from PyQt5.QtWidgets import (QAction,
+from qtpy.QtWidgets import (QAction,
                              QApplication,
                              QButtonGroup,
                              QCheckBox,

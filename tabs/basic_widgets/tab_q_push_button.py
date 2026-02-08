@@ -3,8 +3,8 @@
 # ---- tof
 """
 # metadata here including WIKI_LINK as Constant ( not comment )
-# this material is used for selection access to the tab module which must
-# be named tab_....py     among other things
+# this material is used for selection access to the tab module which should
+# be named xxxxTab.py     among other things
 
 KEY_WORDS:      pressed press PushBtton click connect rsh pushbutton
 CLASS_NAME:     QPushButtonTab
@@ -14,7 +14,7 @@ TAB_TITLE:      QPushButton / Reference
 DESCRIPTION:    A reference for the QPushButton widget
 HOW_COMPLETE:   20  #  AND A COMMENT -- <10 major probs  <15 runs but <20 fair not finished  <=25 not to shabby
 """
-WIKI_LINK      =  "https://github.com/russ-hensel/qt5_by_example/wiki/What-We-Know-About-QPushButtons"
+WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-About-QPushButtons"
 
 """
 Some Notes:
@@ -28,12 +28,12 @@ https://github.com/russ-hensel/qt5_by_example/wiki/What-We-Know-About-QPushButto
 
 
 """
+# next lets us launch the app from the file
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
     import main
 # --------------------------------
-
 
 import inspect
 import subprocess
@@ -44,21 +44,21 @@ from functools import partial
 from subprocess import PIPE, STDOUT, Popen, run
 
 import wat
-from PyQt5 import QtGui
-from PyQt5.QtCore import (QDate,
+from qtpy import QtGui
+from qtpy.QtCore import (QDate,
                           QDateTime,
                           QModelIndex,
                           QSize,
                           Qt,
                           QTime,
                           QTimer)
-from PyQt5.QtGui import QColor, QPalette, QTextCursor, QTextDocument
+from qtpy.QtGui import QColor, QPalette, QTextCursor, QTextDocument
 # sql
-from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
+from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 # widgets biger
 # widgets -- small
 # layouts
-from PyQt5.QtWidgets import (QAction,
+from qtpy.QtWidgets import (QAction,
                              QApplication,
                              QButtonGroup,
                              QCheckBox,

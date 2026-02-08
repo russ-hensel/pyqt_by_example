@@ -13,7 +13,7 @@ TAB_TITLE:      Fitz Chapt 23 / TableModel
 DESCRIPTION:    This needs review
 HOW_COMPLETE:   15  #  AND A COMMENT
 """
-WIKI_LINK      =  "https://github.com/russ-hensel/qt5_by_example/wiki/What-We-Know-About-QPushButtons"
+WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/Documentation-Not-Written"
 """
 looked at
 
@@ -41,7 +41,6 @@ looked at
 if __name__ == "__main__":
     #----- run the full app
     import main
-    #qt_fitz_book.main()
 # --------------------
 
 
@@ -56,8 +55,8 @@ from functools import partial
 from subprocess import PIPE, STDOUT, Popen, run
 
 import wat
-from PyQt5 import QtGui
-from PyQt5.QtCore import (QAbstractListModel,
+from qtpy import QtGui
+from qtpy.QtCore import (QAbstractListModel,
                           QAbstractTableModel,
                           QDate,
                           QDateTime,
@@ -66,13 +65,13 @@ from PyQt5.QtCore import (QAbstractListModel,
                           Qt,
                           QTime,
                           QTimer)
-from PyQt5.QtGui import QColor, QImage, QPalette, QTextCursor, QTextDocument, QIcon
+from qtpy.QtGui import QColor, QImage, QPalette, QTextCursor, QTextDocument, QIcon
 # sql
-from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel, QSqlQueryModel
+from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel, QSqlQueryModel
 # widgets biger
 # widgets -- small
 # layouts
-from PyQt5.QtWidgets import (QAction,
+from qtpy.QtWidgets import (QAction,
                              QApplication,
                              QButtonGroup,
                              QCheckBox,

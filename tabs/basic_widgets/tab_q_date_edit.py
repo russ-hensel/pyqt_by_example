@@ -37,19 +37,19 @@ from functools import partial
 from subprocess import PIPE, STDOUT, Popen, run
 
 import wat
-from PyQt5 import QtGui
-from PyQt5.QtCore import (QDate,
+from qtpy import QtGui
+from qtpy.QtCore import (QDate,
                           QDateTime,
                           QModelIndex,
                           QSize,
                           Qt,
                           QTime,
                           QTimer)
-from PyQt5.QtGui import QColor, QPalette, QTextCursor, QTextDocument
+from qtpy.QtGui import QColor, QPalette, QTextCursor, QTextDocument
 
-from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
+from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 
-from PyQt5.QtWidgets import (QAction,
+from qtpy.QtWidgets import (QAction,
                              QApplication,
                              QButtonGroup,
                              QCheckBox,
@@ -364,7 +364,7 @@ class QDateEditTab( tab_base.TabBase  ):
 
         unix_time_stamp   = self.to_unix( a_date,   )
         print( f"w   popup   self.end_date_widget.date() ={ unix_time_stamp }" )
-        # from PyQt5.QtCore import QDateTime
+        # from qtpy.QtCore import QDateTime
 
         # # Example Unix timestamp (for September 16, 2024, 00:00:00)
         # unix_timestamp = 1726444800

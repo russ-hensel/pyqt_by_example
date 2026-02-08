@@ -12,6 +12,10 @@ TAB_TITLE:      QCheckBox Reference
 HOW_COMPLETE:   25  #  AND A COMMENT
 
 """
+
+WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-About-QCheckBox"
+
+
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
@@ -29,21 +33,21 @@ from functools import partial
 from subprocess import PIPE, STDOUT, Popen, run
 
 import wat
-from PyQt5 import QtGui
-from PyQt5.QtCore import (QDate,
+from qtpy import QtGui
+from qtpy.QtCore import (QDate,
                           QDateTime,
                           QModelIndex,
                           QSize,
                           Qt,
                           QTime,
                           QTimer)
-from PyQt5.QtGui import QColor, QPalette, QTextCursor, QTextDocument
+from qtpy.QtGui import QColor, QPalette, QTextCursor, QTextDocument
 # sql
-from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
+from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 # widgets biger
 # widgets -- small
 # layouts
-from PyQt5.QtWidgets import (QAction,
+from qtpy.QtWidgets import (QAction,
                              QApplication,
                              QButtonGroup,
                              QCheckBox,
@@ -94,6 +98,10 @@ class QCheckBoxTab(  tab_base.TabBase  ):
         """
         super().__init__()
         self.module_file       = __file__      # save for help file usage
+
+        global WIKI_LINK
+        self.wiki_link          = WIKI_LINK
+
         self.mutate_dict[0]    = self.mutate_0
         self.mutate_dict[1]    = self.mutate_1
         self.mutate_dict[2]    = self.mutate_2
@@ -180,8 +188,8 @@ class QCheckBoxTab(  tab_base.TabBase  ):
         self.cbox_2.setChecked( state )
 
         self.cbox_2.setLayoutDirection( Qt.LeftToRight )
-        
-        
+
+
         self.append_msg( f"{str(self.cbox_1.isChecked()) = }" )
         self.append_msg( f"{str(self.cbox_2.isChecked()) = }" )
 
@@ -203,8 +211,8 @@ class QCheckBoxTab(  tab_base.TabBase  ):
         msg    = "un- check everything "
         self.append_msg( msg, clear = False )
 
-        
-        
+
+
         self.append_msg( f"{str(self.cbox_1.isChecked()) = }" )
         self.append_msg( f"{str(self.cbox_2.isChecked()) = }" )
 
@@ -245,7 +253,7 @@ class QCheckBoxTab(  tab_base.TabBase  ):
     def mutate_3( self ):
         """
         read it -- mutate the widgets
-        
+
         FIXME: how else can I change checkboxes?
         """
         self.append_function_msg( "mutate_3" )

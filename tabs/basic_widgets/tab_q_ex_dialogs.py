@@ -14,7 +14,7 @@ TAB_TITLE:      QDialogsTab / various
 DESCRIPTION:    A few examples of dialogs
 HOW_COMPLETE:   20  #  AND A COMMENT -- <10 major probs  <15 runs but <20 fair not finished  <=25 not to shabby
 """
-WIKI_LINK      =  "https://github.com/russ-hensel/qt5_by_example/wiki/What-We-Know-About-Misc-Dialogs"
+WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-About-Misc-Dialogs"
 
 
 # --------------------
@@ -34,21 +34,22 @@ from functools import partial
 from subprocess import PIPE, STDOUT, Popen, run
 from pathlib import Path
 import wat
-from PyQt5 import QtGui
 
-from PyQt5.QtCore import (QDate,
+from qtpy import QtGui
+
+from qtpy.QtCore import (QDate,
                           QDateTime,
                           QModelIndex,
                           QSize,
                           Qt,
                           QTime,
                           QTimer)
-from PyQt5.QtGui import QColor, QPalette, QTextCursor, QTextDocument
+from qtpy.QtGui import QColor, QPalette, QTextCursor, QTextDocument
 # sql
-from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
+from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QFileDialog
-from PyQt5.QtWidgets import (QAction,
+from qtpy.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QFileDialog
+from qtpy.QtWidgets import (QAction,
                              QApplication,
                              QButtonGroup,
                              QCheckBox,
@@ -96,8 +97,8 @@ print_func_header   = uft.print_func_header
 #     """
 
 
-from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLabel, QPushButton, QLineEdit
-from PyQt5.QtCore import Qt
+from qtpy.QtWidgets import QDialog, QVBoxLayout, QLabel, QPushButton, QLineEdit
+from qtpy.QtCore import Qt
 
 class ExQDialog( QDialog ):
     """
@@ -263,7 +264,7 @@ class QDialogsTab( tab_base.TabBase ):
             add some returns
         """
 
-        from PyQt5.QtWidgets import (  QMessageBox, )
+        from qtpy.QtWidgets import (  QMessageBox, )
 
 
         msg_box_msg    = "this is a message"

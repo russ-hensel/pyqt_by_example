@@ -12,14 +12,13 @@ DESCRIPTION:    Code motivated by Fitz 35 Dynamic Plot
 HOW_COMPLETE:   25  #  AND A COMMENT
 
 """
-WIKI_LINK      =  "https://github.com/russ-hensel/qt5_by_example/wiki/Fitz-Chapt-35-Qt-Graph"
+WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/Fitz-Chapt-35-Qt-Graph"
 #WIKI_LINK     =  "https://github.com/russ-hensel/qt5_by_example/wiki/Fitz-Chapt-12-Events"
 
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
     import main
-    #qt_fitz_book.main()
 # --------------------
 
 
@@ -36,8 +35,8 @@ from subprocess import PIPE, STDOUT, Popen, run
 
 import pyqtgraph as pg  # import PyQtGraph after PyQt5
 import wat
-from PyQt5 import QtGui
-from PyQt5.QtCore import (QAbstractListModel,
+from qtpy import QtGui
+from qtpy.QtCore import (QAbstractListModel,
                           QDate,
                           QDateTime,
                           QModelIndex,
@@ -45,13 +44,13 @@ from PyQt5.QtCore import (QAbstractListModel,
                           Qt,
                           QTime,
                           QTimer)
-from PyQt5.QtGui import QColor, QImage, QPalette, QTextCursor, QTextDocument
+from qtpy.QtGui import QColor, QImage, QPalette, QTextCursor, QTextDocument
 # sql
-from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
+from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 # widgets biger
 # widgets -- small
 # layouts
-from PyQt5.QtWidgets import (QAction,
+from qtpy.QtWidgets import (QAction,
                              QApplication,
                              QButtonGroup,
                              QCheckBox,

@@ -27,15 +27,15 @@ from subprocess import PIPE, STDOUT, Popen, run
 
 import key_word_indexer
 #from app_global import AppGlobal
-from PyQt5 import QtGui
-from PyQt5.QtCore import (QDate,
+from qtpy import QtGui
+from qtpy.QtCore import (QDate,
                           QModelIndex,
                           QSize,
                           QSortFilterProxyModel,
                           Qt,
                           QTimer)
 # sql
-from PyQt5.QtSql import (QSqlDatabase,
+from qtpy.QtSql import (QSqlDatabase,
                          QSqlField,
                          QSqlQuery,
                          QSqlQueryModel,
@@ -44,7 +44,7 @@ from PyQt5.QtSql import (QSqlDatabase,
                          QSqlRelationalDelegate,
                          QSqlRelationalTableModel,
                          QSqlTableModel)
-from PyQt5.QtWidgets import (QAbstractItemView,
+from qtpy.QtWidgets import (QAbstractItemView,
                              QAction,
                              QApplication,
                              QButtonGroup,

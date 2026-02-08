@@ -12,12 +12,12 @@ TAB_TITLE:      Fitz Chapt  7 / Widgets widgets_list
 DESCRIPTION:    Code motivated by Fitz section 7 Widgets widgets_list.py
 HOW_COMPLETE:   25  #  AND A COMMENT
 """
-WIKI_LINK      =  "https://github.com/russ-hensel/qt5_by_example/wiki/Fitz-7-Widgets-List"
+WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/Fitz-7-Widgets-List"
 
 
 """
-Fitz 7.Widgets widgets_list.py · russ-hensel/qt5_by_example Wiki
-https://github.com/russ-hensel/qt5_by_example/wiki/Fitz-7.Widgets-widgets_list.py
+Fitz 7.Widgets widgets_list.py · russ-hensel/pyqt_by_example Wiki
+https://github.com/russ-hensel/pyqtby_example/wiki/Fitz-7.Widgets-widgets_list.py
 
 Use as model for Fitz tabs
 from:
@@ -53,21 +53,21 @@ from functools import partial
 from subprocess import PIPE, STDOUT, Popen, run
 
 
-from PyQt5 import QtGui
-from PyQt5.QtCore import (QDate,
+from qtpy import QtGui
+from qtpy.QtCore import (QDate,
                           QDateTime,
                           QModelIndex,
                           QSize,
                           Qt,
                           QTime,
                           QTimer)
-from PyQt5.QtGui import QColor, QPalette, QTextCursor, QTextDocument
+from qtpy.QtGui import QColor, QPalette, QTextCursor, QTextDocument
 # sql
-from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
+from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 # widgets biger
 # widgets -- small
 # layouts
-from PyQt5.QtWidgets import (QAction,
+from qtpy.QtWidgets import (QAction,
                              QApplication,
                              QButtonGroup,
                              QCheckBox,
