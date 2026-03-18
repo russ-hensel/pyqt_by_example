@@ -15,23 +15,17 @@ APP      = None
 
 import logging
 
-# ---- QtCore
+# ---- Qt
 
-from qt_compat import QApplication, QAction, exec_app, qt_version
-from PyQt.QtWidgets import QMainWindow, QToolBar, QMessageBox
+from qtpy.QtWidgets import QMainWindow, QToolBar, QMessageBox
 
-
-
-from PyQt.QtCore import QDate, QModelIndex, Qt, QTimer, pyqtSlot
-from PyQt.QtGui import QIntValidator, QStandardItem, QStandardItemModel
+from qtpy.QtCore import QDate, QModelIndex, Qt, QTimer, Slot
+from qtpy.QtGui import QIntValidator, QStandardItem, QStandardItemModel
 # ---- QtSql
-from PyQt.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
+from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 
 
-#from PyQt.QtGui import ( QAction, QActionGroup, )
-
-
-from PyQt.QtWidgets import (
+from qtpy.QtWidgets import (
                              QApplication,
                              QButtonGroup,
                              QCheckBox,
@@ -65,44 +59,8 @@ from PyQt.QtWidgets import (
                              QVBoxLayout,
                              QWidget)
 
-# ----QtWidgets Boxs, Dialogs
-# ----QtWidgets layouts
-# ----QtWidgets big
-# ----QtWidgets
 
-
-# from PyQt.QtWidgets import (QAction,
-#                              QActionGroup,
-#                              QApplication,
-#                              QButtonGroup,
-#                              QCheckBox,
-#                              QComboBox,
-#                              QDateEdit,
-#                              QDockWidget,
-#                              QFileDialog,
-#                              QFrame,
-#                              QGridLayout,
-#                              QHBoxLayout,
-#                              QInputDialog,
-#                              QLabel,
-#                              QLineEdit,
-#                              QListWidget,
-#                              QMainWindow,
-#                              QMdiArea,
-#                              QMdiSubWindow,
-#                              QMenu,
-#                              QMessageBox,
-#                              QPushButton,
-#                              QSpinBox,
-#                              QTableView,
-#                              QTableWidget,
-#                              QTableWidgetItem,
-#                              QTabWidget,
-#                              QTextEdit,
-#                              QVBoxLayout,
-#                              QWidget)
-
-
+#----------------------------------------
 class SQLError( Exception ):
     """
     raise SQLError( why, errors )
@@ -114,15 +72,17 @@ class SQLError( Exception ):
         but fix in future
 
         """
-
-        # Call the base class constructor with the parameters it needs
         super( ).__init__(   )
         self.why    = why
         # Now for your custom code...
         self.errors = errors
 
+    def __str__( self ):
 
+        a_str    = f"SQLError {self.why}"
+        return   a_str
 
+#----------------------------------------
 class DisplaySQLError( QDialog ):
     """
     for display of errors, may move out of here
@@ -190,6 +150,7 @@ class DisplaySQLError( QDialog ):
 
         # self.layout.addRow(self.buttons)
 
+#----------------------------------------
 def query_exec_error_check( *, query, sql = None, raise_except = True ):
     """
     !! think about outher args
@@ -203,19 +164,23 @@ def query_exec_error_check( *, query, sql = None, raise_except = True ):
         query_ok    True or False, but execpt may be thrown
         query_ok   =  qsql_utils.query_exec_error_check(  query = query, sql = sql, raise_except = True )
     """
-
     query_ok    = True
-    if qt_version == 6:
-        # qsqlquery_exec  =   # approach not taken
-        if sql is None:
-            result  = query.exec( )  # sql already in the query
-        else:
-            result  = query.exec( sql )
+    # if qt_version == 6:
+    #     # qsqlquery_exec  =   # approach not taken
+    #     if sql is None:
+    #         result  = query.exec( )  # sql already in the query
+    #     else:
+    #         result  = query.exec( sql )
+    # else:
+    #     if sql is None:
+    #         result  = query.exec_( )  # sql already in the query
+    #     else:
+    #         result  = query.exec_( sql )
+
+    if sql is None:
+        result  = query.exec( )  # sql already in the query
     else:
-        if sql is None:
-            result  = query.exec_( )  # sql already in the query
-        else:
-            result  = query.exec_( sql )
+        result  = query.exec( sql )
 
     if not result:
         query_ok        = False
@@ -223,11 +188,13 @@ def query_exec_error_check( *, query, sql = None, raise_except = True ):
         loc             = "query_exec_error_check"
         debug_msg       = f"{loc} >>> error sql = { sql } \n lastError = {error_txt = }"
         logging.debug( debug_msg )
-        dialog          =  DisplaySQLError( parent = None, title = "SQL Error", msg = debug_msg )
-        if dialog.exec_() == QDialog.Accepted:
-            pass
+        # next is nice but if a qapplication is not running crashes out so comment out
+        print( "query_exec_error_check see this zz for an upgrade ")
+        # dialog          =  DisplaySQLError( parent = None, title = "SQL Error", msg = debug_msg )
+        # if dialog.exec_() == QDialog.Accepted:
+        #     pass
 
-        raise SQLError( "sqlerror", debug_msg )
+        raise SQLError(  debug_msg )
 
     else:
         pass
@@ -241,7 +208,6 @@ def ok_message_box(  title = "please a title", msg = "this is a default message 
     qsql_utils.ok_message_box(  title  = " a_title",
                                  msg   = msg  )
     """
-
     msg_box = QMessageBox()
     msg_box.setIcon( QMessageBox.Information )
     msg_box.setText( msg )  # Set the message text
@@ -250,8 +216,6 @@ def ok_message_box(  title = "please a title", msg = "this is a default message 
 
     # Show the message box and wait for the user to close it
     msg_box.exec_()
-
-
 
 #--------------
 def execute_sql_may_delete_not_used( msg = None, db = None, sql = None  ):
@@ -278,19 +242,7 @@ def execute_sql_may_delete_not_used( msg = None, db = None, sql = None  ):
 
     print( "execute_sql done")
 
-
-# ---- tof
-
-# ---- imports
-
-# ---- end imports
-
-
-#-------------------------------
-
-
-
-
-
-
 # ---- eof
+
+
+

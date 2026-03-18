@@ -6,7 +6,7 @@
 # this material is used for selection access to the tab module which should
 # be named xxxxTab.py     among other things
 
-KEY_WORDS:      pressed press PushBtton click connect rsh pushbutton
+KEY_WORDS:      pressed press PushBtton click connect color pushbutton setCheckable
 CLASS_NAME:     QPushButtonTab
 WIDGETS:        QPushButton
 STATUS:         June 2025 ok: but more content would be nice
@@ -344,10 +344,8 @@ class QPushButtonTab( tab_base.TabBase ):
         # msg    = "setChecked(True )"
         # self.append_msg( msg, )
 
-
         # msg        = f"{self.q_push_button_1.isChecked() = } "
         # self.append_msg( msg, )
-
 
         self.append_msg( tab_base.DONE_MSG )
 
@@ -514,3 +512,5 @@ class QPushButtonTab( tab_base.TabBase ):
         self.append_msg( tab_base.DONE_MSG )
 
 # ---- eof
+
+

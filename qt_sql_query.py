@@ -3,10 +3,7 @@
 # ---- tof
 
 
-
 """
-
-
 
 
 
@@ -17,7 +14,6 @@ if __name__ == "__main__":
     import main
     main.main()
 # --------------------
-
 
 
 # ---- imports
@@ -35,7 +31,7 @@ from tkinter import messagebox
 #import file_writers
 #import pseudo_column
 #import sql_writers
-import string_util
+import  string_utils as string_util
 from app_global import AppGlobal
 
 

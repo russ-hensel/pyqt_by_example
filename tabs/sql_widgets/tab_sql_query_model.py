@@ -27,8 +27,6 @@ if __name__ == "__main__":
 """
 
 
-
-
 import inspect
 import json
 import os
@@ -43,7 +41,7 @@ from subprocess import PIPE, STDOUT, Popen, run
 import pyqtgraph as pg  # import PyQtGraph after PyQt5
 import wat
 from qtpy import QtGui
-from qtpy.QtCore import (QAbstractListModel,
+from qtpy.QtCore import ( QAbstractListModel,
                           QDate,
                           QDateTime,
                           QModelIndex,
@@ -51,20 +49,18 @@ from qtpy.QtCore import (QAbstractListModel,
                           Qt,
                           QTime,
                           QTimer)
+
 from qtpy.QtGui import QColor, QImage, QPalette, QTextCursor, QTextDocument
-# sql
-# sql
-from qtpy.QtSql import (QSqlDatabase,
+
+from qtpy.QtSql import ( QSqlDatabase,
                          QSqlQuery,
                          QSqlQueryModel,
                          QSqlRelation,
                          QSqlRelationalDelegate,
                          QSqlRelationalTableModel,
                          QSqlTableModel)
-# widgets biger
-# widgets -- small
-# layouts
-from qtpy.QtWidgets import (QAction,
+
+from qtpy.QtWidgets import ( QAction,
                              QApplication,
                              QButtonGroup,
                              QCheckBox,
@@ -173,6 +169,10 @@ class SqlQueryModelTab( tab_base.TabBase ) :
     def run_it( self, ):
         """
         from chat
+            problem with this is that it does not show
+            where the db connection comes from
+            more or less a hidden gloabal
+                look in ( ? )  /pyqt_by_example/tab_qsql_database.py
         """
         #def loop_through_rows():
         """Loop through rows using QSqlQueryModel."""

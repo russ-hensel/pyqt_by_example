@@ -6,26 +6,19 @@
 """
 
 
-KEY_WORDS:      stretch hbox vbox
-CLASS_NAME:     BoxLayoutWindowsTab
-WIDGETS:        QHBoxLayout  QVBoxLayout, QSpacerItem
+KEY_WORDS:      stretch hbox vbox rowspan columnspan colspan
+CLASS_NAME:     BoxGridLayoutWindowsTab
+WIDGETS:        QHBoxLayout  QVBoxLayout, QGridLayout,  QSpacerItem
 STATUS:         new
-TAB_TITLE:      BoxLayout / Windows
-DESCRIPTION:    A reference for the QHBoxLayout, QVBoxLayout widgets
+TAB_TITLE:      BoxGridLayout / Windows
+DESCRIPTION:    An example of box layouts containing grid layouts.
 HOW_COMPLETE:   5  #     -- <10 major probs or early dev  <15 runs but <20 fair not finished  <=25 not to shabby
 """
-WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-About-QBoxLayout"
+WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-About-BoxGridLayouts"
 
 """
-the layout_1
-    shows the simple way to build with the HBox
-layout_2
-    a more efficient version of _1
-layout_mutate t
-    linked to the mutated parms, to see effect of layout args ( so far stretch )
-    this code needs more developemnt, msssages in the mutates and wikid help
-
-
+Notes, not carefully checked
+t
 
 """
 
@@ -122,7 +115,7 @@ def layout_widget( widget, layout, layout_at, widget_list ):
     widget_list.append( widget )
 
 # ----------------------------
-class BoxLayoutWindowsTab( tab_base.TabBase  ) :
+class BoxGridLayoutWindowsTab( tab_base.TabBase  ) :
     def __init__(self):
         """
         the usual
@@ -162,28 +155,28 @@ class BoxLayoutWindowsTab( tab_base.TabBase  ) :
         button_layout        = layout
 
         # ---- BoxWindows.build_box_layout_1
-        widget = QPushButton("box_window\n build_box_layout_1")
-        connect_to   = partial( self.open_box_window,
-                                BoxWindows.build_box_layout_1,
+        widget = QPushButton("boxgrid_window\n build_box_layout_1")
+        connect_to   = partial( self.open_window,
+                                BoxGridWindows.build_box_layout_1,
                                 tab  = self )
         widget.clicked.connect( connect_to  )
         button_layout.addWidget( widget )
 
-        # ---- BoxWindows.build_box_layout_2
-        widget = QPushButton("box_window\n build_box_layout_2")
-        connect_to   = partial( self.open_box_window,
-                               BoxWindows.build_box_layout_2,
-                               tab  = self )
-        widget.clicked.connect( connect_to  )
-        button_layout.addWidget( widget )
+        # # ---- BoxWindows.build_box_layout_2
+        # widget = QPushButton("box_window\n build_box_layout_2")
+        # connect_to   = partial( self.open_window,
+        #                        BoxGridWindows.build_box_layout_2,
+        #                        tab  = self )
+        # widget.clicked.connect( connect_to  )
+        # button_layout.addWidget( widget )
 
-        # ---- BoxWindows.build_box_layout_mutate
-        widget = QPushButton("box_window\n build_box_layout_mutate")
-        connect_to   = partial( self.open_box_window,
-                               BoxWindows.build_box_layout_mutate,
-                               tab  = self )
-        widget.clicked.connect( connect_to  )
-        button_layout.addWidget( widget )
+        # # ---- BoxWindows.build_box_layout_mutate
+        # widget = QPushButton("box_window\n build_box_layout_mutate")
+        # connect_to   = partial( self.open_window,
+        #                        BoxGridWindows.build_box_layout_mutate,
+        #                        tab  = self )
+        # widget.clicked.connect( connect_to  )
+        # button_layout.addWidget( widget )
 
         # ---- new row, for build_gui_last_buttons
         button_layout = QHBoxLayout(   )
@@ -194,11 +187,11 @@ class BoxLayoutWindowsTab( tab_base.TabBase  ) :
         self.build_gui_last_buttons( button_layout )
 
     #---------------------------
-    def open_box_window(self, layout_method, tab ):
+    def open_window(self, layout_method, tab ):
         """
-        Open a box window using the layout method layout_method
+        Open window using the layout method layout_method
         """
-        self.box_window = BoxWindows( layout_method = layout_method,
+        self.box_window = BoxGridWindows( layout_method = layout_method,
                                        tab           = tab )  # No parent specified
         self.box_window.show()
 
@@ -265,7 +258,7 @@ class BoxLayoutWindowsTab( tab_base.TabBase  ) :
         self.append_msg( tab_base.DONE_MSG )
 
 #------------------------------
-class BoxWindows( QWidget ):
+class BoxGridWindows( QWidget ):
     def __init__( self, layout_method, tab ):
         """
         layout_method: method to call to layout the window
@@ -288,25 +281,25 @@ class BoxWindows( QWidget ):
         self.setAttribute(Qt.WA_DeleteOnClose)
 
     #------------------------------
-    def  build_grid_chat_row_0_spaced( self,  ):
-        """ add spacers to stabilize  """
-        self.setWindowTitle( f"GridWindow build_grid_1 build_grid_chat_row_0_spaced")
-        self.line_edits = []
+    def add_to_grid_1( self,  grid_layout ):
+        """
+        add spacers to stabilize
+        """
+        line_edits = []
         # ---- Row -1 the spacer trick, make sure spaces are big enough
         for ix in range( 5 ):  # layout.col_max
-
             widget   = QSpacerItem( 200, 10, QSizePolicy.Minimum, QSizePolicy.Minimum ) # hsize, vsize hpolicy vpolicy
-            self.grid_layout.addItem( widget, 0, ix  )  # row column
+            grid_layout.addItem( widget, 0, ix  )  # row column
 
         # ---- Row 0
-        self.line_edits.append(QLineEdit("Edit 1"))
-        self.grid_layout.addWidget(self.line_edits[-1], 0, 0, 1, 2)  # spans 2 columns
-        self.line_edits.append(QLineEdit("Edit 2"))
-        self.grid_layout.addWidget(self.line_edits[-1], 0, 2, 1, 1)  # spans 1 column
-        self.line_edits.append(QLineEdit("Edit 3"))
-        self.grid_layout.addWidget(self.line_edits[-1], 0, 3, 1, 1)  # spans 1 column
-        self.line_edits.append(QLineEdit("Edit 4"))
-        self.grid_layout.addWidget(self.line_edits[-1], 0, 4, 1, 1)  # spans 1 column
+        line_edits.append(QLineEdit("Edit 1"))
+        grid_layout.addWidget(line_edits[-1], 0, 0, 1, 2)  # spans 2 columns
+        line_edits.append(QLineEdit("Edit 2"))
+        grid_layout.addWidget(line_edits[-1], 0, 2, 1, 1)  # spans 1 column
+        line_edits.append(QLineEdit("Edit 3"))
+        grid_layout.addWidget(line_edits[-1], 0, 3, 1, 1)  # spans 1 column
+        line_edits.append(QLineEdit("Edit 4"))
+        grid_layout.addWidget(line_edits[-1], 0, 4, 1, 1)  # spans 1 column
 
     # -----------------
     def  build_box_layout_1( self,  ):
@@ -317,7 +310,7 @@ class BoxWindows( QWidget ):
             all this should probably be put in some sort of list,
             and perhaps they should be in a class, tbc
         """
-        self.setWindowTitle( f"BoxWindows.build_box_layout_1")
+        self.setWindowTitle( f"BoxGridWindows.build_box_layout_1")
         self.line_edits     = []
 
         # widget              = QLineEdit("Edit 1")
@@ -364,8 +357,10 @@ class BoxWindows( QWidget ):
         layout_across_3     = QHBoxLayout( )
         widget_across_3.setLayout( layout_across_3 )
 
-        # ---- widget_across_4 build across using a method
-        self.build_a_top_widget( layout_across, "white" )
+        # ---- widget_across_  build  using a method return it an its layout
+        #self.build_a_top_widget( layout_across, "white" )
+        widget, layout       = self.build_a_top_widget_with_grid( layout_across, "white" )
+        self.add_to_grid_1( grid_layout = layout )
 
         return
 
@@ -440,11 +435,35 @@ class BoxWindows( QWidget ):
                                                         stretch = stretch )
             self.line_edits.append( widget_across )
 
+    #------------------------------
+    def build_a_top_widget_with_grid( self, layout_across, color, stretch = 1 ):
+        """
+        build one of the top widgets meant to go a
+            across the layout_across
+            put a grid layout in it, return widget and its layout
+
+        """
+        # ---- widget_across
+        widget_across       = QWidget()
+        palette             = widget_across.palette()
+        palette.setColor( QPalette.Window, QColor( color ))
+        widget_across.setAutoFillBackground( True )
+        widget_across.setPalette(palette)
+
+        layout_across.addWidget( widget_across, stretch = stretch )  # > Stretches more 0 = No stretch
+        layout_across     = QGridLayout( )
+        widget_across.setLayout( layout_across )
+
+        # let the caller add widgets
+        # widget            = QLabel( f"{stretch = }" )
+        # layout_across.addWidget( widget )
+
+        return widget_across, layout_across
 
     #------------------------------
     def build_a_top_widget( self, layout_across, color, stretch = 1 ):
         """
-        build one of the top widget meant to go a
+        build one of the top widgets meant to go a
             across the layout_across
 
         """
@@ -463,16 +482,5 @@ class BoxWindows( QWidget ):
         layout_across.addWidget( widget )
 
         return widget_across
-
-    #------------------------------
-    def  build_grid_chat( self,  ):
-        """
-        what chat did with some alterations
-
-        """
-        pass
-
-
-
 
 # ---- eof

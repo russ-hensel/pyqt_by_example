@@ -27,11 +27,9 @@ adjust_path_file      = __file__
 print( hostname )
 
 
-
 VERBOSE   = 50
 
 if VERBOSE > 20:
-
 
     print( f"in {adjust_path_file   = }")
     print( f"{cwd                   = }")

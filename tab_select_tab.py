@@ -29,13 +29,15 @@ from qtpy.QtCore import (QDate,
                           QSize,
                           Qt,
                           QTime,
-                          QTimer)
+                          QTimer,
+                          QSortFilterProxyModel )
+
 from qtpy.QtGui import QColor, QPalette, QTextCursor, QTextDocument
 # sql
 from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
-# widgets biger
-# widgets -- small
-# layouts
+
+
+
 from qtpy.QtWidgets import (QAction,
                              QApplication,
                              QButtonGroup,
@@ -169,24 +171,29 @@ class Search_Tab( QWidget ) :
         row_layout          = QHBoxLayout(   )
         layout.addLayout( row_layout, ) # stretch = 6  )
 
-
-        # ---- model and view
+        # ---- model and view  column sorting
         db                  = global_vars.TAB_DB
         model               = QSqlTableModel( self, db )
         self.list_model     = model
-
 
         model.setTable( "tabs" )
         model.setFilter( "id = -99" )  # afte set table to be effiective
 
         model.setEditStrategy( QSqlTableModel.EditStrategy.OnManualSubmit ) # = never QSqlTableModel.EditStrategy.OnManualSubmit
+        model.setEditStrategy( QSqlTableModel.OnManualSubmit)   # probaly wrong
 
         # COMMENT  out to default  Set column headers	model.setHorizontalHeaderLabels([...])
 
-        view                 = QTableView()
+        # claud_fix for select on sort problem Create proxy model for sorting
+        proxy_model = QSortFilterProxyModel()
+        self.proxy_model    = proxy_model
+        proxy_model.setSourceModel( model )
+
+        view                = QTableView()
         self.list_view       = view
-        view.setSelectionBehavior( QTableView.SelectRows )
-        view.setModel( model )
+        # view.setSelectionBehavior( QTableView.SelectRows )
+        #view.setModel( model )   # comment out for claud_fix
+        view.setModel( proxy_model )
         view.setSortingEnabled( True )
         row_layout.addWidget( view )
 
@@ -347,12 +354,18 @@ class Search_Tab( QWidget ) :
         opens a tab that is clicked on
         goes to controller.open_tab_select
 
-
-       sql for ref
+        sql for ref
            look in index_and_search.py ?
            """
+        # because of proxy_model we can not just use the index
+        # Map proxy index back to source model index
+        source_index = self.proxy_model.mapToSource( index )
 
-        row         = index.row()
+        # Now get data from the source model
+        row = source_index.row()
+
+        # without proxy model
+        # row         = index.row()
         model       = self.list_model
         column      = model.fieldIndex( "tab_title" )
         model_index = model.index( row, column)

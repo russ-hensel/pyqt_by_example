@@ -268,23 +268,10 @@ class QDateEditTab( tab_base.TabBase  ):
 
         layout.addWidget( widget, ix_row, ix_col )
 
-        # ---- buttons ---------------------------------
+        # ---- last buttons ---------------------------------
         ix_row    += 1
         ix_col    = 0
         layout.addLayout( button_layout, ix_row, ix_col )
-
-        # # ---- Inspect
-        # widget = QPushButton("inspect")
-        # # widget.clicked.connect(lambda: self.print_message(widget.text()))
-        # a_widget        = widget
-        # widget.clicked.connect( lambda: self.inspect( ) )
-        # button_layout.addWidget( widget )
-
-        # # ----set_empty
-        # widget = QPushButton("set_empty\n")
-        # widget.clicked.connect(lambda: self.set_empty( ))
-        # a_widget        = widget
-        # button_layout.addWidget( widget )
 
         self.build_gui_last_buttons( button_layout )
 

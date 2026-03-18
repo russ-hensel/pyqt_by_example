@@ -2,12 +2,21 @@
 cd   ~/virtual_env
 source theprof_qt5/bin/activate
 
-
+# not a real requirements, mor just comments
 
 # installs -----------------
+one of
 uv pip install  pyqt5
+uv pip install  pyqt6
+and for compatability
+uv pip install qtpy
+
+
+and if you use spyder you will probably get pyqt5
+we like
 uv pip install  spyder
 
+next are required to get everything running
 uv pip install  wat-inspector
 
 uv pip install  pyqtgraph
@@ -23,3 +32,7 @@ uv pip install
 
 
  # --------------------- notes
+
+
+
+

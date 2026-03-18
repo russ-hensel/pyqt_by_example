@@ -15,18 +15,18 @@ import time
 
 # ----   imports
 import string_utils
-from qt_compat import QApplication, QAction, exec_app, qt_version
-from PyQt.QtWidgets import QMainWindow, QToolBar, QMessageBox
 
-from PyQt import QtGui
-from PyQt.QtCore import (QDate,
+from qtpy        import QtGui
+
+
+from qtpy.QtCore import ( QDate,
                           QModelIndex,
                           QSize,
                           QSortFilterProxyModel,
                           Qt,
                           QTimer)
 # sql
-from PyQt.QtSql import (QSqlDatabase,
+from qtpy.QtSql import (QSqlDatabase,
                          QSqlQuery,
                          QSqlQueryModel,
                          QSqlRelation,
@@ -36,8 +36,8 @@ from PyQt.QtSql import (QSqlDatabase,
 
 # from PyQt.QtGui import ( QAction, QActionGroup, )
 
-from PyQt.QtWidgets import (QAbstractItemView,
-
+from qtpy.QtWidgets import ( QAbstractItemView,
+                             QAction,
                              QApplication,
                              QButtonGroup,
                              QCheckBox,
@@ -63,12 +63,13 @@ from PyQt.QtWidgets import (QAbstractItemView,
                              QSpinBox,
                              QStyledItemDelegate,
                              QTableView,
+                             QToolBar,
                              QTableWidget,
                              QTableWidgetItem,
                              QTabWidget,
                              QTextEdit,
                              QVBoxLayout,
-                             QWidget)
+                             QWidget )
 
 
 import qsql_utils
@@ -136,6 +137,7 @@ class KeyWords(   ):
         # next not verry efficient
         if caps_split:
             a_string = a_string + " " + a_string.lower() # suppress cap split
+
         else:
             a_string = a_string.lower() # suppress cap split
 
@@ -196,12 +198,10 @@ class KeyWords(   ):
         # this may be a repeat that we want to elimiante
         # Execute the DELETE statement
 
-        if qt_version == 6:  # 5 6 compat
+        if True:  # 5 6 compat
             ret  =  query.exec()
         else:
             ret  =  query.exec_()
-
-
 
         if not ret:
             error = query.lastError()
@@ -236,7 +236,7 @@ class KeyWords(   ):
         self.old_string                 = self.new_string
         self.old_key_words              = self.new_key_words
 
-        self.check_id_for_error( table_id )
+        #self.check_id_for_error( table_id )   # debug could be commented out ??
 
         self.db.commit()   # trying to get rid of wad fiel
 
@@ -263,7 +263,7 @@ class KeyWords(   ):
 
             # Execute the DELETE statement
 
-            if qt_version == 6:  # 5 6 compat
+            if True:  # 5 6 compat
                 ret  =  query.exec()
             else:
                 ret  =  query.exec_()
@@ -303,8 +303,7 @@ class KeyWords(   ):
             query.bindValue( ":id",        table_id )
             query.bindValue( ":key_word",  i_key_word )
 
-
-            if qt_version == 6:  # 5 6 compat
+            if  True:  # 5 6 compat
                 ret  =  query.exec()
             else:
                 ret  =  query.exec_()

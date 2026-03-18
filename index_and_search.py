@@ -26,6 +26,7 @@ from platform import python_version
 from subprocess import PIPE, STDOUT, Popen, run
 
 import key_word_indexer
+
 #from app_global import AppGlobal
 from qtpy import QtGui
 from qtpy.QtCore import (QDate,
@@ -44,6 +45,7 @@ from qtpy.QtSql import (QSqlDatabase,
                          QSqlRelationalDelegate,
                          QSqlRelationalTableModel,
                          QSqlTableModel)
+
 from qtpy.QtWidgets import (QAbstractItemView,
                              QAction,
                              QApplication,

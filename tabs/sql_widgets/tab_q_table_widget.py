@@ -10,9 +10,11 @@ KEY_WORDS:      table widget tabular data display click select headers pp tablew
 CLASS_NAME:     QTableWidgetTab
 WIDGETS:        QTableWidget
 STATUS:         runs_correctly_5_10      demo_complete_2_10   !! review_key_words   !! review_help_0_10
-TAB_TITLE:      QTableWidget
-
+TAB_TITLE:      QTableWidget / A Table
+DESCRIPTION:    QTableWidget Reference
+HOW_COMPLETE:   15  #  AND A COMMENT -- <10 major probs  <15 runs but <20 fair not finished  <=25 not to shabby
 """
+WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/QTableWidget Reference"
 
 # --------------------
 # --------------------
@@ -106,6 +108,11 @@ class QTableWidgetTab( tab_base.TabBase  ):
         """
         super().__init__( )
 
+        self.module_file        = __file__      # save for help file usage
+
+        global WIKI_LINK
+        self.wiki_link          = WIKI_LINK
+
         self.mutate_dict[0]     = self.mutate_0
         self.mutate_dict[1]     = self.mutate_1
         self.mutate_dict[2]     = self.mutate_2
@@ -163,6 +170,8 @@ class QTableWidgetTab( tab_base.TabBase  ):
 
         table_widget.cellClicked.connect( self.on_cell_clicked )
 
+
+
         # getting an error !!
         print( f"{table_widget.currentRow()}")
             # method returns the currently selected row. It returns -1 i
@@ -201,23 +210,13 @@ class QTableWidgetTab( tab_base.TabBase  ):
         # a_widget.clicked.connect( self.search )
         # button_layout.addWidget(a_widget)
 
-        # ---- mutate
-        widget = QPushButton("mutate\n")
-        self.button_ex_1         = widget
-        widget.clicked.connect( lambda: self.mutate( ) )
-        button_layout.addWidget( widget )
+        # ---- new row, for build_gui_last_buttons
+        button_layout = QHBoxLayout(   )
+        layout.addLayout( button_layout, )
 
-        # ---- PB inspect
-        widget              = QPushButton("inspect\n")
-        connect_to          = self.inspect
-        widget.clicked.connect( connect_to )
-        button_layout.addWidget( widget )
-
-        # ---- PB breakpoint
-        widget              = QPushButton("breakpoint\n ")
-        connect_to          = self.breakpoint
-        widget.clicked.connect( connect_to )
-        button_layout.addWidget( widget )
+        # our ancestor finishes off the tab with some
+        # standard buttons
+        self.build_gui_last_buttons( button_layout )
 
     # -------------------------------------
     def populate_table(self):
@@ -318,15 +317,12 @@ class QTableWidgetTab( tab_base.TabBase  ):
         """Select a specific column."""
         self.table_widget.selectColumn(col_index)
 
-
     # ------------------------------
     def set_size(self):
         """
         read it
         """
         self.append_function_msg( "set_size")
-
-
 
         table   = self.table_widget
         table.horizontalHeader().setStretchLastSection(True)
@@ -377,7 +373,6 @@ class QTableWidgetTab( tab_base.TabBase  ):
             msg        = f"nothing found {search_for = }"
             self.append_msg( msg,  )
 
-
     # ------------------------------------
     def mutate_x( self ):
         """
@@ -406,8 +401,6 @@ class QTableWidgetTab( tab_base.TabBase  ):
 
         self.append_msg( "mutate_0 done" )
 
-
-
     # ------------------------------------
     def mutate_1( self ):
         """
@@ -423,8 +416,6 @@ class QTableWidgetTab( tab_base.TabBase  ):
 
         self.append_msg( "mutate_1 done" )
 
-
-
     #----------------------------
     def mutate_2( self  ):
         """
@@ -439,8 +430,6 @@ class QTableWidgetTab( tab_base.TabBase  ):
     def mutate_3( self ):
         """
         read it -- mutate the widgets
-
-
 
         def horizontalHeader(…) # horizontalHeader(self) -> Optional[QHeaderView]
         def horizontalHeaderItem(…) # horizontalHeaderItem(self, column: int) -> Optional[QTableWidgetItem]
@@ -458,7 +447,6 @@ class QTableWidgetTab( tab_base.TabBase  ):
         def verticalHeader(…) # verticalHeader(self) -> Optional[QHeaderView]
         def verticalHeaderItem(…) # verticalHeaderItem(self, row: int) -> Optional[QTableWidgetItem]
 
-
         """
         self.append_function_msg( "mutate_3" )
 
@@ -473,7 +461,6 @@ class QTableWidgetTab( tab_base.TabBase  ):
 
         table.setColumnWidth(2, 100)  # Set specific width for a column
 
-
         self.append_msg( "mutate_3 done" )
 
     # ------------------------------------
@@ -482,11 +469,6 @@ class QTableWidgetTab( tab_base.TabBase  ):
         read it -- mutate the widgets
         """
         self.append_function_msg( "mutate_4" )
-
-
-        #self.append_msg( msg,  )
-
-
 
         msg    = ( "mutate_4 -- change headers one at a time a bit of a mess " )
         self.append_msg( msg,  )
@@ -542,13 +524,11 @@ class QTableWidgetTab( tab_base.TabBase  ):
 
     #     Users can resize columns manually with Interactive.
 
-
     # # Customize vertical header (optional)
     # vertical_header = table_widget.verticalHeader()
     # vertical_header.setSectionResizeMode(QHeaderView.Stretch)  # Stretch rows
 
         self.append_msg( "mutate_4 done" )
-
 
     #----------------------------
     def find_row_with_text_in_column(self, ):
@@ -560,7 +540,6 @@ class QTableWidgetTab( tab_base.TabBase  ):
         may be ok not yet tested
         """
         self.append_function_msg( "find_row_with_text_in_column broken comment out fix me " )
-
 
         return
 
@@ -578,8 +557,6 @@ class QTableWidgetTab( tab_base.TabBase  ):
         print( f"find_row_with_text {ix_found = }")
 
         return ix_found
-
-
 
     # ------------------------
     def inspect(self):
@@ -604,19 +581,9 @@ class QTableWidgetTab( tab_base.TabBase  ):
         """
         self.append_function_msg( "breakpoint" )
 
-
-        # #__file__
-
-        # print( f"{__file__ = }" )
-
-        # clipboard = QApplication.clipboard()
-
-        # clipboard.setText( str( __file__ ) )
-
-        # print("Text added to clipboard:", clipboard.text())
-
         breakpoint()
 
         self.append_msg( "breakpoint done" )
 
 # ---- eof
+

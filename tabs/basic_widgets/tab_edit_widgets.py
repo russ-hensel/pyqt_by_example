@@ -6,24 +6,19 @@ Created on Sun Dec 15 12:41:16 2024
 no it is one listed twice
 
 
-KEY_WORDS:      basic edits often used for forms seems to be some confusion 2 versions custom or not
+KEY_WORDS:      basic edits often used for forms seems to be some confusion 2 versions custom or not read only
 CLASS_NAME:     EditWidgetTab
 WIDGETS:        LineEdit TextEdit  DateEdit
 STATUS:         !! runs    runs_correctly  demo_partial   demo_complete
-TAB_TITLE:      EditWidgets
-
-         self.help_file_name     =  "find_this_file.txt"
-
+TAB_TITLE:      EditWidgets / for input
+DESCRIPTION:    Examples of some edit wigets
+HOW_COMPLETE:   15  #  AND A COMMENT -- <10 major probs  <15 runs but <20 fair not finished  <=25 not to shabby
 """
-WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/Documentation-Not-Written"
 
-# ---- search
-"""
-    Search for
-        QLineEdit
-        QTextEdit
-        readOnly
-"""
+
+WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/Edit Widgets"
+
+
 
 
 # --------------------
@@ -195,34 +190,13 @@ class EditWidgetTab( tab_base.TabBase ) :
         # ---- buttons
         layout.addLayout( button_layout )
 
-        label       = "mutate\n"
-        widget      = QPushButton( label )
-        widget.clicked.connect( self.mutate )
-        button_layout.addWidget( widget )
+        # ---- new row, for build_gui_last_buttons
+        button_layout = QHBoxLayout(   )
+        layout.addLayout( button_layout, )
 
-        # label       = "validate\n"
-        # widget      = QPushButton( label )
-        # widget.clicked.connect( self.validate )
-        # button_layout.addWidget( widget )
-
-
-
-        # label       = "examine_0\n"
-        # widget      = QPushButton( label )
-        # widget.clicked.connect( self.examine_0 )
-        # button_layout.addWidget( widget )
-
-        # ---- PB inspect
-        widget              = QPushButton("inspect\n")
-        connect_to        = self.inspect
-        widget.clicked.connect( connect_to )
-        button_layout.addWidget( widget )
-
-        # ---- PB breakpoint
-        widget              = QPushButton("breakpoint\n ")
-        connect_to          = self.breakpoint
-        widget.clicked.connect( connect_to )
-        button_layout.addWidget( widget )
+        # our ancestor finishes off the tab with some
+        # standard buttons
+        self.build_gui_last_buttons( button_layout )
 
     # ------------------------
     def _build_gui_in_gb_edit(self, layout  ):

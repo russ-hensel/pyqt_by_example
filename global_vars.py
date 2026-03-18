@@ -3,6 +3,8 @@
 """
 Created on Tue Dec 10 16:01:21 2024
 
+probably a bad idea, for the stuff that is ok put back in app_globals
+
 global variables only ( perhaps sets for them so no monky patch)
 only use the set methods so we can track errors
 this belongs to qt_by_example
@@ -43,8 +45,6 @@ def set_ex_db( obj ):
         # 1/0
     EX_DB  = obj
     print_vars()
-
-
 
 def set_sample_db_obj( obj ):
     """

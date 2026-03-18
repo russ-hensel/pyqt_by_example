@@ -35,14 +35,12 @@ from functools import partial
 
 #from app_global import AppGlobal
 from qtpy import QtGui
-from qtpy.QtCore import ( QDate,
+from qtpy.QtCore import (QDate,
                           QModelIndex,
                           QSize,
                           QSortFilterProxyModel,
                           Qt,
-                          QTimer )
-
-from qtpy.QtGui import QIcon, QIntValidator, QStandardItem, QStandardItemModel
+                          QTimer)
 # sql
 from qtpy.QtSql import (QSqlDatabase,
                          QSqlField,
@@ -52,9 +50,9 @@ from qtpy.QtSql import (QSqlDatabase,
 
                          QSqlRelationalDelegate,
                          QSqlRelationalTableModel,
-                         QSqlTableModel )
+                         QSqlTableModel)
 
-from qtpy.QtWidgets import ( QAbstractItemView,
+from qtpy.QtWidgets import (QAbstractItemView,
                              QAction,
                              QApplication,
                              QButtonGroup,
@@ -119,8 +117,6 @@ BEGIN_MARK_2    = uft.BEGIN_MARK_2
 print_func_header  = uft.print_func_header
 
 __VERSION__  = "ver_001 - 2026 02 04.01"
-__VERSION__  = "ver_002 - 2026 03 01.01"
-
 
 # ---- main window ===================================================================
 class PyqtByExample( QMainWindow ):

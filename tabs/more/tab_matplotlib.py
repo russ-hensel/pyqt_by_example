@@ -207,20 +207,12 @@ class QMatplotlibTab( tab_base.TabBase ) :
         # # widget.append(  "append a bit" )
         # widget.setReadOnly( True )
 
-        chat = """  """
-
-
+        # ---- last buttons in own layout
         button_layout    = QHBoxLayout()
         layout.addLayout( button_layout )
 
-        # # ---- lower buttons
-
-
-        # our ancestor finishes off the tab with some
-        # standard buttons
+        # our ancestor finishes off the tab with some standard buttons
         self.build_gui_last_buttons( button_layout )
-
-
 
     # ---------------  end of button actions and class
     # ---------------------------------------

@@ -12,9 +12,14 @@ CLASS_NAME:     QSqlTableModelTab2
 WIDGETS:        QSqlTableModel QTableView
 STATUS:         runs_correctly_?_10      demo_complete_2_10   !! review_key_words   !! review_help_0_10
 TAB_TITLE:      QSqlTableModel2 Reference
-DESCRIPTION:    A reference .... part2
+DESCRIPTION:    A reference for the QDateEdit and closely related widgets
+HOW_COMPLETE:   20  #   ...
+
+
 
 """
+
+WIKI_LINK      =  "https://github.com/russ-hensel/qt5_by_example/wiki/What-We-Know-About-QDateEdit"
 # ---- tof
 
 # --------------------

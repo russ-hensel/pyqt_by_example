@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-
+launcher for the app
 
 
 """
@@ -20,5 +20,7 @@ import pyqt_by_example
 print( f"sys.argv  = >>>{sys.argv}<<< ")
 
 pyqt_by_example.main()
+
+# ---- eof
 
 

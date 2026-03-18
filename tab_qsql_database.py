@@ -42,12 +42,11 @@ from qtpy.QtCore import (QDate,
                           Qt,
                           QTime,
                           QTimer)
+
 from qtpy.QtGui import QColor, QIcon, QPalette, QTextCursor, QTextDocument
-# sql
+
 from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
-# widgets biger
-# widgets -- small
-# layouts
+
 from qtpy.QtWidgets import (QAction,
                              QApplication,
                              QButtonGroup,

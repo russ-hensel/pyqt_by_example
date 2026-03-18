@@ -38,9 +38,10 @@ class Parameters( ):
             if you comment all out all modes you get the default mode which should
             run, perhaps not in the way you want
         """
-        #self.mode_dev_debug()
+        self.mode_dev_debug()
         #self.mode_russ_on_theprof()
-        self.new_user_mode()
+        #self.new_user_mode()
+        #self.mode_disk_db()
         #self.millhouse_1_mode()
 
         # two of my computers
@@ -53,24 +54,6 @@ class Parameters( ):
 
     # ---- ---->> Methods:  one for each mode
     # -------
-    def mode_test_win( self ):
-        """
-        a mode for
-        """
-        self.mode               = "mode_test_win"
-        # but do they use the same units ?QDateEdit
-        self.qt_width           = 1500
-        self.qt_height          = 600    # 700 most of win height
-        self.qt_xpos            = 10
-        self.qt_ypos            = 10
-
-        self.wat_qt_width       = 1500
-        self.wat_qt_height      = 900
-        self.wat_qt_xpos        = 10
-        self.wat_qt_ypos        = 10
-
-        self.dir_for_tabs       = [ "./",  ]
-
 
     # -------
     def mode_dc_on_linux_mint( self ):
@@ -78,43 +61,14 @@ class Parameters( ):
 
         """
         self.mode               = "mode_dc_on_linux_mint"
-        # but do they use the same units ?QDateEdit
-        # self.qt_width           = 1500
-        # self.qt_height          = 600    # 700 most of win height
-        # self.qt_xpos            = 10
-        # self.qt_ypos            = 10
-
-        # self.wat_qt_width       = 1500
-        # self.wat_qt_height      = 900
-        # self.wat_qt_xpos        = 10
-        # self.wat_qt_ypos        = 10
-
-        # # self.dir_for_tabs       = [""]
-        # # self.dir_for_tabs.append( "./tabs/basic_widgets" )
-        # # self.dir_for_tabs.append( "./tabs/sql_widgets" )
-        # # self.dir_for_tabs.append( "./tabs/book_fitz" ) #  book_fitz
-
-        # # ---- for sample database
-        # self.db_file_name        = "/tmp/ramdisk/qt_sql.db"
-        # self.db_file_name        = ":memory:"
-        # # in memory is fast
-        # # on disk (in "/tmp") is easier to debug
-
-        # # ---- for qt tabs
-        # self.tab_db_type         = "QSQLITE"
-
-        # self.default_search     = "dc"
-        # self.do_search_on_init  = True
-
-        # # self.min_complete    = 10  # minimum value for HOW_COMPLETE
-
-
-        # self.logging_level      = logging.DEBUG
 
     # -------
-    def mode_dev_debug( self ):
-        """  """
-        self.mode               = "mode_dev_debug"
+    def mode_disk_db( self ):
+        """
+        run for debugging when you want the db on a disk
+        startup is really slow
+        """
+        self.mode               = "mode_disk_db"
         # expose tabs that are not ready
         self.min_complete    = 0  # minimum value for HOW_COMPLETE
 
@@ -122,21 +76,40 @@ class Parameters( ):
         self.default_search     = "progress"
         self.do_search_on_init  = True
 
+        # ---- database there are 2 ........
+        # ---- for sample database
+        self.db_type            = "QSQLITE"
+        self.db_file_name        = "./misc/qt_sql.db"
 
-        # ---- need to stop double listing
-        #may need to be on path sys.path.insert( 1, f"{src_root}/_projects/stuffdb/qt_tabs" )
-        self.dir_for_tabs.append( "./tabs/basic_widgets" )
-        self.dir_for_tabs.append( "./tabs/sql_widgets" )
-        self.dir_for_tabs.append( "./tabs/book_fitz" ) #  book_fitz
-        self.dir_for_tabs.append( "./tabs/more" )
-        self.dir_for_tabs.append( "./tabs/real_python" )
-        self.dir_for_tabs.append( "./tabs/layouts" )
+        # ---- for qt tabs
+        self.tab_db_type         = "QSQLITE"
+        self.tab_db_file_name    = "./misc/tab.db"
 
     # -------
-    def mode_russ_on_theprof( self ):
+    def mode_dev_debug( self ):
         """
-        a mode for the new user, pretty much empty,
-        a new user may experiment here.
+        for dev and debug, mostly for rsh
+        """
+        self.mode               = "mode_dev_debug"
+        # expose tabs that are not ready
+        self.min_complete    = 0  # minimum value for HOW_COMPLETE
+
+        # ---- search and default
+        self.default_search     = "box grid"
+        self.do_search_on_init  = True
+
+        self.qt_width           = 1500
+        self.qt_height          = 600    # 700 most of win height
+        self.qt_xpos            = 10
+        self.qt_ypos            = 10
+
+
+        self.dir_for_tabs.append(  "/mnt/WIN_D/russ/0000/python00/python3/_projects/stuffdb/qt_tabs"  )
+
+    # -------
+    def mode_russ_on_theprof_salvame_maybe ( self ):
+        """
+        .
         """
         self.mode               = "mode_russ_on_theprof"
         # but do they use the same units ?QDateEdit
@@ -191,15 +164,8 @@ class Parameters( ):
         self.auto_run           = True
 
         # ---- min_complete
-        self.min_complete    = 10  # minimum value for HOW_COMPLETE
+        self.min_complete       = 20  # minimum value for HOW_COMPLETE
 
-        # self.dir_for_tabs       = [ "./tabs",
-        #                             "/mnt/WIN_D/russ/0000/python00/python3/_projects/stuffdb",
-        #                             # "/mnt/WIN_D/russ/0000/python00/python3/_projects/rshlib/test",
-        #                             "/mnt/WIN_D/russ/0000/python00/python3/_projects/qt5_by_example/tabs",
-        #                             "/mnt/WIN_D/russ/0000/python00/python3/_projects/stuffdb/qt_tabs",
-        #                             "/mnt/WIN_D/russ/0000/python00/python3/_projects/rshlib/rshlib_qt",
-        #                             ]
 
     # -------
     def running_on_tweaks(self,  ):
@@ -419,7 +385,7 @@ class Parameters( ):
         # ---- dir_for_tabs
         self.dir_for_tabs       = [ "./",  ]
         self.dir_for_tabs       = [    ]
-        self.dir_for_tabs       = [ "/mnt/WIN_D/russ/0000/python00/python3/_projects/stuffdb/qt_tabs" ]
+        #self.dir_for_tabs       = [ "/mnt/WIN_D/russ/0000/python00/python3/_projects/stuffdb/qt_tabs" ]
         #may need to be on path sys.path.insert( 1, f"{src_root}/_projects/stuffdb/qt_tabs" )
         self.dir_for_tabs.append( "./tabs/basic_widgets" )
         self.dir_for_tabs.append( "./tabs/sql_widgets" )

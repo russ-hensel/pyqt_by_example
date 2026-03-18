@@ -85,7 +85,6 @@ INDENT          = uft.BEGIN_MARK_2
 #INDENT          = qt_sql_widgets.
 
 
-
 #  --------
 class QListWidgetTab( tab_base.TabBase ) :
     def __init__(self):

@@ -113,7 +113,7 @@ def layout_at_str( layout_at ):
 def layout_widget( widget, layout, layout_at, ):
     """only for a grid
         self.line_edits.append(QLineEdit( "Edit 1") )
-        layout_at    = 0, 0, 1, 2   # row coulum rowspan column_span
+        layout_at    = 0, 0, 1, 2   # row column rowspan column_span
         text         = layout_at_str( layout_at )
         self.grid_layout.addWidget( self.line_edits[-1], *layout_at)  # spans 2 columns
         widget       = self.line_edits[-1]
@@ -360,10 +360,10 @@ class GridWindow( QWidget ):
 
     # ---------------------------
     def  build_grid_chat_row_0_spaced( self,  ):
-        """ add spacers to stabalize  """
+        """ add spacers to stabilize  """
         self.setWindowTitle( f"GridWindowOne build_grid_1 build_grid_chat_row_0_spaced")
         self.line_edits = []
-        # ---- Row -1 the spacer trick, makd sure spaces are big enough
+        # ---- Row -1 the spacer trick, make sure spaces are big enough
         for ix in range( 5 ):  # layout.col_max
             widget   = QSpacerItem( 200, 10, QSizePolicy.Minimum, QSizePolicy.Minimum ) # hsize, vsize hpolicy vpolicy
             self.grid_layout.addItem( widget, 0, ix  )  # row column
@@ -381,7 +381,7 @@ class GridWindow( QWidget ):
     # -----------------
     def  build_grid_chat_row_0( self,  ):
         """
-        inbetween 0 and 1
+        in between 0 and 1
 
         """
         self.setWindowTitle( f"GridWindowOne.build_grid_chat_row_0")

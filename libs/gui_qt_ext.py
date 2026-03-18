@@ -35,6 +35,12 @@ look for links
         .logger
 gui_qt_ext.
 
+saved a compat version but convert this to qtpy
+
+
+TEST
+      /mnt/8ball1/first6_root/russ/0000/python00/python3/_projects/rshlib/rshlib_qt/test/test_gui_qt_ext.py
+
 """
 # ---- tof
 
@@ -42,27 +48,47 @@ gui_qt_ext.
 # ---- imports
 
 
+from   qtpy.QtCore import ( QTimer, QDateTime,  Qt,   )
+
 
 #import PyQt.QtWidgets as qtw    #  qt widgets avaoid so much import below
 
-from qt_compat import QApplication, QAction, exec_app, qt_version
-from qt_compat import QTextCursor
-from qt_compat import QCheckBox
-
-from PyQt.QtWidgets import QMainWindow, QToolBar, QMessageBox
-
-
-from   PyQt.QtCore import Qt, QTimer
-from   PyQt import QtGui
-
-from PyQt.QtWidgets import QApplication,  QMainWindow
-from PyQt.QtWidgets import QGridLayout,   QVBoxLayout
-from PyQt.QtWidgets import QLabel,        QTextEdit,    QGroupBox,  QPushButton
-from PyQt.QtWidgets import QApplication,  QWidget,      QLabel, QLineEdit, QPushButton, QFileDialog, QMessageBox
+from   qtpy.QtWidgets import ( QApplication, QMainWindow, QToolBar, QMessageBox,
+                               QGridLayout,   QVBoxLayout,  QHBoxLayout,
+                               QTextEdit,    QGroupBox,  QPushButton,
+                               QWidget,      QLabel,     QLineEdit,  QFileDialog,
+                               QAction,       QCheckBox, )
 
 
-import sys
-import os
+from   qtpy.QtGui import QTextCursor
+
+
+
+#from qt_compat import QCheckBox
+
+#from PyQt.QtWidgets import  , QToolBar, QMessageBox
+
+
+
+# from   PyQt.QtCore import Qt, QTimer
+
+
+# from   PyQt  import QtGui
+from   qtpy  import QtGui
+
+
+#from   QtGui import QCursor
+QCursor  =  QtGui.QCursor
+#from   qtpy.QtGui     import QCursor
+
+#from PyQt.QtWidgets import QApplication,  QMainWindow
+#from PyQt.QtWidgets import QGridLayout,   QVBoxLayout
+#from PyQt.QtWidgets import QLabel,        QTextEdit,    QGroupBox,  QPushButton
+#from PyQt.QtWidgets import QApplication,  QWidget,      QLabel, QLineEdit, QPushButton, QFileDialog, QMessageBox
+
+
+#import sys
+#import os
 
 
 #import string_utils
@@ -74,7 +100,6 @@ from   app_global import AppGlobal
 # where app was started, or provide another in this dir
 # seems to work
 
-
 import logging
 
 logger          = logging.getLogger( )
@@ -83,16 +108,20 @@ logger          = logging.getLogger( )
 # for custom logging level at module
 LOG_LEVEL  = 5   # higher is more
 
+
+
+
 # ----- style sheets  gui_qt_ext.LINE_EDIT_READ_ONLY
 
 LINE_EDIT_READ_ONLY = (
     "QLineEdit { "
      "   background-color: #ececec; "
      "   border: 1px solid #cccccc; "
-     "  border-radius: 4px; "
-     " padding: 4px; "
+     "   border-radius: 4px; "
+     "   padding: 4px; "
     " } "
       )
+#  see stufdb for color by name
 
 #---------------------
 def bring_to_top( root_frame  ):
@@ -144,6 +173,167 @@ def maximize_gui( root_frame  ):
     #root_frame.deiconify()
 
 #---------------------
+def move_under_mouse( widget ):
+    """
+    widget right now expected to be a window
+    perhaps this can be generalized
+    """
+    mouse_pos = QCursor.pos()
+    widget.move( mouse_pos )
+
+    widget.show()
+
+#---------------------
+class SizedMessageBoxxxx( QMessageBox ):
+    def __init__(self, *args, fixed_width=500, fixed_height=300, custom_show_event, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fixed_size = (fixed_width, fixed_height)
+        self.custom_show_event   = custom_show_event
+
+    def showEvent(self, event):
+        super().showEvent(event)
+        self.custom_show_event( self, event )
+            # this is injected or replacable function
+            # self twice since it is not in class
+
+
+    # or a null function ( pass ) may be as effective
+    def resizeEvent(self, event):
+        pass    # i do not have the rectangle
+        # super().resizeEvent(event)
+        # if self._rect:
+        #     self.resize(self._rect.size())
+
+#---------------------
+class PositionMessageBox( QMessageBox ):
+    def __init__(self, *args, upper_left,  **kwargs):
+        """
+        upper_left is a point
+
+        Pa
+        None.
+
+        """
+        super().__init__(*args, **kwargs)
+        self.upper_left           = upper_left
+
+    # ---------
+    def showEvent(self, event):
+        super().showEvent(event)
+        self.move( self.upper_left )
+
+
+        # Defer geometry until after Qt finishes auto-sizing
+        # QTimer.singleShot(0, self._apply_geometry)
+
+    # def resizeEvent(self, event):
+    #     super().resizeEvent(event)
+    #     self.resize( self.rectangle.size() )
+
+    # def adjustSize(self):
+    #     pass
+
+    # def _apply_geometry(self):
+    #     print( "_apply_geometry" )
+    #     self.setGeometry(self.rectangle)
+
+
+
+#---------------------
+def custom_show_event( widget_self, event, rectangle,  ):
+    """
+    adjust with partial then pass to above
+    """
+    # widget_self.resize( widget_self.fixed_size )          # or self.setFixedSize(...)
+    # Optional: center on screen or parent
+    widget_self.setGeometry( rectangle  )
+
+    # if widget_self.parent():
+    #     widget_self.move( widget_self.parent().geometry().center() - widget_self.rect().center())
+    # else:
+    #     screen = QApplication.primaryScreen().geometry()
+    #     widget_self.move(
+    #         (screen.width() - self.width()) // 2,
+    #         (screen.height() - self.height()) // 2
+    #   )
+
+
+
+
+#---------------------
+def color_toolbar_action( toolbar, action, bg_color, text_color):
+        """
+
+        from claud
+        Apply colors to a specific toolbar action
+
+        Args:
+            toolbar: QToolBar containing the action
+            action: QAction to color
+            bg_color: Background color (hex string)
+            text_color: Text color (hex string)
+
+        gui_qt_ext.color_toolbar_action( toolbar, action, bg_color = "#FF5555", text_color = "#FFFFFF" )
+                    make/find some constans for these
+                    color_toolbar_action(toolbar, action1, "#FF5555", "#FFFFFF")  # Red background
+                    color_toolbar_action(toolbar, action2, "#55FF55", "#000000")  # Green background
+                    color_toolbar_action(toolbar, action3, "#5555FF", "#FFFFFF")  # Blue background
+        """
+        if not toolbar or not action:
+            print("Error: Invalid toolbar or action")
+            return
+
+        # Get the QToolButton widget associated with this action
+        widget = toolbar.widgetForAction( action )
+
+        if widget:
+            stylesheet = f"""
+                QToolButton {{
+                    background-color: {bg_color};
+                    color: {text_color};
+                    border: 1px solid #888;
+                    border-radius: 3px;
+                    padding: 5px;
+                }}
+                QToolButton:hover {{
+                    background-color: {lighten_color(bg_color)};
+                    border: 1px solid #000;
+                }}
+                QToolButton:pressed {{
+                    background-color: {darken_color(bg_color)};
+                }}
+            """
+            widget.setStyleSheet(stylesheet)
+        else:
+            print(f"Warning: Could not find widget for action '{action.text()}'")
+
+def lighten_color( hex_color, factor=1.2):
+    """
+    Lighten a hex color for hover effect"""
+    try:
+        hex_color = hex_color.lstrip('#')
+        r, g, b = tuple(int(hex_color[i:i+2], 16) for i in (0, 2, 4))
+        r       = min(255, int(r * factor))
+        g       = min(255, int(g * factor))
+        b       = min(255, int(b * factor))
+        return f"#{r:02x}{g:02x}{b:02x}"
+    except (ValueError, IndexError):
+        return hex_color
+
+def darken_color( hex_color, factor=0.8 ):
+    """Darken a hex color for pressed effect"""
+    try:
+        hex_color = hex_color.lstrip('#')
+        r, g, b = tuple(int(hex_color[i:i+2], 16) for i in (0, 2, 4))
+        r = int(r * factor)
+        g = int(g * factor)
+        b = int(b * factor)
+        return f"#{r:02x}{g:02x}{b:02x}"
+    except (ValueError, IndexError):
+        return hex_color
+
+
+#---------------------
 def about(  controller  ):
     """
     interfaces with controller and called back from gui
@@ -167,10 +357,7 @@ def about(  controller  ):
     message_box.setText( msg )
 
     # message_box.setIcon(QMessageBox.Information)
-    if qt_version == 6:
-        box_exec  = message_box.exec( )
-    else:
-        box_exec  = message_box.exec_( )
+    box_exec  = message_box.exec( )
 
 
 # ---------------------------------
@@ -188,7 +375,6 @@ class FileBrowseWidget( QWidget ):
 
 
     """
-
     #-----------------------------
     def __init__(self, parent=None, entry_width=None):
         """
@@ -309,7 +495,7 @@ class DirBrowseWidget(QWidget):
 #     sys.exit(app.exec_())
 
 #  --------
-class MessageArea( QGroupBox  ):
+class MessageArea( QGroupBox ):
     def __init__( self ):
 
         """
@@ -325,7 +511,7 @@ class MessageArea( QGroupBox  ):
 
     message frame used in so many apps
 
-        a_frame            = gui_qt_ext.MessageArea( parent,  )
+        a_frame            = gui_qt_ext.MessageArea(    )
 
 
     # ----------- from web search -------------------------------   gui_qt_ext.MessageArea
@@ -352,6 +538,7 @@ class MessageArea( QGroupBox  ):
 
 
     """
+        print(QApplication.instance())
         super().__init__()
 
         # ---- build gui
@@ -387,7 +574,7 @@ class MessageArea( QGroupBox  ):
         group_placer.new_row( )
         group_placer.place( widget, rowspan = 1, columnspan = 1 )
 
-        widget = QPushButton("Clear")
+        widget      = QPushButton("Clear")
         widget.clicked.connect( lambda: self.clear_text( ) )
         clear_button = widget
         # layout.addWidget(copy_selected_button, 6, 0)
@@ -552,13 +739,11 @@ class MessageArea( QGroupBox  ):
     #  --------
     def set_auto_scroll( self ):
         """
+        really set from check box
         the state you get is the new one
         """
-        pass
-        return
-
-        state  =  self.auto_scroll_widget.isChecked() # after  state has xhanged
-        self.auto_scroll_widget.setChecked( state )
+        state           =  self.auto_scroll_widget.isChecked() # after  state has xhanged
+        self.auto_scroll_widget.setChecked( state ) # why it does not change auto
 
         self.auto_scroll = state
 
@@ -607,7 +792,7 @@ class MessageArea( QGroupBox  ):
             text_edit.ensureCursorVisible()
 
     #------------------------------
-    def insert_text(self,  text):
+    def insert_text( self,  text ):
         cursor = self.text_edit.textCursor()
         cursor.insertText(text)
 

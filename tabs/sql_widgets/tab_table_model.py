@@ -44,7 +44,12 @@ from qtpy.QtCore import (QAbstractTableModel,
                           Qt,
                           QTime,
                           QTimer,
-                          pyqtSlot)
+                          # pyqtSlot seem to be qtpy error  was not used
+                          )
+
+# from qtpy.QtCore import Slot
+
+
 from qtpy.QtGui import QColor, QPalette, QTextCursor, QTextDocument
 
 from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel

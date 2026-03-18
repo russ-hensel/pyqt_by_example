@@ -10,9 +10,14 @@ KEY_WORDS:      table model for relational sql join crud update add insert
 CLASS_NAME:     QSqlRelationalTableModelTab_2
 WIDGETS:         QSqlRelationalTableModel QTableView Broken
 STATUS:         runs_correctly_5_10      demo_complete_2_10   !! review_key_words   !! review_help_0_10
-TAB_TITLE:       QSqlRelationalTableModel
+TAB_TITLE:       QSqlRelationalTableModel / .
+DESCRIPTION:    A reference for the QSqlRelationalTableModel
+HOW_COMPLETE:   20  #   ...
+
+
 
 """
+WIKI_LINK      =  "https://github.com/russ-hensel/qt5_by_example/wiki/What-We-Know-About-QDateEdit"
 
 """
 
@@ -225,24 +230,12 @@ class QSqlRelationalTableModelTab_2( tab_base.TabBase  ):
         widget.clicked.connect( connect_to )
         button_layout.addWidget( widget )
 
-        # ---- mutate
-        widget = QPushButton("mutate\n")
-        self.button_ex_1         = widget
-        widget.clicked.connect(  self.mutate  )
-        button_layout.addWidget( widget )
+        # ---- last buttons in own layout
+        button_layout    = QHBoxLayout()
+        layout.addLayout( button_layout )
 
-        # ---- PB inspect
-        widget              = QPushButton("inspect\n")
-        # widget.clicked.connect(lambda: self.print_message(widget.text()))
-        connect_to          = self.inspect
-        widget.clicked.connect( connect_to )
-        button_layout.addWidget( widget )
-
-        # ---- PB breakpoint
-        widget            = QPushButton("breakpoint\n")
-        connect_to        = self.breakpoint
-        widget.clicked.connect( connect_to )
-        button_layout.addWidget( widget )
+        # our ancestor finishes off the tab with some standard buttons
+        self.build_gui_last_buttons( button_layout )
 
     # ------------------------------
     def _build_model( self,   ):

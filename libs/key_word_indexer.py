@@ -4,8 +4,8 @@
 
 Index the key words for all of a table
 
-deletes all the old entries
-
+    deletes all the old entries
+    2026-03-07 convert to qtpy
 
 
 """
@@ -13,22 +13,20 @@ deletes all the old entries
 import logging
 
 
-from qt_compat import QApplication, QAction, exec_app, qt_version
-from PyQt.QtWidgets import QMainWindow, QToolBar, QMessageBox
-from qt_compat import Qt, DisplayRole, EditRole, CheckStateRole
-from qt_compat import TextAlignmentRole
+from qtpy import QtGui
 
 
 
-from PyQt import QtGui
-from PyQt.QtCore import (QDate,
+from qtpy        import QtGui
+
+from qtpy.QtCore import (QDate,
                           QModelIndex,
                           QSize,
                           QSortFilterProxyModel,
                           Qt,
                           QTimer)
-# sql
-from PyQt.QtSql import (QSqlDatabase,
+
+from qtpy.QtSql import (QSqlDatabase,
                          QSqlQuery,
                          QSqlQueryModel,
                          QSqlRelation,
@@ -38,8 +36,8 @@ from PyQt.QtSql import (QSqlDatabase,
 
 #from PyQt.QtGui import ( QAction, QActionGroup, )
 
-from PyQt.QtWidgets import (QAbstractItemView,
-
+from qtpy.QtWidgets import ( QAbstractItemView,
+                             QAction,
                              QApplication,
                              QButtonGroup,
                              QCheckBox,
@@ -65,12 +63,13 @@ from PyQt.QtWidgets import (QAbstractItemView,
                              QSpinBox,
                              QStyledItemDelegate,
                              QTableView,
+                             QToolBar,
                              QTableWidget,
                              QTableWidgetItem,
                              QTabWidget,
                              QTextEdit,
                              QVBoxLayout,
-                             QWidget)
+                             QWidget )
 
 from collections import defaultdict
 
@@ -145,12 +144,13 @@ class KeyWordIndexer(   ):
         sql     = KEY_WORD_SQL[ table_name ]
         if sql is None:
              from data_dict import DATA_DICT
-             table_dict    = DATA_DICT.get_table( table_name  )
+             table_dict             = DATA_DICT.get_table( table_name  )
              key_word_column_list   = table_dict.get_key_word_columns()
+             key_word_column_list   = [ i_column.column_name for i_column in key_word_column_list]
              key_word_column_list.insert( 0, "id" )
                  # noe a key word but a needed part of the query
              columns                = ", ".join( key_word_column_list )
-             sql                    =  f"""SELECT {columns}  FROM    {table_name}  """
+             sql                    =  f"""SELECT {columns}  FROM  {table_name}  """
 
         return sql
 
@@ -243,8 +243,6 @@ class KeyWordIndexer(   ):
             key_words
             FROM    tabs """
 
-
-
         else:
             print( f"not set up for {table_name = }")
             1/0
@@ -330,3 +328,5 @@ if __name__ == "__main__":
     print( "running manually ---------- disconnect other stuff please  ---------")
 
 # ---- eof -----------------------------------------
+
+

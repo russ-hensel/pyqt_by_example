@@ -7,7 +7,8 @@ Purpose:
 
 
 Status:
-    draft but useful
+    in use for awhile
+    now in qtpy for compatibility
     also see help
     some todos
 
@@ -55,9 +56,10 @@ import pprint
 import subprocess
 import sys
 import traceback
-from functools import partial
-from pprint import pprint as pp
-from subprocess import PIPE, STDOUT, Popen, run
+from   functools import partial
+from   pprint import pprint as pp
+from   subprocess import PIPE, STDOUT, Popen, run
+import wat
 
 import info_about
 
@@ -66,25 +68,27 @@ import info_about
 
 FIF       = info_about.INFO_ABOUT.find_info_for
 
+#import wat   #   replace PyQt5 with qtpy
+
+# from qt_compat import QApplication, QAction, QActionGroup, exec_app, qt_version
+
+from qtpy.QtWidgets import ( QApplication, QMainWindow,
+                             QPushButton, QLineEdit,
+                             QVBoxLayout,
+                             QHBoxLayout,
+                             QWidget,
+                             QAction,  QTextEdit, QMessageBox, QDialog  )
 
 
-#import wat
-
-from qt_compat import QApplication, QAction, QActionGroup, exec_app, qt_version
-from PyQt.QtWidgets import QMainWindow, QToolBar, QMessageBox
-
-
-from PyQt import QtGui
-from PyQt.QtCore import QDate, QDateTime, QModelIndex, Qt, QTimer
-from PyQt.QtGui import QTextCursor, QTextDocument
-
-# sql
-from PyQt.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
+from qtpy import QtGui
+from qtpy.QtCore import QDate, QDateTime, QModelIndex, Qt, QTimer
+from qtpy.QtGui import QTextCursor, QTextDocument
 
 
-# from PyQt.QtGui import ( QAction, QActionGroup, )
+#from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 
-from PyQt.QtWidgets import (
+
+from qtpy.QtWidgets import (
                              QApplication,
                              QButtonGroup,
                              QCheckBox,
@@ -121,13 +125,12 @@ go                      = None    # dialog.setup_go
 display_wat             = None
 testing                 = True
 
-
 # ---- a few parameters for you
 
 try:
     import parameters
     my_parameters = parameters.Parameters()
-    print( "import of parameters in wat_inspector ok ")
+    #rint( "import of parameters in wat_inspector ok ")
 
 except:
     my_parameters = None
@@ -151,8 +154,6 @@ def get_traceback_list( msg = "get_traceback_list", print_it = True ):
     """
     stop_text = "main.py"
 
-    #stop_text  File "/mnt/WIN_D/Russ/0000/python00/python3/_projects/rshlib/debug_util.py", line 171, in call_tbl
-
     keep = True
     short_list  = [">>>>>>>>>>>>>see what inspector get_traceback_list<<<<<<<<<<<<<<<<<<<<<<"]
     for i_item in reversed( traceback.format_stack() ):
@@ -163,6 +164,7 @@ def get_traceback_list( msg = "get_traceback_list", print_it = True ):
             if stop_text in i_item:
                 print( "stop ---------------------------------------")
                 keep = False
+
     short_list.append( msg )
     short_list.append( ">>>>>>>>>>>>>get_traceback_list<<<<<<<<<<<<<<<<<<<<<<" )
 
@@ -455,6 +457,7 @@ widget.lineEdit().returnPressed.connect(your_function)
         """
         do_wat      = True
         code        = self.eval_widget.text()
+
         try:
             result   = eval( code, self.globals, self.locals )
 
@@ -474,7 +477,7 @@ widget.lineEdit().returnPressed.connect(your_function)
 
         if do_wat:
             main_text   = self.get_wat_str(  result )
-            title        = f"Eval -> {code}"
+            title       = f"Eval -> {code}"
 
         else:
             title       = f"Eval -> {code}"
@@ -550,8 +553,6 @@ widget.lineEdit().returnPressed.connect(your_function)
         super_text   = inspect.getmro( type( self.last_get_wat_str_obj )  )
         super_text   = [ str( i_line ) for i_line in super_text ]
         super_text   = "\n".join( super_text )
-
-        # Output: (<class '__main__.C'>, <class '__main__.B'>, <class '__main__.A'>, <class 'object'>)
 
         self.display_text( title = "Super Classes", main_text = super_text )
 
@@ -728,7 +729,7 @@ widget.lineEdit().returnPressed.connect(your_function)
         new_text       = "\n".join( new_lines )
         self.display_text( f"Results filtered on {filter_text}", new_text )
 
-    #  --------
+    #----------------
     def copy_all_text( self, text_edit ):
         """
         what it says
@@ -825,6 +826,7 @@ widget.lineEdit().returnPressed.connect(your_function)
             case insensitive
         """
         search_text = self.line_edit.text()
+
         if search_text:
             cursor = self.text_edit.textCursor()
             cursor.setPosition( self.last_position )
@@ -832,6 +834,7 @@ widget.lineEdit().returnPressed.connect(your_function)
 
             if found:
                 self.last_position = self.text_edit.textCursor().position()
+
             else:
                 # Reset position if end is reached and no match
                 self.last_position = 0
@@ -839,6 +842,7 @@ widget.lineEdit().returnPressed.connect(your_function)
     # ---------------------
     def search_up(self):
         search_text = self.line_edit.text()
+
         if search_text:
             cursor = self.text_edit.textCursor()
             cursor.setPosition( self.last_position )
@@ -847,17 +851,19 @@ widget.lineEdit().returnPressed.connect(your_function)
 
             if found:
                 self.last_position = self.text_edit.textCursor().position()
+
             else:
                 # Reset position if start is reached and no match
                 self.last_position = self.text_edit.document().characterCount()
 
-    #-------
+    #---------------------
     def open_txt_file( self, file_name  ):
         """
         what it says
         """
         proc               = subprocess.Popen( [ TEXT_EDITOR, file_name ] )
 
+    #---------------------
     def do_ok( self ):
         """
         close out window
@@ -898,8 +904,6 @@ class WatInspector(   ):
                               msg        = None ):
 
         """ """
-
-
         self.window    = WatWindow( self.app )  # is necessary ??
         # self.window.show( )
         self.window.setup_go(
@@ -907,7 +911,8 @@ class WatInspector(   ):
                                 a_globals  = a_globals,
                                 msg        = msg, )
 
-        self.app.exec_()
+        self.app.exec()    #  QApplication.exec   ()
+       # exec_app()
 
 # -----------------
 def run_display_wat():
@@ -926,27 +931,16 @@ def run_display_wat():
               a_globals  = globals(),
               msg        = "my message" )
 
-
-
-
 # --------------------
 if __name__ == "__main__":
     #----- for running examples
     run_display_wat()
 
-
-
-"""
-
-Scratch text:
-
-
--
-
-
-"""
-
 # ---- eof
+
+
+
+
 
 
 
