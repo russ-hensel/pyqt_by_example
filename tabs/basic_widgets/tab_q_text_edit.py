@@ -88,8 +88,8 @@ import tab_base
 
 
 INDENT          = uft.INDENT
-INDENT          = uft.BEGIN_MARK_1
-INDENT          = uft.BEGIN_MARK_2
+# INDENT          = uft.BEGIN_MARK_1
+# INDENT          = uft.BEGIN_MARK_2
 #INDENT          = qt_sql_widgets.
 
 

@@ -65,6 +65,7 @@ except ValueError as error:
     elif hostname == "millhouse-mint":
         src_root         = "/media/russ/j_sg_bigcase/sync_py_3"
         src_root         = "/home/russ/sync_with_fattony/python3"
+
     else:
         src_root         = "/mnt/WIN_D/russ/0000/python00/python3"
 

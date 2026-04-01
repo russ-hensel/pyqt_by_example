@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
+seems not to be used
 Created on Tue Dec 10 16:01:21 2024
 
 probably a bad idea, for the stuff that is ok put back in app_globals

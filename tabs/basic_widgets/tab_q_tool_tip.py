@@ -11,11 +11,10 @@ WIDGETS:        QToolTip
 STATUS:         seem fairly complete
 TAB_TITLE:      QToolTip / and Hover
 DESCRIPTION:    ToolTips and other Hover Code
-HOW_COMPLETE:   20  #  AND A COMMENT -- <10 major probs  <15 runs but <20 fair not finished  <=25 not to shabby
+HOW_COMPLETE:   15  #  AND A COMMENT -- <10 major probs  <15 runs but <20 fair not finished  <=25 not to shabby
 """
 
 WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/Documentation-Not-Written"
-
 
 # --------------------
 if __name__ == "__main__":
@@ -23,14 +22,14 @@ if __name__ == "__main__":
     import main
 # --------------------------------
 
-
+# ---- imports
 import inspect
 import subprocess
 import sys
 import time
-from datetime import datetime
-from functools import partial
-from subprocess import PIPE, STDOUT, Popen, run
+from   datetime import datetime
+from   functools import partial
+from   subprocess import PIPE, STDOUT, Popen, run
 
 import wat
 
@@ -43,12 +42,11 @@ from qtpy.QtCore import (QDate,
                           Qt,
                           QTime,
                           QTimer)
+
 from qtpy.QtGui import QColor, QPalette, QTextCursor, QTextDocument
-# sql
+
 from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
-# widgets biger
-# widgets -- small
-# layouts
+
 from qtpy.QtWidgets import (QAction,
                              QApplication,
                              QButtonGroup,
@@ -103,17 +101,12 @@ class HoverLabel(QLabel):
         self.setStyleSheet("background: lightgray;")
         super().leaveEvent(event)
 
-
-
-
-
-#  --------
+#-----------------
 class ToolTipTab( tab_base.TabBase ):
     """
     Now i have a doc string.
 
 
-    see
     """
     def __init__(self):
         """
@@ -146,11 +139,6 @@ class ToolTipTab( tab_base.TabBase ):
         # too clever ??
         main_layout.addLayout( layout := QVBoxLayout() )
 
-        #button_layout        = QHBoxLayout(   )
-
-        # main_layout.addLayout( layout )
-        # button_layout        = QHBoxLayout(   )
-
         # ---- new row c
         row_layout          = QHBoxLayout(   )
         layout.addLayout( row_layout )
@@ -159,16 +147,15 @@ class ToolTipTab( tab_base.TabBase ):
         row_layout          = QVBoxLayout(   )
         layout.addLayout( row_layout )
 
-
         # ---- the QTextEdit
-        widget       = QLineEdit()
+        widget       = QLineEdit( "mouse over and wait for tool tip (if on)")
         # layout.addWidget(text_edit, 4, 0, 1, 3)  # Row 4, Column 0, RowSpan 1, ColumnSpan 3
         self.line_edit  = widget   # later we will need to know this
 
         row_layout.addWidget( widget,  )
 
         # ---- the QHoverLabel
-        widget       = HoverLabel( "this is a HoverLabel")
+        widget       = HoverLabel( "this is a HoverLabel -- color changes or whatever you want when mouse over ")
         # layout.addWidget(text_edit, 4, 0, 1, 3)  # Row 4, Column 0, RowSpan 1, ColumnSpan 3
         self.hover_label  = widget   # later we will need to know this
 
@@ -180,20 +167,15 @@ class ToolTipTab( tab_base.TabBase ):
 
         self.build_gui_last_buttons( button_layout )
 
-
     #-------------------------
     def no_tool_tip(self, widget ):
         """
-
+        what it says
 
         """
-        self.append_msg( "no_tool_tip" )
-        # Option 1: Revert to default context menu
-        #widget.setContextMenuPolicy(QtCore.Qt.DefaultContextMenu)
-        # Option 2: Disable context menu entirely
-        #widget.setContextMenuPolicy(QtCore.Qt.NoContextMenu)
-        widget.setToolTip( None )
+        self.append_msg( "no_tool_tip -- turn it off, set to None" )
 
+        widget.setToolTip( None )
 
     #----------------------------
     def a_tool_tip( self, widget ):
@@ -270,46 +252,9 @@ class ToolTipTab( tab_base.TabBase ):
         """
         self.append_function_msg( "mutate_1" )
 
-
-
         self.a_tool_tip( self.line_edit )
 
         self.append_msg( tab_base.DONE_MSG )
-
-    # ------------------------------------
-    def mutate_2( self ):
-        """
-        read it -- mutate the widgets
-        """
-        self.append_function_msg( "mutate_2" )
-
-        self.custom_context_menu( self.text_edit )
-
-        self.right_click_menu       = False
-        self.append_msg( f"{self.right_click_menu = }", )
-
-        self.append_msg( tab_base.DONE_MSG )
-
-    # ------------------------------------
-    def mutate_3( self ):
-        """
-        read it -- mutate the widgets
-        """
-        self.append_function_msg( "mutate_3" )
-
-
-
-        self.append_msg( tab_base.DONE_MSG )
-
-    # ------------------------------------
-    def mutate_4( self ):
-        """
-        read it -- mutate the widgets
-        """
-        self.append_function_msg( "mutate_4" )
-
-        self.append_msg( tab_base.DONE_MSG )
-
 
     # ------------------------
     def inspect(self):

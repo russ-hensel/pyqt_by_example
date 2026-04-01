@@ -20,11 +20,11 @@ WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-K
 Some Notes:
 
 Home · russ-hensel/qt5_by_example Wiki
-https://github.com/russ-hensel/qt5_by_example/wiki
+https://github.com/russ-hensel/pyqt_by_example/wiki
 
 
 What We Know About QPushButtons · russ-hensel/qt5_by_example Wiki
-https://github.com/russ-hensel/qt5_by_example/wiki/What-We-Know-About-QPushButtons
+https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-About-QPushButtons
 
 
 """
@@ -45,19 +45,18 @@ from subprocess import PIPE, STDOUT, Popen, run
 
 import wat
 from qtpy import QtGui
-from qtpy.QtCore import (QDate,
+from qtpy.QtCore import ( QDate,
                           QDateTime,
                           QModelIndex,
                           QSize,
                           Qt,
                           QTime,
                           QTimer)
+
 from qtpy.QtGui import QColor, QPalette, QTextCursor, QTextDocument
-# sql
+
 from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
-# widgets biger
-# widgets -- small
-# layouts
+
 from qtpy.QtWidgets import (QAction,
                              QApplication,
                              QButtonGroup,
@@ -87,7 +86,7 @@ from qtpy.QtWidgets import (QAction,
                              QVBoxLayout,
                              QWidget)
 
-#import parameters
+
 
 import utils_for_tabs as uft
 import wat_inspector
@@ -102,11 +101,10 @@ class QPushButtonTab( tab_base.TabBase ):
     """
     Reference examples for QPushButton
 
-
-    this is also the place for documentation on the methods normally found
-    in a tab_.... file and should display its naming and other coding conventions
-    other tab_xxx files may not be as well commented, you should be familiar with
-    the conventions and be able to read the code.
+        this is also the place for documentation on the methods normally found
+        in a tab_.... file and should display its naming and other coding conventions
+        other tab_xxx files may not be as well commented, you should be familiar with
+        the conventions and be able to read the code.
     """
     def __init__(self):
         """
@@ -129,6 +127,7 @@ class QPushButtonTab( tab_base.TabBase ):
 
         self._build_gui()
 
+    #--------------------------
     def _build_gui_widgets( self, main_layout ):
         """
         the usual, build the gui with the widgets of interest
@@ -182,8 +181,8 @@ class QPushButtonTab( tab_base.TabBase ):
         widget              = QPushButton( "q_pbutton_2" )
         self.q_push_button_2    = widget
         connect_to          = self.pb_2_clicked
-        widget.clicked.connect( connect_to    )
-        row_layout.addWidget( widget,  )
+        widget.clicked.connect( connect_to )
+        row_layout.addWidget( widget, )
 
         # ---- new row, for build_gui_last_buttons
         button_layout = QHBoxLayout(   )

@@ -11,7 +11,7 @@ to make this work base on one of the layout which creates its own windows
 # this material is used for selection access to the tab module which should
 # be named xxxxTab.py     among other things
 
-KEY_WORDS:      color     zz
+KEY_WORDS:      color ToolBar
 CLASS_NAME:     QToolbarTab
 WIDGETS:        QToolbar QIcon
 STATUS:         June 2025 ok: but more content would be nice
@@ -25,7 +25,6 @@ WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-K
 Some Notes:
 
 Home · russ-hensel/qt5_by_example Wiki
-
 
 
 """
@@ -133,9 +132,9 @@ class QToolbarTab( tab_base.TabBase ):
         # modify to match the number of mutate methods in this module
         self.mutate_dict[0]     = self.mutate_0
         self.mutate_dict[1]     = self.mutate_1
-        self.mutate_dict[2]     = self.mutate_2
-        self.mutate_dict[3]     = self.mutate_3
-        self.mutate_dict[4]     = self.mutate_4
+        # self.mutate_dict[2]     = self.mutate_2
+        # self.mutate_dict[3]     = self.mutate_3
+        # self.mutate_dict[4]     = self.mutate_4
 
         self._build_gui()
 
@@ -165,36 +164,6 @@ class QToolbarTab( tab_base.TabBase ):
         row_layout          = QHBoxLayout(   )
         layout.addLayout( row_layout )
 
-        # # a label that points to q_pbutton_1
-        # widget          = QLabel( "q_pbutton_1 -> ", alignment=Qt.AlignRight)
-        #     # no instance variable as we will not use after __init__
-
-        # # layout ( add to the windows ) the widget
-        # row_layout.addWidget( widget )
-
-        # # we use a local variable because it reduces the amount of code
-        # # and does not run any slower
-        # # we use this local variable idea in many places
-        # # because we will refer to the bu
-        # widget              = QPushButton( "q_pbutton_1" )
-        # self.q_push_button_1    = widget
-
-        #     # save a reference for later use
-        # # this function will be called when the button is clicked
-        # # the code is a little indirect, do on one line if you wish
-        # connect_to          = self.pb_1_clicked
-        # widget.clicked.connect( connect_to )
-        # row_layout.addWidget( widget )
-
-        # widget              = QLabel("q_pbutton_2 -> ", alignment=Qt.AlignRight)
-        # row_layout.addWidget( widget )
-
-        # widget              = QPushButton( "q_pbutton_2" )
-        # self.q_push_button_2    = widget
-        # connect_to          = self.pb_2_clicked
-        # widget.clicked.connect( connect_to    )
-        # row_layout.addWidget( widget,  )
-
         # ---- BoxWindows.build_box_layout_1
         widget = QPushButton("ExampleWindow\n ..... ")
         connect_to   = partial( self.open_window,
@@ -208,12 +177,9 @@ class QToolbarTab( tab_base.TabBase ):
         button_layout = QHBoxLayout(   )
         layout.addLayout( button_layout, )
 
-
-
         # our ancestor finishes off the tab with some
         # standard buttons
         self.build_gui_last_buttons( button_layout )
-
 
     #---------------------------
     def open_window(self, layout_method, tab ):
@@ -231,7 +197,7 @@ class QToolbarTab( tab_base.TabBase ):
         """
         self.append_function_msg( "mutate_0()" )
 
-        msg    = "implemented "
+        msg    = "implementation comming -- but not yet "
         self.append_msg( msg, clear = False )
 
         self.layout_args        = [ ( "yellow", 0 ),
@@ -249,7 +215,7 @@ class QToolbarTab( tab_base.TabBase ):
         """
         self.append_function_msg( "mutate_1()" )
 
-        msg    = "implemented "
+        msg    = "implementation comming -- but not yet "
         self.append_msg( msg, clear = False )
 
         self.layout_args        = [ ( "yellow", 1 ),
@@ -257,218 +223,6 @@ class QToolbarTab( tab_base.TabBase ):
                                     ( "white",  1 ),
                                     ( "red",    0 ),
                                   ]
-
-        self.append_msg( tab_base.DONE_MSG )
-
-
-
-
-
-
-
-    #----------------------------
-    def get_button_style_sheet( self ):
-        """
-        what it says
-
-        when applied to a button changes a bit of its appearance
-
-        this is important content for the widgets referenced on this tab
-        """
-        return """
-            QPushButton {
-                background-color: #4CAF50;
-                color: white;
-                border: 2px solid #4CAF50;
-                border-radius: 8px;
-                padding: 8px;
-            }
-            QPushButton:hover {
-                background-color: #45a049;
-            }
-            QPushButton:pressed {
-                background-color: #3e8e41;
-            }
-        """
-        # i do not know what the default state, perhaps wat_inspector can tell
-    # ------------------------------------
-    def signal_sent( self, msg ):
-        """
-        when a signal is sent, use find ???
-
-        this is important content for the widgets referenced on this tab
-        """
-        self.append_function_msg( "signal_sent()" )
-        # msg   = f"{function_nl}signal_sent"
-        # print( msg )
-        self.append_msg( f"signal_sent {msg}" )
-
-        self.append_msg( tab_base.DONE_MSG )
-
-    # ---- connects signals...   --------
-    # --------------------------
-    def return_pressed( self ):
-        """
-        what is says  -- not connected, delete?
-
-        this is important content for the widgets referenced on this tab
-        """
-        self.append_function_msg( "return_pressed()" )
-
-        self.append_msg( tab_base.DONE_MSG )
-
-    # ------------------------------------
-    def pb_1_clicked( self ):
-        """
-        What it says
-
-            this function may be connected to a button normally
-            q_push_button_1
-
-        this is important content for the widgets referenced on this tab
-        """
-        self.append_msg( "pb_1_clicked()" )
-        self.append_msg( tab_base.DONE_MSG )
-
-    # ------------------------------------
-    def pb_2_clicked( self ):
-        """
-        What it says
-
-            this function may be connected to a button normally
-            q_push_button_1
-
-        this is important content for the widgets referenced on this tab
-        """
-        self.append_msg( "pb_2_clicked()" )
-
-        self.append_msg( tab_base.DONE_MSG  )
-
-
-
-
-    # ------------------------------------
-    def mutate_2( self ):
-        """
-        read it -- mutate the widgets
-
-        this is important content for the widgets referenced on this tab
-        read the code for more insight, note messages to app and comments
-        """
-        self.append_function_msg( "mutate_2()" )
-
-        msg    = "change some attributes..."
-        self.append_msg( msg,  )
-
-
-        widget     = self.q_push_button_1
-        self.q_push_button_1.setText( "one line")
-        self.q_push_button_1.width     = 500
-        self.q_push_button_1.setVisible( False )
-
-        msg    = "q_push_button_1 mess with checkable enabled..."
-        self.append_msg( msg,  )
-
-        self.q_push_button_1.setCheckable( True )
-        self.q_push_button_1.setChecked( True )
-        self.q_push_button_1.setDisabled( True )
-
-        self.q_push_button_1.setVisible( True )
-
-        # next does not seem to work
-        self.q_push_button_1.setCheckable( True )
-
-        # ---- change widget
-        msg    = "some changes to q_push_button_2"
-        self.append_msg( msg, clear = False )
-
-        widget     = self.q_push_button_2
-        widget.setCheckable( True )
-
-        self.append_msg( tab_base.DONE_MSG )
-
-    # ------------------------------------
-    def mutate_3( self ):
-        """
-        read it -- mutate the widgets
-
-        this is important content for the widgets referenced on this tab
-        read the code for more insight, note messages to app and comments
-        """
-        self.append_function_msg( "mutate_3()" )
-
-        msg    = "re-enable some stuff -- change attributes"
-        self.append_msg( msg, clear = False )
-
-        # ---- first widget
-        widget      = self.q_push_button_1
-        self.q_push_button_1.setText( "one line")
-        self.q_push_button_1.width     = 500
-        self.q_push_button_1.setDisabled( False )
-        self.q_push_button_1.setVisible( True )
-        self.q_push_button_1.setCheckable( True )
-        self.q_push_button_1.toggle()
-
-        msg    = "add menu to q_push_button_1"
-        self.append_msg( msg, clear = False )
-
-        menu                = QMenu(self)
-        menu.addAction("Option 1")
-        menu.addAction("Option 2")
-        widget.setMenu( menu )
-
-        # ---- change widget
-        widget      = self.q_push_button_2
-        msg         = "\nsome changes to q_push_button_2"
-        self.append_msg( msg, clear = False )
-
-        msg    = "q_push_button_2 mess with style sheet... hover ... color "
-        self.append_msg( msg,  )
-
-        widget.setCheckable( False )
-        widget.setStyleSheet( self.get_button_style_sheet() )
-        msg     = f"get style sheet from widget \n {widget.styleSheet()}"
-        self.append_msg( msg,  )
-
-        self.append_msg( tab_base.DONE_MSG )
-
-    # ------------------------------------
-    def mutate_4( self ):
-        """
-        read it -- mutate the widgets
-
-        this is important content for the widgets referenced on this tab
-        """
-        self.append_function_msg( "mutate_4()" )
-
-        msg    = "undo many of earlier mutations"
-        self.append_msg( msg, clear = False )
-
-        widget      = self.q_push_button_1
-        self.q_push_button_1.setText( "one line")
-        self.q_push_button_1.width     = 500
-        self.q_push_button_1.setDisabled( False )
-        self.q_push_button_1.setVisible( True )
-        self.q_push_button_1.setCheckable( True )
-
-        # seems to make togable, how to turn off
-        #self.q_push_button_1.toggle()
-
-        msg    = "add menu to q_push_button_1"
-        self.append_msg( msg, clear = False )
-        menu                = QMenu(self)
-        menu.addAction("Menu Option 1")
-        menu.addAction("Menu Option 2")
-        # try to clear the menu
-        widget.setMenu( None )
-
-        # ---- change widget
-        widget      = self.q_push_button_2
-        msg         = "some changes to q_push_button_2"
-        self.append_msg( msg, clear = False )
-
-        widget.setStyleSheet("")
-            # no style sheet
 
         self.append_msg( tab_base.DONE_MSG )
 
@@ -509,11 +263,14 @@ class QToolbarTab( tab_base.TabBase ):
 
         self.append_msg( tab_base.DONE_MSG )
 
-
 #------------------------------
 class ExampleWindows(  QMainWindow ):
     def __init__( self, layout_method, tab ):
         """
+        This works, but should be extended and may have
+        old dead code.
+
+
         layout_method: method to call to layout the window
         tab  the tab controlling this module
         """
@@ -539,29 +296,16 @@ class ExampleWindows(  QMainWindow ):
         #action1.triggered.connect( self.show_message1 )
         toolbar.addAction(action1)
 
-
         action = QAction( QIcon.fromTheme( "printer" ), "Choice 1", self )
         #action.triggered.connect( self.show_message1 )
         toolbar.addAction(action)
 
-
-
-
-
-        # ---- DocOps db operations
-        #action          = QAction( QIcon.fromTheme( "go-next" ), "Next", self )
+        # ----
         action          = QAction(  "Add", self )
         # connect_to      = functools.partial(  self.go_active_sub_window_func,
         #                                       "add_default"     )
         # action.triggered.connect( connect_to )
         toolbar.addAction(action)
-
-
-
-
-
-
-
 
         # Ensure window is deleted when closed
         self.setAttribute(Qt.WA_DeleteOnClose)
@@ -648,8 +392,6 @@ class ExampleWindows(  QMainWindow ):
         widget, layout       = self.build_a_top_widget_with_grid( layout_across, "white" )
         self.add_to_grid_1( grid_layout = layout )
 
-        return
-
     # -----------------
     def  build_box_layout_2( self,  ):
         """
@@ -662,15 +404,12 @@ class ExampleWindows(  QMainWindow ):
             and perhaps they should be in a class, tbc
         """
         self.setWindowTitle( f"BoxWindows.build_box_layout_2")
-        self.line_edits     = []
+        self.line_edits  = []
 
-        # widget              = QLineEdit("Edit 1")
-        # self.line_edits.append( widget )
-        # self.main_layout.addWidget( widget )  #
-
-        layout_across       = QHBoxLayout( )
+        layout_across    = QHBoxLayout( )
         self.main_layout.addLayout( layout_across )     #  QVBoxLayout()
 
+        # these could all have a generic name like widget
         # ---- widget_across_1 build across using a method
         widget_across_1  = self.build_a_top_widget( layout_across,
                                                     "white",

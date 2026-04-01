@@ -119,7 +119,7 @@ BEGIN_MARK_2    = uft.BEGIN_MARK_2
 print_func_header  = uft.print_func_header
 
 __VERSION__  = "ver_001 - 2026 02 04.01"
-__VERSION__  = "ver_002 - 2026 03 01.01"
+__VERSION__  = "ver_002 - 2026 03 31.01"
 
 
 # ---- main window ===================================================================

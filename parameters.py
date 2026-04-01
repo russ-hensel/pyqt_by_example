@@ -94,17 +94,20 @@ class Parameters( ):
         # expose tabs that are not ready
         self.min_complete    = 0  # minimum value for HOW_COMPLETE
 
+        self.note_default_text  = "note_default_text"
+
         # ---- search and default
-        self.default_search     = "box grid"
+        self.default_search     = "qq"
         self.do_search_on_init  = True
 
+        # good for kingholmer
         self.qt_width           = 1500
         self.qt_height          = 600    # 700 most of win height
         self.qt_xpos            = 10
         self.qt_ypos            = 10
 
-
-        self.dir_for_tabs.append(  "/mnt/WIN_D/russ/0000/python00/python3/_projects/stuffdb/qt_tabs"  )
+        #self.dir_for_tabs.append(  "/mnt/WIN_D/russ/0000/python00/python3/_projects/stuffdb/qt_tabs"  )
+        self.dir_for_tabs.append(  "/mnt/8ball1/first6_root/russ/0000/python00/python3/_projects/stuffdb/pyqt_tabs" )
 
     # -------
     def mode_russ_on_theprof_salvame_maybe ( self ):
@@ -225,9 +228,15 @@ class Parameters( ):
             self.tab_db_file_name    = ":memory:"
 
             #self.dir_for_tabs       = [ "./",  ]
-            #self.dir_for_tabs       = [    ]
-            #self.dir_for_tabs      =  [ "/mnt/WIN_D/russ/0000/python00/python3/_projects/stuffdb/qt_tabs" ]
+
             self.dir_for_tabs.append(  "/home/russ/sync_with_fattony/python3/_projects/stuffdb/qt_tabs"  )
+
+        if computer_id == 'kingholmer':
+
+            self.qt_width           = 1500
+            self.qt_height          = 600    # 700 most of win height
+            self.qt_xpos            = 10
+            self.qt_ypos            = 10
 
         # # ---- theprof
         # elif computer_id == "theprof":
@@ -322,7 +331,6 @@ class Parameters( ):
         self.wat_qt_ypos        = 10
 
 
-
         self.minimun_useful    =  10
 
         self.icon               = r"./images/icon_red.png"    # icon for running app
@@ -331,7 +339,7 @@ class Parameters( ):
 
 
         self.text_editor        = "gedit"
-#        self.text_editor        = "xed"
+        self.text_editor        = "xed"
 
         # ---- logging
         self.pylogging_fn       = "./app.py_log"   # file name for the python logging
@@ -463,7 +471,6 @@ class Parameters( ):
         not complete, add as needed -- compare across applications and code above
         """
         # new_indented    = "\n    "   # but it nice to have some whitespace to see ...
-
 
         a_str   = ""
         a_str   = ">>>>>>>>>>* Parameters *<<<<<<<<<<<<"
