@@ -1,20 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-KEY_WORDS:      combo box model key value q qcombo
-CLASS_NAME:     QComboBoxModelTab
+KEY_WORDS:      combo box model key value with 2 combo boxes
+CLASS_NAME:     QComboBoxModelTab_2
 WIDGETS:        QComboBox, QAbstractListModel
 STATUS:         works
-TAB_TITLE:      QComboBox / with Model
-DESCRIPTION:    A QComboBox backed by a 2-column key/value model
+TAB_TITLE:      QComboBoxs (two) / wih Model
+DESCRIPTION:    Two QComboBoxes share one key/value model; each has its own current row
 
-What We Know About QComboBox with Model · russ-hensel/pyqt_by_example Wiki
-https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-About-QComboBox-with-Model
-
-
-
+still needs some rename to avoid confusion and _1 and _2
+the two combo boxes share one key value model
 """
-WIKI_LINK = "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-About-QComboBox-with-Model"
+WIKI_LINK = "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-About-QComboBox"
 
 # ---- tof
 if __name__ == "__main__":
@@ -32,8 +29,10 @@ import tab_base
 
 
 # --------------------------------------------------
-class KeyValueListModel(QAbstractListModel):
+class KeyValueListModel( QAbstractListModel ):
     """
+    this stores the data, but does not keep current
+    selection info
     A small 2-column model:
     column 0 = key (int)
     column 1 = value (str)
@@ -114,9 +113,8 @@ class KeyValueListModel(QAbstractListModel):
 
     # -----------------------
     def append_row(self, key, value):
-        """ """
-        insert_row  = len(self._rows)
-        self.beginInsertRows( QModelIndex(), insert_row, insert_row )
+        insert_row = len(self._rows)
+        self.beginInsertRows(QModelIndex(), insert_row, insert_row)
         self._rows.append((key, value))
         self.endInsertRows()
 
@@ -126,8 +124,8 @@ class KeyValueListModel(QAbstractListModel):
         self._rows.insert(0, (key, value))
         self.endInsertRows()
 
-    # -----------------------
-class QComboBoxModelTab(tab_base.TabBase):
+# ------------------------
+class QComboBoxModelTab_2( tab_base.TabBase ):
     def __init__(self):
         super().__init__()
 
@@ -150,23 +148,44 @@ class QComboBoxModelTab(tab_base.TabBase):
         sub_layout = QHBoxLayout()
         layout.addLayout(sub_layout)
 
-        label = QLabel("combo_model ->")
+        label = QLabel("combo_box ->")
         sub_layout.addWidget(label)
 
-        self.combo_model            = QComboBox()
-        self.key_value_model        = KeyValueListModel(self)
-        self.combo_model.setModel(self.key_value_model)
+        self.combo_box       = QComboBox()
+        self.key_value_model = KeyValueListModel(self)
+        self.combo_box.setModel(self.key_value_model)
         # With QAbstractListModel descendants, use column 0 for combo stability.
-        self.combo_model.setModelColumn(0)
-        self.combo_model.setSizeAdjustPolicy(QComboBox.AdjustToContents)
-        self.combo_model.setMaxVisibleItems(10)
-        self.combo_model.currentIndexChanged.connect(self.combo_changed)
-        self.combo_model.setCurrentIndex(0)
-        self.combo_model.setMinimumWidth(320)
-        self.combo_model.setMinimumHeight(32)
-        self.combo_model.view().setMinimumWidth(320)
-        self.combo_model.view().setMinimumHeight(120)
-        sub_layout.addWidget(self.combo_model)
+        self.combo_box.setModelColumn(0)
+        self.combo_box.setSizeAdjustPolicy(QComboBox.AdjustToContents)
+        self.combo_box.setMaxVisibleItems(10)
+        self.combo_box.currentIndexChanged.connect(self.combo_changed)
+        self.combo_box.setCurrentIndex(0)
+        self.combo_box.setMinimumWidth(320)
+        self.combo_box.setMinimumHeight(32)
+        self.combo_box.view().setMinimumWidth(320)
+        self.combo_box.view().setMinimumHeight(120)
+        sub_layout.addWidget(self.combo_box )
+
+        # ---- second combo: same model, independent current index
+        sub_layout_2 = QHBoxLayout()
+        layout.addLayout(sub_layout_2)
+
+        label_2 = QLabel("combo_model_2 ->")
+        sub_layout_2.addWidget(label_2)
+
+        self.combo_model_2 = QComboBox()
+        self.combo_model_2.setModel(self.key_value_model)
+        self.combo_model_2.setModelColumn(0)
+        self.combo_model_2.setSizeAdjustPolicy(QComboBox.AdjustToContents)
+        self.combo_model_2.setMaxVisibleItems(10)
+        self.combo_model_2.currentIndexChanged.connect(self.combo_changed)
+        row_five = self.key_value_model.row_for_key(5)
+        self.combo_model_2.setCurrentIndex(row_five)
+        self.combo_model_2.setMinimumWidth(320)
+        self.combo_model_2.setMinimumHeight(32)
+        self.combo_model_2.view().setMinimumWidth(320)
+        self.combo_model_2.view().setMinimumHeight(120)
+        sub_layout_2.addWidget(self.combo_model_2)
 
         # ---- button
         button_layout = QHBoxLayout()
@@ -180,52 +199,110 @@ class QComboBoxModelTab(tab_base.TabBase):
 
     # -----------------------
     def combo_changed(self, _arg):
-        self.show_selection()
+        """
+        linked to both combo boxes, set so can not
+        write to non-created msg_widget
+
+
+        """
+        if self.msg_widget is None:
+            pass
+        else:
+            self.show_selection()
+        pass
 
     # -----------------------
     def show_selection(self):
-        key     = self.combo_model.currentData( Qt.UserRole )
-        text    = self.combo_model.currentText()
-        msg     = f"show_selection()  combo_model: currentText={text!r} currentData(Qt.UserRole)={key!r}"
-        self.append_msg(msg)
+        key     = self.combo_box.currentData(Qt.UserRole)
+        text    = self.combo_box.currentText()
+        self.append_msg(
+            f"show_selection()  combo_model_1:   currentText={text!r} currentData(Qt.UserRole)={key!r}"
+        )
+
+        key2   = self.combo_model_2.currentData( Qt.UserRole )
+        text2  = self.combo_model_2.currentText()
+        self.append_msg(
+            f"show_selection()  combo_model_2: currentText={text2!r} currentData(Qt.UserRole)={key2!r}"
+        )
 
     # ------------------------------------
     def mutate_0(self):
+        """
+        a mutation... read
+
+        """
         self.append_function_msg("mutate_0()")
+
+        msg    = ( "set index on box 1 for key = 1" )
+        self.append_msg( msg )
+
         row = self.key_value_model.row_for_key(1)
-        self.combo_model.setCurrentIndex(row)
+        self.combo_box.setCurrentIndex(row)
+
         self.show_selection()
+
         self.append_msg(tab_base.DONE_MSG)
 
     # ------------------------------------
     def mutate_1( self):
+        """
+        a mutation... read
+
+        """
         self.append_function_msg("mutate_1()")
-        row = self.key_value_model.row_for_key(2)
-        self.combo_model.setCurrentIndex(row)
+
+        msg    = ( "set index on box 1 for key = 2" )
+        self.append_msg( msg )
+
+        row     = self.key_value_model.row_for_key(2)
+        self.combo_box.setCurrentIndex(row)
         self.show_selection()
         self.append_msg(tab_base.DONE_MSG)
 
     # ------------------------------------
     def mutate_2(self):
+        """
+        a mutation... read
+
+        """
         self.append_function_msg("mutate_2()")
+
+        msg    = ( "" )
+        self.append_msg( msg )
+
         # Set combo to the entry whose key is 3.
         row = self.key_value_model.row_for_key(3)
-        self.combo_model.setCurrentIndex(row)
+        self.combo_box.setCurrentIndex(row)
         self.show_selection()
+
         self.append_msg(tab_base.DONE_MSG)
 
     # ------------------------------------
     def mutate_3(self):
-        """ """
+        """
+        a mutation... read
+
+        """
         self.append_function_msg("mutate_3()")
-        current_key = self.combo_model.currentData( self.key_value_model.KEY_ROLE )
+
+        msg    = ( "will append data, but keep selection\n" )
+        self.append_msg( msg )
+
+        # save the keys
+        current_key   = self.combo_box.currentData(   self.key_value_model.KEY_ROLE )
+        current_key_2 = self.combo_model_2.currentData( self.key_value_model.KEY_ROLE )
 
         # Add one new row at the end.
         self.key_value_model.append_row(6, "six")
 
+        # restore the keys
         if current_key is not None:
             row = self.key_value_model.row_for_key(current_key)
-            self.combo_model.setCurrentIndex(row)
+            self.combo_box.setCurrentIndex(row)
+
+        if current_key_2 is not None:
+            row2 = self.key_value_model.row_for_key(current_key_2)
+            self.combo_model_2.setCurrentIndex(row2)
 
         self.show_selection()
         self.append_msg("mutate_3 added (6, 'six') at end")
@@ -234,15 +311,31 @@ class QComboBoxModelTab(tab_base.TabBase):
 
     # ------------------------------------
     def mutate_4(self):
+        """
+        a mutation... read
+
+        """
         self.append_function_msg("mutate_4()")
-        current_key = self.combo_model.currentData(self.key_value_model.KEY_ROLE)
+
+        msg    = ( "will prepend data, but keep selection\n" )
+        self.append_msg( msg )
+
+        # save the keys
+        current_key   = self.combo_box.currentData(self.key_value_model.KEY_ROLE)
+        current_key_2 = self.combo_model_2.currentData(self.key_value_model.KEY_ROLE)
 
         # Add zero row at the beginning.
         self.key_value_model.prepend_row(0, "zero")
 
+        # restore the keys
         if current_key is not None:
             row = self.key_value_model.row_for_key(current_key)
-            self.combo_model.setCurrentIndex(row)
+            self.combo_box.setCurrentIndex(row)
+
+        if current_key_2 is not None:
+            row2 = self.key_value_model.row_for_key(current_key_2)
+            self.combo_model_2.setCurrentIndex(row2)
+
         self.show_selection()
         self.append_msg("mutate_4 added (0, 'zero') at beginning")
 
@@ -262,7 +355,8 @@ class QComboBoxModelTab(tab_base.TabBase):
 
         # we set local variables to make it handy to inspect them
 
-        self_combo_model    = self.combo_model
+        self_combo_model = self.combo_model
+        self_combo_model_2 = self.combo_model_2
 
         wat_inspector.go(
              msg            = "for your inspection, some locals and globals",

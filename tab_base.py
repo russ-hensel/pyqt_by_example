@@ -154,6 +154,7 @@ class TabBase( QWidget ):
         self.my_next_layout_function  = None
             # replace with function that builds
             # desired part of gui
+        self.msg_widget     = None
 
     # -------------------------------
     def _build_gui(self,   ):
@@ -288,7 +289,6 @@ class TabBase( QWidget ):
     def clear_msg( self,  ):
         """
         read it --
-
         """
         self.msg_widget.clear()
 
