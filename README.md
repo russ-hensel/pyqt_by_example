@@ -1,5 +1,5 @@
 # pyqt_by_example
-Python example code for demo, instruction, cut-paste using qt5 qt6 pyside compatibllity.
+Python example code for demo, instruction, and cut-paste code.  We use qtpy for qt5 qt6 pyside compatibllity.
 The accompaning wiki is our documentation and the Book All We Know About PYQT 
 
 Find the Wiki at the link above or:
