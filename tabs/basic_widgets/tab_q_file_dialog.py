@@ -20,7 +20,7 @@ WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-K
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
-    import main
+    pass
 # --------------------------------
 
 # ---- import
@@ -31,52 +31,16 @@ if __name__ == "__main__":
 # import time
 # from datetime import datetime
 # from functools import partial
-from subprocess import PIPE, STDOUT, Popen, run
 from pathlib import Path
-import wat
 
 #  from qtpy import QtGui
 
-from qtpy.QtCore import (QDate,
-                          QDateTime,
-                          QModelIndex,
-                          QSize,
-                          Qt,
-                          QTime,
-                          QTimer)
-from qtpy.QtGui import QColor, QPalette, QTextCursor, QTextDocument
 # sql
-from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 
-from qtpy.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QFileDialog
-from qtpy.QtWidgets import (QAction,
-                             QApplication,
-                             QButtonGroup,
-                             QCheckBox,
-                             QComboBox,
-                             QDateEdit,
-                             QDateTimeEdit,
-                             QGridLayout,
-                             QGroupBox,
-                             QHBoxLayout,
-                             QLabel,
-                             QLineEdit,
-                             QListWidget,
-                             QListWidgetItem,
-                             QMainWindow,
-                             QMenu,
-                             QMessageBox,
+from qtpy.QtWidgets import QPushButton, QVBoxLayout, QFileDialog
+from qtpy.QtWidgets import (QHBoxLayout,
                              QPushButton,
-                             QRadioButton,
-                             QSizePolicy,
-                             QTableView,
-                             QTableWidget,
-                             QTableWidgetItem,
-                             QTabWidget,
-                             QTextEdit,
-                             QTimeEdit,
-                             QVBoxLayout,
-                             QWidget)
+                             QVBoxLayout)
 
 #import parameters
 

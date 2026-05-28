@@ -20,63 +20,21 @@ WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-K
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
-    import main
+    pass
 # --------------------------------
 
 # ---- import
-import inspect
-import subprocess
-import os
-import sys
-import time
-from datetime import datetime
-from functools import partial
-from subprocess import PIPE, STDOUT, Popen, run
-from pathlib import Path
-import wat
 
-from qtpy import QtGui
 
-from qtpy.QtCore import (QDate,
-                          QDateTime,
-                          QModelIndex,
-                          QSize,
-                          Qt,
-                          QTime,
-                          QTimer)
-from qtpy.QtGui import QColor, QPalette, QTextCursor, QTextDocument
 # sql
-from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 
-from qtpy.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QFileDialog
-from qtpy.QtWidgets import (QAction,
-                             QApplication,
-                             QButtonGroup,
-                             QCheckBox,
-                             QComboBox,
-                             QDateEdit,
-                             QDateTimeEdit,
-                             QGridLayout,
-                             QGroupBox,
-                             QHBoxLayout,
+from qtpy.QtWidgets import QPushButton, QVBoxLayout
+from qtpy.QtWidgets import (QHBoxLayout,
                              QLabel,
                              QLineEdit,
-                             QListWidget,
-                             QListWidgetItem,
-                             QMainWindow,
-                             QMenu,
                              QMessageBox,
                              QPushButton,
-                             QRadioButton,
-                             QSizePolicy,
-                             QTableView,
-                             QTableWidget,
-                             QTableWidgetItem,
-                             QTabWidget,
-                             QTextEdit,
-                             QTimeEdit,
-                             QVBoxLayout,
-                             QWidget)
+                             QVBoxLayout)
 
 #import parameters
 
@@ -98,7 +56,6 @@ print_func_header   = uft.print_func_header
 
 
 from qtpy.QtWidgets import QDialog, QVBoxLayout, QLabel, QPushButton, QLineEdit
-from qtpy.QtCore import Qt
 
 class ExQDialog( QDialog ):
     """

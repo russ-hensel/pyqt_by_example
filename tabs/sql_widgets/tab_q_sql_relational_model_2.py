@@ -29,71 +29,23 @@ tab_q_sql_relational_model_2.QSqlRelationalTableModelTab_2()
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
-    import main
+    pass
 # --------------------
 
 
 # ---- imports
 
-import inspect
-import os
-import subprocess
-import sys
-from functools import partial
-from platform import python_version
-from subprocess import PIPE, STDOUT, Popen, run
 
 #from app_global import AppGlobal
-from qtpy import QtGui
-from qtpy.QtCore import (QDate,
-                          QModelIndex,
-                          QSize,
-                          QSortFilterProxyModel,
-                          Qt,
-                          QTimer)
+from qtpy.QtCore import (Qt)
 # sql
-from qtpy.QtSql import (QSqlDatabase,
-                         QSqlField,
-                         QSqlQuery,
-                         QSqlQueryModel,
-                         QSqlRecord,
-                         QSqlRelation,
-                         QSqlRelationalDelegate,
+from qtpy.QtSql import (QSqlRelation,
                          QSqlRelationalTableModel,
                          QSqlTableModel)
-from qtpy.QtWidgets import (QAbstractItemView,
-                             QAction,
-                             QApplication,
-                             QButtonGroup,
-                             QCheckBox,
-                             QComboBox,
-                             QDataWidgetMapper,
-                             QDateEdit,
-                             QDialog,
-                             QDoubleSpinBox,
-                             QFormLayout,
-                             QGridLayout,
-                             QGroupBox,
-                             QHBoxLayout,
-                             QHeaderView,
-                             QLabel,
-                             QLineEdit,
-                             QListWidget,
-                             QListWidgetItem,
-                             QMainWindow,
-                             QMenu,
-                             QMessageBox,
+from qtpy.QtWidgets import (QHBoxLayout,
                              QPushButton,
-                             QRadioButton,
-                             QSpinBox,
-                             QStyledItemDelegate,
                              QTableView,
-                             QTableWidget,
-                             QTableWidgetItem,
-                             QTabWidget,
-                             QTextEdit,
-                             QVBoxLayout,
-                             QWidget)
+                             QVBoxLayout)
 
 
 import utils_for_tabs as uft

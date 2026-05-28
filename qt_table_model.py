@@ -18,71 +18,17 @@ table_model.
 
 #from   functools import partial
 #import collections
-import functools
-import sqlite3
 
 # ---- QtCore
 from qtpy.QtCore import (QAbstractTableModel,
-                          QDate,
-                          QModelIndex,
-                          QRectF,
-                          Qt,
-                          QTimer,
-                          Slot)   # in place off pyqtSlot
+                          Qt)   # in place off pyqtSlot
 
-from qtpy.QtGui import (QIntValidator,
-                         QPainter,
-                         QPixmap,
-                         QStandardItem,
-                         QStandardItemModel)
 # ---- QtSql
-from qtpy.QtSql import (QSqlDatabase,
-                         QSqlQuery,
-                         QSqlQueryModel,
-                         QSqlRecord,
-                         QSqlRelation,
-                         QSqlRelationalDelegate,
-                         QSqlRelationalTableModel,
-                         QSqlTableModel)
 # ---- not in standard imports
 # ----QtWidgets Boxes, Dialogs
 # ----QtWidgets layouts
 # ----QtWidgets big
 # ----QtWidgets
-from qtpy.QtWidgets import (QAction,
-                             QActionGroup,
-                             QApplication,
-                             QButtonGroup,
-                             QCheckBox,
-                             QComboBox,
-                             QDateEdit,
-                             QDialog,
-                             QDockWidget,
-                             QFileDialog,
-                             QFrame,
-                             QGraphicsPixmapItem,
-                             QGraphicsScene,
-                             QGraphicsView,
-                             QGridLayout,
-                             QHBoxLayout,
-                             QInputDialog,
-                             QLabel,
-                             QLineEdit,
-                             QListWidget,
-                             QMainWindow,
-                             QMdiArea,
-                             QMdiSubWindow,
-                             QMenu,
-                             QMessageBox,
-                             QPushButton,
-                             QSpinBox,
-                             QTableView,
-                             QTableWidget,
-                             QTableWidgetItem,
-                             QTabWidget,
-                             QTextEdit,
-                             QVBoxLayout,
-                             QWidget)
 
 #from qtpy.QtCore import QAbstractTableModel, Qt
 

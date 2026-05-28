@@ -27,79 +27,17 @@ if __name__ == "__main__":
 """
 
 
-import inspect
-import json
 import os
-import subprocess
-import sys
-import time
-from datetime import datetime
-from functools import partial
-from random import randint
-from subprocess import PIPE, STDOUT, Popen, run
 
-import pyqtgraph as pg  # import PyQtGraph after PyQt5
-import wat
-from qtpy import QtGui
-from qtpy.QtCore import ( QAbstractListModel,
-                          QDate,
-                          QDateTime,
-                          QModelIndex,
-                          QSize,
-                          Qt,
-                          QTime,
-                          QTimer)
 
-from qtpy.QtGui import QColor, QImage, QPalette, QTextCursor, QTextDocument
 
-from qtpy.QtSql import ( QSqlDatabase,
-                         QSqlQuery,
-                         QSqlQueryModel,
-                         QSqlRelation,
-                         QSqlRelationalDelegate,
-                         QSqlRelationalTableModel,
-                         QSqlTableModel)
+from qtpy.QtSql import ( QSqlQueryModel)
 
-from qtpy.QtWidgets import ( QAction,
-                             QApplication,
-                             QButtonGroup,
-                             QCheckBox,
-                             QComboBox,
-                             QDateEdit,
-                             QDateTimeEdit,
-                             QDial,
-                             QDoubleSpinBox,
-                             QFontComboBox,
-                             QGridLayout,
-                             QGroupBox,
-                             QHBoxLayout,
-                             QLabel,
-                             QLCDNumber,
-                             QLineEdit,
-                             QListView,
-                             QListWidget,
-                             QListWidgetItem,
-                             QMainWindow,
-                             QMenu,
-                             QMessageBox,
-                             QProgressBar,
-                             QPushButton,
-                             QRadioButton,
-                             QSizePolicy,
-                             QSlider,
-                             QSpinBox,
-                             QTableView,
+from qtpy.QtWidgets import ( QHBoxLayout,
                              QTableWidget,
-                             QTableWidgetItem,
-                             QTabWidget,
-                             QTextEdit,
-                             QTimeEdit,
-                             QVBoxLayout,
-                             QWidget)
+                             QVBoxLayout)
 
-import parameters
 
-import utils_for_tabs as uft
 import wat_inspector
 import tab_base
 
@@ -139,6 +77,7 @@ class SqlQueryModelTab( tab_base.TabBase ) :
         # self.timer.start()
         self._build_gui()
 
+    # --------------------------------
     def _build_gui_widgets(self, main_layout  ):
         """
         the usual, build the gui with the widgets of interest
@@ -149,7 +88,7 @@ class SqlQueryModelTab( tab_base.TabBase ) :
         main_layout.addLayout( layout )
         button_layout        = QHBoxLayout(   )
 
-        table_widget        = QTableWidget(4, 5)  # row, column ??third arg parent
+        table_widget        = QTableWidget( 4, 5 )  # row, column ??third arg parent
         self.table_widget   = table_widget
         layout.addWidget( table_widget )
 
@@ -165,7 +104,7 @@ class SqlQueryModelTab( tab_base.TabBase ) :
         # standard buttons
         self.build_gui_last_buttons( button_layout )
 
-     # --------------------------------
+    # --------------------------------
     def run_it( self, ):
         """
         from chat
@@ -193,7 +132,7 @@ class SqlQueryModelTab( tab_base.TabBase ) :
         for row in range(model.rowCount()):
             # Extract data from each column in the current row
             row_data = []
-            for col in range(model.columnCount()):
+            for col in range( model.columnCount() ):
                 row_data.append( model.data(model.index(row, col)))
 
             print(f"Row {row + 1}: {row_data}")

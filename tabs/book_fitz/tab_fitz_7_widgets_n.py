@@ -30,73 +30,25 @@ WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/Fitz-7-Wi
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
-    import main
+    pass
     #main.main()
 # --------------------
 
-import inspect
 import os
-import subprocess
-import sys
-import time
-from datetime import datetime
-from functools import partial
-from subprocess import PIPE, STDOUT, Popen, run
 
-import wat
-from qtpy import QtGui
-from qtpy.QtCore import (QDate,
-                          QDateTime,
-                          QModelIndex,
-                          QSize,
-                          Qt,
-                          QTime,
-                          QTimer)
-from qtpy.QtGui import QColor, QPalette, QPixmap, QTextCursor, QTextDocument
+from qtpy.QtCore import (Qt)
+from qtpy.QtGui import QPixmap
 # sql
-from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 # widgets biger
 # widgets -- small
 # layouts
-from qtpy.QtWidgets import (QAction,
-                             QApplication,
-                             QButtonGroup,
-                             QCheckBox,
+from qtpy.QtWidgets import (QCheckBox,
                              QComboBox,
-                             QDateEdit,
-                             QDateTimeEdit,
-                             QDial,
-                             QDoubleSpinBox,
-                             QFontComboBox,
-                             QGridLayout,
-                             QGroupBox,
                              QHBoxLayout,
                              QLabel,
-                             QLCDNumber,
-                             QLineEdit,
-                             QListWidget,
-                             QListWidgetItem,
-                             QMainWindow,
-                             QMenu,
-                             QMessageBox,
-                             QProgressBar,
-                             QPushButton,
-                             QRadioButton,
-                             QSizePolicy,
-                             QSlider,
-                             QSpinBox,
-                             QTableView,
-                             QTableWidget,
-                             QTableWidgetItem,
-                             QTabWidget,
-                             QTextEdit,
-                             QTimeEdit,
-                             QVBoxLayout,
-                             QWidget)
+                             QVBoxLayout)
 
-import parameters
 #import qt_widgets
-import utils_for_tabs as uft
 import wat_inspector
 import tab_base
 

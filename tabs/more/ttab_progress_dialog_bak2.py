@@ -20,74 +20,31 @@ WIKI_LINK      =  "https://github.com/russ-hensel/qt5_by_example/wiki/What-We-Kn
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
-    import main
+    pass
 # --------------------------------
 
 # ---- import
-import inspect
-import subprocess
-import os
-import sys
 import time
-from datetime import datetime
-from functools import partial
-from subprocess import PIPE, STDOUT, Popen, run
-from pathlib import Path
-import wat
 
 
 
 
-from PyQt5 import QtGui
 
 
 from PyQt5.QtWidgets import (
-    QApplication, QMainWindow, QPushButton, QVBoxLayout,
-    QWidget, QDialog, QTextEdit, QHBoxLayout
+    QPushButton, QVBoxLayout,
+    QDialog, QTextEdit, QHBoxLayout
 )
 from PyQt5.QtCore import QThread, pyqtSignal
 
 
-from PyQt5.QtCore import (QDate,
-                          QDateTime,
-                          QModelIndex,
-                          QSize,
-                          Qt,
-                          QTime,
-                          QTimer)
-from PyQt5.QtGui import QColor, QPalette, QTextCursor, QTextDocument
 # sql
-from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QFileDialog
-from PyQt5.QtWidgets import (QAction,
-                             QApplication,
-                             QButtonGroup,
-                             QCheckBox,
-                             QComboBox,
-                             QDateEdit,
-                             QDateTimeEdit,
-                             QGridLayout,
-                             QGroupBox,
-                             QHBoxLayout,
-                             QLabel,
-                             QLineEdit,
-                             QListWidget,
-                             QListWidgetItem,
-                             QMainWindow,
-                             QMenu,
-                             QMessageBox,
+from PyQt5.QtWidgets import QPushButton, QVBoxLayout
+from PyQt5.QtWidgets import (QHBoxLayout,
                              QPushButton,
-                             QRadioButton,
-                             QSizePolicy,
-                             QTableView,
-                             QTableWidget,
-                             QTableWidgetItem,
-                             QTabWidget,
                              QTextEdit,
-                             QTimeEdit,
-                             QVBoxLayout,
-                             QWidget)
+                             QVBoxLayout)
 
 #import parameters
 

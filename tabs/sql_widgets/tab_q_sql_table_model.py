@@ -17,66 +17,31 @@ DESCRIPTION:    A reference for the QSqlTableModel and its View QTableView
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
-    import main
+    pass
 # -------------------
 
 
-import inspect
-import subprocess
-import sys
-import time
-from datetime import datetime
 from functools import partial
-from subprocess import PIPE, STDOUT, Popen, run
 
-import wat
-from qtpy import QtGui
-from qtpy.QtCore import (QDate,
-                          QDateTime,
-                          QModelIndex,
-                          QSize,
-                          Qt,
-                          QTime,
-                          QTimer)
-from qtpy.QtGui import QColor, QPalette, QTextCursor, QTextDocument
+from qtpy.QtCore import (QDateTime,
+                          Qt)
 
-from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
+from qtpy.QtSql import QSqlTableModel
 
 from qtpy.QtWidgets import (  QDialog, )
 from qtpy.QtWidgets import (  QSpinBox, )
 from qtpy.QtWidgets import ( QHBoxLayout, QFormLayout, )
 from qtpy.QtWidgets import ( QSpinBox, QComboBox, QDialogButtonBox, QMessageBox, )
-from qtpy.QtWidgets import (QAction,
-                             QApplication,
-                             QButtonGroup,
-                             QCheckBox,
-                             QComboBox,
-                             QDateEdit,
+from qtpy.QtWidgets import (QComboBox,
                              QDateTimeEdit,
-                             QGridLayout,
-                             QGroupBox,
                              QHBoxLayout,
-                             QHeaderView,
-                             QLabel,
                              QLineEdit,
-                             QListWidget,
-                             QListWidgetItem,
-                             QMainWindow,
-                             QMenu,
                              QMessageBox,
                              QPushButton,
-                             QRadioButton,
-                             QSizePolicy,
                              QTableView,
-                             QTableWidget,
-                             QTableWidgetItem,
-                             QTabWidget,
                              QTextEdit,
-                             QTimeEdit,
-                             QVBoxLayout,
-                             QWidget)
+                             QVBoxLayout)
 
-import parameters
 import info_about
 import utils_for_tabs as uft
 import wat_inspector
@@ -282,7 +247,7 @@ class QSqlTableModelTab( tab_base.TabBase   ):
 
         row             = 1
         column          = 1
-        msg    = ( f"for now not selectd by by {row = } {column = }" )
+        msg    = ( f"for now not selected by by {row = } {column = }" )
         self.append_msg( msg, )
 
         model           = self.persons_model
@@ -403,7 +368,7 @@ class QSqlTableModelTab( tab_base.TabBase   ):
     def select_by_id( self, a_id   ):
         """
         What it says
-        taken from stuff and simplifed
+        taken from stuff and simplified
         """
         self.append_function_msg( f"select_by_id for persons {a_id = }" )
 

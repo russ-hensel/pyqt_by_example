@@ -4,8 +4,13 @@ launcher for the app
 
 
 """
+
+
 import os
 import sys
+
+import adjust_path   # noqa  stops auto removal by pycln
+
 # Get the directory of the current .py file
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -13,7 +18,6 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 os.chdir(script_dir)
 print(os.getcwd())  # Prints the new working directory
 
-import adjust_path
 import pyqt_by_example
 
 

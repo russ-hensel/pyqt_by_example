@@ -21,64 +21,30 @@ WIKI_LINK      =  "https://github.com/russ-hensel/qt5_by_example/wiki/What-We-Kn
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
-    import main
+    pass
     #qt_fitz_book.main()
 # --------------------
 
 
-import inspect
 
-import subprocess
-import sys
 import time
-from datetime import datetime
 
-from functools import partial
-from subprocess import PIPE, STDOUT, Popen, run
 
-import wat
-from qtpy import QtGui
 from qtpy.QtCore import (QDate,
                           QDateTime,
-                          QModelIndex,
-                          QSize,
                           Qt,
-                          QTime,
-                          QTimer)
-from qtpy.QtGui import QColor, QPalette, QTextCursor, QTextDocument
+                          QTime)
 
-from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 
 from qtpy.QtWidgets import (QAction,
-                             QApplication,
-                             QButtonGroup,
-                             QCheckBox,
-                             QComboBox,
                              QDateEdit,
                              QDateTimeEdit,
                              QGridLayout,
-                             QGroupBox,
                              QHBoxLayout,
                              QLabel,
-                             QLineEdit,
-                             QListWidget,
-                             QListWidgetItem,
-                             QMainWindow,
                              QMenu,
-                             QMessageBox,
-                             QPushButton,
-                             QRadioButton,
-                             QSizePolicy,
-                             QTableView,
-                             QTableWidget,
-                             QTableWidgetItem,
-                             QTabWidget,
-                             QTextEdit,
-                             QTimeEdit,
-                             QVBoxLayout,
-                             QWidget)
+                             QTimeEdit)
 
-import parameters
 
 import utils_for_tabs as uft
 import wat_inspector
@@ -98,7 +64,7 @@ INDENT          = uft.BEGIN_MARK_2
 # ----------------------------
 class CustomDateEdit( QDateEdit ):
     """
-    not used, might keep to show addition of a context meny
+    not used, might keep to show addition of a context menu
     but may want different name ....
     move a version to stuffdb
     custom_widget.pb   as CQDateEdit
@@ -140,7 +106,6 @@ class QDateEditTab( tab_base.TabBase  ):
         """
         super().__init__()
 
-
         self.module_file       = __file__      # save for help file usage
 
         global WIKI_LINK
@@ -165,7 +130,6 @@ class QDateEditTab( tab_base.TabBase  ):
 
         main_layout.addLayout( layout )
         button_layout        = QHBoxLayout(   )
-
 
         ix_row        = 0
         ix_col        = 0

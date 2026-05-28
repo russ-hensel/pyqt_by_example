@@ -15,81 +15,28 @@ not part of the widget examples
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
-    import main
+    pass
 # --------------------
 
 
-#import inspect
-#import json
 import os
-#import subprocess
-import sys
-import time
-from datetime import datetime
-from functools import partial
-from subprocess import PIPE, STDOUT, Popen, run
 import webbrowser
-#import wat
-from pathlib import Path
+from   pathlib import Path
+import logging
 
-from qtpy import QtGui
-from qtpy.QtCore import (QAbstractListModel,
-                          QAbstractTableModel,
-                          QDate,
-                          QDateTime,
-                          QModelIndex,
-                          QSize,
-                          Qt,
-                          QTime,
-                          QTimer)
-from qtpy.QtGui import QColor, QImage, QPalette, QTextCursor, QTextDocument, QIcon
+from qtpy.QtGui import QImage
 
-from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel, QSqlQueryModel
 
-from qtpy.QtWidgets import (QAction,
-                             QApplication,
-                             QButtonGroup,
-                             QCheckBox,
-                             QComboBox,
-                             QDateEdit,
-                             QDateTimeEdit,
-                             QDial,
-                             QDoubleSpinBox,
-                             QFontComboBox,
-                             QGridLayout,
-                             QGroupBox,
+from qtpy.QtWidgets import ( QApplication,
                              QHBoxLayout,
                              QLabel,
-
-                             QLineEdit,
-                             QListView,
-                             QListWidget,
-                             QListWidgetItem,
-                             QMainWindow,
-                             QMenu,
-                             QMessageBox,
-                             QProgressBar,
                              QPushButton,
-                             QRadioButton,
-                             QSizePolicy,
-                             QSlider,
-                             QSpinBox,
-                             QTableView,
-                             QTableWidget,
-                             QTableWidgetItem,
-                             QTabWidget,
                              QTextEdit,
-                             QTimeEdit,
                              QVBoxLayout,
-                             QWidget)
+                             QWidget )
 
-import parameters
-#import qt_widgets
-import utils_for_tabs as uft
-import wat_inspector
 import global_vars
-# ---- imports neq qt
-import logging
+
 
 # ---- end imports
 
@@ -120,7 +67,6 @@ INSPECT_MSG     = ( "inspect()"  )
 BREAK_MSG       = ( "breakpoint()" )
 NO_MUTATE_MSG   = ( "no mutations for this tab")
 
-# tab_base.DONE_MSG
 
 #  --------
 class TabBase( QWidget ):
@@ -130,11 +76,11 @@ class TabBase( QWidget ):
         """
         super().__init__()
 
-        self.help_file_name     =  "unknown.txt"
+        self.help_file_name     = "unknown.txt"
 
         self.web_link           = "web_link not set"
         self.mutate_dict        = {}
-        self.mutate_ix          = 0    # set two plaes by mistahk !! ??
+        self.mutate_ix          = 0    # set two places by mistake !! ??
         self.help_file_set      = set()
         # self.module_file_name   = "not_set"
         # _build_gui(self,   ): call from child
@@ -159,7 +105,6 @@ class TabBase( QWidget ):
     # -------------------------------
     def _build_gui(self,   ):
         """
-
         for the first 2 tabs
         layouts
             a vbox for main layout
@@ -188,7 +133,7 @@ class TabBase( QWidget ):
         layout.addLayout( row_layout,  )
 
         widget              = QLabel( "classes...... on this tab" )
-        self.class_widget   = widget  # widget showin calsses or widgets on tab
+        self.class_widget   = widget  # widget showin classes or widgets on tab
         row_layout.addWidget( widget,   )
 
     # -------------------------------
@@ -204,7 +149,7 @@ class TabBase( QWidget ):
         layout.addLayout( row_layout,  )
 
         # ----
-        widget              = QTextEdit("load\nthis should be new row ")
+        widget              = QTextEdit( "load\nthis should be new row " )
         self.msg_widget     = widget
         #widget.clicked.connect( self.load    )
         row_layout.addWidget( widget,   )
@@ -215,7 +160,7 @@ class TabBase( QWidget ):
         self.build_gui_last_buttons(  row_layout  )
         """
         # ---- "copy\nmod fn"
-        widget              = QPushButton("copy\nmodule fn")
+        widget              = QPushButton( "copy\nmodule fn" )
         connect_to          = self.copy_module_file_name
         widget.clicked.connect( connect_to )
         row_layout.addWidget( widget )
@@ -254,7 +199,6 @@ class TabBase( QWidget ):
          !! move help file to the dir where the class file is
 
          """
-
         splits                 = self.module_file.split( "/" )
         #self.help_file_name    = splits[ 1 ].replace( ".", "__") + ".txt"
         #self.help_file_name    = splits[ 1 ] + ".txt"
@@ -277,7 +221,7 @@ class TabBase( QWidget ):
     def mutate( self ):
         """
         read it
-            loop throug the mutate functions
+            loop through the mutate functions
         """
         max_ix          = len( self.mutate_dict)
         self.mutate_ix   += 1
@@ -300,6 +244,7 @@ class TabBase( QWidget ):
         msg is just the name of the function
         """
         msg     = f"----==== {msg} ====----"
+
         if clear:
             self.clear_msg(  )
 
@@ -313,7 +258,7 @@ class TabBase( QWidget ):
             and print to console
         """
         if clear:
-            self.clear_msg(   )
+            self.clear_msg()
         self.msg_widget.append( msg )
         print( msg )
 
@@ -341,4 +286,3 @@ class TabBase( QWidget ):
         self.append_msg( msg )
 
 # ---- eof
-

@@ -48,78 +48,27 @@ looked at
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
-    import main
+    pass
     #qt_fitz_book.main()
 # --------------------
 
 
-import inspect
 import json
 import os
-import subprocess
-import sys
-import time
-from datetime import datetime
-from functools import partial
-from subprocess import PIPE, STDOUT, Popen, run
 
-import wat
-from qtpy import QtGui
-from qtpy.QtCore import (QAbstractListModel,
-                          QAbstractTableModel,
-                          QDate,
-                          QDateTime,
-                          QModelIndex,
-                          QSize,
-                          Qt,
-                          QTime,
-                          QTimer)
-from qtpy.QtGui import QColor, QImage, QPalette, QTextCursor, QTextDocument, QIcon
+from qtpy.QtCore import (Qt)
+from qtpy.QtGui import QImage
 # sql
-from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel, QSqlQueryModel
+from qtpy.QtSql import QSqlQuery, QSqlQueryModel
 # widgets biger
 # widgets -- small
 # layouts
-from qtpy.QtWidgets import (QAction,
-                             QApplication,
-                             QButtonGroup,
-                             QCheckBox,
-                             QComboBox,
-                             QDateEdit,
-                             QDateTimeEdit,
-                             QDial,
-                             QDoubleSpinBox,
-                             QFontComboBox,
-                             QGridLayout,
-                             QGroupBox,
-                             QHBoxLayout,
-                             QLabel,
-
-                             QLineEdit,
-                             QListView,
-                             QListWidget,
-                             QListWidgetItem,
-                             QMainWindow,
-                             QMenu,
-                             QMessageBox,
-                             QProgressBar,
+from qtpy.QtWidgets import (QHBoxLayout,
                              QPushButton,
-                             QRadioButton,
-                             QSizePolicy,
-                             QSlider,
-                             QSpinBox,
                              QTableView,
-                             QTableWidget,
-                             QTableWidgetItem,
-                             QTabWidget,
-                             QTextEdit,
-                             QTimeEdit,
-                             QVBoxLayout,
-                             QWidget)
+                             QVBoxLayout)
 
-import parameters
 #import qt_widgets
-import utils_for_tabs as uft
 import wat_inspector
 import global_vars
 import tab_base
@@ -265,7 +214,7 @@ class Fitz_23_C_Tab( tab_base.TabBase ) :
 
         # print( "button code from other example may reacivate some ")
 
-
+    # -------------------------------
     def add(self):
         """
         Add an item to our todo list, getting the text from the QLineEdit .todoEdit
@@ -284,6 +233,7 @@ class Fitz_23_C_Tab( tab_base.TabBase ) :
             # Empty the input
             self.todoEdit.setText("")
 
+    # -------------------------------
     def delete(self):
         """ """
         self.append_function_msg( "delete" )
@@ -298,6 +248,7 @@ class Fitz_23_C_Tab( tab_base.TabBase ) :
             # Clear the selection (as it is no longer valid).
             self.todoView.clearSelection()
 
+    # -------------------------------
     def complete(self):
         """
         mark selected row as complete
@@ -321,6 +272,7 @@ class Fitz_23_C_Tab( tab_base.TabBase ) :
             msg    = "no selection to complete"
             print( msg )
 
+    # -------------------------------
     def set_headers( self ):
         """ """
         self.append_function_msg( "set_headers()" )
@@ -330,6 +282,7 @@ class Fitz_23_C_Tab( tab_base.TabBase ) :
         model.setHeaderData(1, Qt.Horizontal, "SetCol1")
         model.setHeaderData(2, Qt.Horizontal, "SetCol2")
 
+    # -------------------------------
     def remove_columns( self ):
         """ """
         self.append_msg( "remove_columns()" )
@@ -345,7 +298,6 @@ class Fitz_23_C_Tab( tab_base.TabBase ) :
         """ """
         self.append_msg( "select_with_where()" )
 
-
         a_name          = "%a%"
         msg             = f" where like   {a_name =} "
         print( msg )
@@ -360,7 +312,7 @@ class Fitz_23_C_Tab( tab_base.TabBase ) :
         query.exec_()
         self.model.setQuery(query)
 
-
+    # -------------------------------
     def select_all( self ):
         """ """
         self.append_function_msg( "select_all  is a nop " )
@@ -385,14 +337,12 @@ class Fitz_23_C_Tab( tab_base.TabBase ) :
 
         #self.model.layoutChanged.emit() # This triggers a refresh of the entirety of the view. I
 
-
+    # -------------------------------
     def save(self):
         self.append_msg( "save()" )
 
         with open("data.json", "w") as f:
             data = json.dump(self.model.todos, f)
-
-
 
     # ------------------------------------
     def mutate_0( self ):
@@ -441,6 +391,5 @@ class Fitz_23_C_Tab( tab_base.TabBase ) :
         self.append_function_msg( "breakpoint()" )
 
         breakpoint()
-
 
 # ---- eof

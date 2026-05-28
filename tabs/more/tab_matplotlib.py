@@ -18,58 +18,16 @@ WIKI_LINK      = "https://github.com/russ-hensel/pyqt_by_example/wiki/Matplotlib
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
-    import main
+    pass
 
 # --------------------
 
 
-import inspect
-import subprocess
-import sys
-import time
-from datetime import datetime
-from functools import partial
-from subprocess import PIPE, STDOUT, Popen, run
 
-import wat
-from qtpy import QtGui
-from qtpy.QtCore import (QDate,
-                          QDateTime,
-                          QModelIndex,
-                          QSize,
-                          Qt,
-                          QTime,
-                          QTimer)
-from qtpy.QtGui import QColor, QPalette, QTextCursor, QTextDocument
 # sql
-from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 
-from qtpy.QtWidgets import (QAction,
-                             QApplication,
-                             QButtonGroup,
-                             QCheckBox,
-                             QComboBox,
-                             QDateEdit,
-                             QDateTimeEdit,
-                             QGridLayout,
-                             QGroupBox,
+from qtpy.QtWidgets import (QApplication,
                              QHBoxLayout,
-                             QLabel,
-                             QLineEdit,
-                             QListWidget,
-                             QListWidgetItem,
-                             QMainWindow,
-                             QMenu,
-                             QMessageBox,
-                             QPushButton,
-                             QRadioButton,
-                             QSizePolicy,
-                             QTableView,
-                             QTableWidget,
-                             QTableWidgetItem,
-                             QTabWidget,
-                             QTextEdit,
-                             QTimeEdit,
                              QVBoxLayout,
                              QWidget)
 

@@ -30,11 +30,9 @@ print( hostname )
 VERBOSE   = 50
 
 if VERBOSE > 20:
-
     print( f"in {adjust_path_file   = }")
     print( f"{cwd                   = }")
     print( f"{hostname              = }")
-
 
 try:
     # ---- next needs to match the app
@@ -43,11 +41,11 @@ try:
 
     src_root   = cwd[ : ix   ]
     print( f"in try {src_root = }" )
+
 except ValueError as error:
     # Access the first argument (the message)
     error_message = error.args[0]
     print(f"fallback to hostname")
-
 
 
     # fallbak may bo out of use out of date

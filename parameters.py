@@ -9,11 +9,10 @@
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
-    import main
+    import main   # noqa  stops auto removal by pycln
 # --------------------
 
 import logging
-import os
 import sys
 
 # ---- local imports
@@ -38,6 +37,7 @@ class Parameters( ):
             if you comment all out all modes you get the default mode which should
             run, perhaps not in the way you want
         """
+
         self.mode_dev_debug()
         #self.mode_russ_on_theprof()
         #self.new_user_mode()
@@ -66,7 +66,7 @@ class Parameters( ):
     def mode_disk_db( self ):
         """
         run for debugging when you want the db on a disk
-        startup is really slow
+        startup is really slow -- minutes
         """
         self.mode               = "mode_disk_db"
         # expose tabs that are not ready

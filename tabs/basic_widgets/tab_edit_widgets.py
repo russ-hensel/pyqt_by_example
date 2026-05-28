@@ -24,80 +24,19 @@ WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/Edit Widg
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
-    import main
+    pass
 # --------------------
 
 
 
-import traceback
-import glob
-import inspect
-import json
-import math
-import os
-import subprocess
-import sys
-import time
-from collections import namedtuple
-from datetime import datetime
-from functools import partial
-from random import randint
-from subprocess import PIPE, STDOUT, Popen, run
 
-import pyqtgraph as pg  # import PyQtGraph after PyQt5
-import wat
-from qtpy import QtGui
-from qtpy.QtCore import (QAbstractListModel,
-                          QAbstractTableModel,
-                          QDate,
-                          QDateTime,
-                          QModelIndex,
-                          QSize,
-                          Qt,
-                          QTime,
-                          QTimer)
-from qtpy.QtGui import QColor, QImage, QPalette, QTextCursor, QTextDocument
 # sql
-from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
-from qtpy.QtWidgets import (QAction,
-                             QApplication,
-                             QButtonGroup,
-                             QCheckBox,
-                             QComboBox,
-                             QDateEdit,
-                             QDateTimeEdit,
-                             QDial,
-                             QDoubleSpinBox,
-                             QFontComboBox,
-                             QGridLayout,
-                             QGroupBox,
+from qtpy.QtWidgets import (QGroupBox,
                              QHBoxLayout,
                              QLabel,
-                             QLCDNumber,
                              QLineEdit,
-                             QListView,
-                             QListWidget,
-                             QListWidgetItem,
-                             QMainWindow,
-                             QMenu,
-                             QMessageBox,
-                             QProgressBar,
-                             QPushButton,
-                             QRadioButton,
-                             QSizePolicy,
-                             QSlider,
-                             QSpinBox,
-                             QStyledItemDelegate,
-                             QTableView,
-                             QTableWidget,
-                             QTableWidgetItem,
-                             QTabWidget,
-                             QTextEdit,
-                             QTimeEdit,
-                             QVBoxLayout,
-                             QWidget)
+                             QVBoxLayout)
 
-import parameters
 
 import utils_for_tabs as uft
 import wat_inspector

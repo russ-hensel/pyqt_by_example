@@ -50,74 +50,37 @@ No data needs to be passed between the window and the iterator because they are 
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
-    import main
+    pass
 # --------------------------------
 
 # ---- import
-import inspect
 #import subprocess
-import os
-import sys
 import time
 #from   datetime import datetime
-from   functools import partial
-from   subprocess import PIPE, STDOUT, Popen, run
 #from   pathlib import Path
-import wat
 
 
 
 from qtpy.QtCore import QCoreApplication
-from qtpy import QtGui
 
 
 from qtpy.QtWidgets import (
-    QApplication, QMainWindow, QPushButton, QVBoxLayout,
-    QWidget, QDialog, QTextEdit, QHBoxLayout
+    QPushButton, QVBoxLayout,
+    QDialog, QHBoxLayout
     )
 
 #from qtpy.QtCore import QThread, pyqtSignal
 
-from qtpy.QtCore import (QDate,
-                          QDateTime,
-                          QModelIndex,
-                          QSize,
-                          Qt,
-                          QTime,
-                          QTimer)
-from qtpy.QtGui import QColor, QPalette, QTextCursor, QTextDocument
+from qtpy.QtCore import (Qt)
 
 # from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 
-from qtpy.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QFileDialog
-from qtpy.QtWidgets import (QAction,
-                             QApplication,
-                             QButtonGroup,
-                             QCheckBox,
-                             QComboBox,
-                             QDateEdit,
-                             QDateTimeEdit,
-                             QGridLayout,
-                             QGroupBox,
-                             QHBoxLayout,
+from qtpy.QtWidgets import QPushButton, QVBoxLayout
+from qtpy.QtWidgets import (QHBoxLayout,
                              QLabel,
-                             QLineEdit,
-                             QListWidget,
-                             QListWidgetItem,
-                             QMainWindow,
-                             QMenu,
                              QMessageBox,
                              QPushButton,
-                             QRadioButton,
-                             QSizePolicy,
-                             QTableView,
-                             QTableWidget,
-                             QTableWidgetItem,
-                             QTabWidget,
-                             QTextEdit,
-                             QTimeEdit,
-                             QVBoxLayout,
-                             QWidget)
+                             QVBoxLayout)
 
 #import parameters
 

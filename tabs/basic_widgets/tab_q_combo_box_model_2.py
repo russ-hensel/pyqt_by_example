@@ -16,14 +16,13 @@ WIKI_LINK = "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-Ab
 # ---- tof
 if __name__ == "__main__":
     # ----- run the full app
-    import main
+    pass
 # --------------------
 
 from qtpy.QtCore import QAbstractListModel, QModelIndex, Qt
 from qtpy.QtWidgets import QComboBox, QHBoxLayout, QLabel, QPushButton, QVBoxLayout
 
 import tab_base
-import utils_for_tabs as uft
 import wat_inspector
 import tab_base
 
@@ -209,7 +208,6 @@ class QComboBoxModelTab_2( tab_base.TabBase ):
             pass
         else:
             self.show_selection()
-        pass
 
     # -----------------------
     def show_selection(self):

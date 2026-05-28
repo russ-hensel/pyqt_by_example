@@ -17,29 +17,20 @@ WIKI_LINK = "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-Ab
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
-    import main
+    pass
 # --------------------
 
-import inspect
-from datetime import datetime
 
-import wat
 
-from qtpy import QtCore
 from qtpy import QtGui
-from qtpy.QtCore import Qt
 from qtpy.QtGui import QColor
-from qtpy.QtWidgets import (QApplication,
-                             QGridLayout,
+from qtpy.QtWidgets import (QGridLayout,
                              QHBoxLayout,
                              QLabel,
-                             QPushButton,
-                             QVBoxLayout,
-                             QWidget)
+                             QPushButton)
 
 from qtpy.Qsci import QsciScintilla, QsciLexerPython
 
-import utils_for_tabs as uft
 import wat_inspector
 import tab_base
 

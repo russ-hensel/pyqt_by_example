@@ -20,71 +20,25 @@ if __name__ == "__main__":
 
 
 # ---- imports
-import logging
 import psutil
 
 import os
 import sys
-
 import functools
 import subprocess
-#import sys
-from functools import partial
-#from platform import python_version
-#from subprocess import PIPE, STDOUT, Popen, run
+from   functools import partial
 
 #from app_global import AppGlobal
 from qtpy import QtGui
-from qtpy.QtCore import ( QDate,
-                          QModelIndex,
-                          QSize,
-                          QSortFilterProxyModel,
-                          Qt,
-                          QTimer )
 
-from qtpy.QtGui import QIcon, QIntValidator, QStandardItem, QStandardItemModel
-# sql
-from qtpy.QtSql import (QSqlDatabase,
-                         QSqlField,
-                         QSqlQuery,
-                         QSqlQueryModel,
-                         QSqlRecord,
 
-                         QSqlRelationalDelegate,
-                         QSqlRelationalTableModel,
-                         QSqlTableModel )
-
-from qtpy.QtWidgets import ( QAbstractItemView,
-                             QAction,
+from qtpy.QtWidgets import ( QAction,
                              QApplication,
-                             QButtonGroup,
-                             QCheckBox,
-                             QComboBox,
-                             QDataWidgetMapper,
-                             QDateEdit,
                              QDialog,
-                             QDoubleSpinBox,
-                             QFormLayout,
-                             QGridLayout,
-                             QGroupBox,
                              QHBoxLayout,
-                             QHeaderView,
-                             QLabel,
-                             QLineEdit,
-                             QListWidget,
-                             QListWidgetItem,
                              QMainWindow,
-                             QMenu,
                              QMessageBox,
-                             QPushButton,
-                             QRadioButton,
-                             QSpinBox,
-                             QStyledItemDelegate,
-                             QTableView,
-                             QTableWidget,
-                             QTableWidgetItem,
                              QTabWidget,
-                             QTextEdit,
                              QVBoxLayout,
                              QWidget)
 
@@ -138,8 +92,7 @@ class PyqtByExample( QMainWindow ):
         #my_parameters.PARAMETERS = my_parameters
         AppGlobal.parameters  = my_parameters
 
-        # kluge untill better fix
-
+        # kluge until better fix
         uft.main_window     = self
 
         qt_xpos             = my_parameters.qt_xpos
@@ -157,7 +110,6 @@ class PyqtByExample( QMainWindow ):
 
         global DB_FILE
         DB_FILE             = my_parameters.db_file_name
-
 
         app_logging.init()
 
@@ -184,8 +136,10 @@ class PyqtByExample( QMainWindow ):
         # argv not gettin passed in reliably put in parameters for now
         # if sys.argv[1] = "breakpoint_ok"
         # self.breakpoint_ok
+
         if len( sys.argv ) > 1:
             self.breakpoint_ok = sys.argv[1] ==  "breakpoint_ok"
+
         else:
             self.breakpoint_ok = False
 
@@ -259,6 +213,7 @@ class PyqtByExample( QMainWindow ):
         tab_index   = -1
         #print( f"looking for {class_name} = " )
         tab            =  self.tab_widget
+
         for ix_tab in range( tab.count() ):
             tab_page       = tab.widget( ix_tab )
             full_type      = type( tab_page )
@@ -296,6 +251,7 @@ class PyqtByExample( QMainWindow ):
         #breakpoint()
         # very messy, web links could just be in class this
         # is nonsense
+
         if   isinstance( tab, tab_base.TabBase ):
             #rint( f"yes widgets ==================={widgets}" )
             msg       = f"Widget of interest >> {widgets}"
@@ -388,7 +344,8 @@ class PyqtByExample( QMainWindow ):
         if ( isinstance( widget,  tab_select_tab.Search_Tab ) or
              isinstance( widget,  tab_qsql_database.QSqlDatabaseTab )
             ):
-            print(f"Tab {index} {type( widget )=} cannot be closed because it is key to the operation of this app")
+            print( f"Tab {index} {type( widget )=} cannot be closed "
+                    "because it is key to the operation of this app" )
             return
 
         # if index in [0, 1]:  # Allow closing the first tab
@@ -473,7 +430,7 @@ class PyqtByExample( QMainWindow ):
         """
         what it says read
         """
-        proc               = subprocess.Popen( [ uft.TEXT_EDITOR, file_name ] )
+        proc    = subprocess.Popen( [ uft.TEXT_EDITOR, file_name ] )
 
     # -----------------------
     def show_about_box(self):
@@ -506,11 +463,8 @@ class PyqtByExample( QMainWindow ):
         what it says,
         """
         dialog     = show_parameters.DisplayParameters( parent = self )
+
         if dialog.exec_() == QDialog.Accepted:
-            #self.model.submitAll()
-            # ok     = stuffdb_tabbed_sub_window.model_submit_all(
-            #            model,  f"StuffEventsSubTab.add_record " )
-            # model.select()
             pass
 
     # ------------------------
@@ -561,8 +515,9 @@ def main():
 
     #sys.exit( 0 )
 
-# --------------------
-if __name__ == "__main__":
-    main()
 
 # ---- eof
+
+
+
+

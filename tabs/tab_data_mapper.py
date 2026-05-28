@@ -22,70 +22,27 @@ self.help_file_name     =  "data_mapper_tab.txt"
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
-    import main
+    pass
 
 # --------------------
 
-import inspect
 #from   ex_qt import ia_qt
 #import ia_qt
-import subprocess
-import sys
 #import adjust_path
-import time
-from datetime import datetime
-from functools import partial
-from subprocess import PIPE, STDOUT, Popen, run
 
-import wat
-from PyQt5 import QtGui
-from PyQt5.QtCore import (QDate,
-                          QDateTime,
-                          QModelIndex,
-                          QSize,
-                          Qt,
-                          QTime,
-                          QTimer)
-from PyQt5.QtGui import QColor, QPalette, QTextCursor, QTextDocument
 # sql
-from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
+from PyQt5.QtSql import QSqlTableModel
 # widgets bigger
 # widgets -- small
 # layouts
-from PyQt5.QtWidgets import (QAction,
-                             QApplication,
-                             QButtonGroup,
-                             QCheckBox,
-                             QComboBox,
-                             QDataWidgetMapper,
-                             QDateEdit,
-                             QDateTimeEdit,
-                             QGridLayout,
-                             QGroupBox,
+from PyQt5.QtWidgets import (QDataWidgetMapper,
                              QHBoxLayout,
                              QLabel,
                              QLineEdit,
-                             QListWidget,
-                             QListWidgetItem,
-                             QMainWindow,
-                             QMenu,
-                             QMessageBox,
                              QPushButton,
-                             QRadioButton,
-                             QSizePolicy,
-                             QStyledItemDelegate,
-                             QTableView,
-                             QTableWidget,
-                             QTableWidgetItem,
-                             QTabWidget,
-                             QTextEdit,
-                             QTimeEdit,
-                             QVBoxLayout,
-                             QWidget)
+                             QVBoxLayout)
 
-import parameters
 import tab_base
-import utils_for_tabs as uft
 import wat_inspector
 import global_vars
 # ---- end imports

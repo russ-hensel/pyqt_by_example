@@ -35,62 +35,24 @@ in gridwindow_1
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
-    import main
+    pass
 # --------------------
 
-import inspect
-import subprocess
-import sys
-import time
-from datetime import datetime
 from functools import partial
-from subprocess import PIPE, STDOUT, Popen, run
 
-import wat
 
 
 from qtpy.QtWidgets import QSpacerItem, QSizePolicy
-from qtpy import QtGui
-from qtpy.QtCore import (QDate,
-                          QDateTime,
-                          QModelIndex,
-                          QSize,
-                          Qt,
-                          QTime,
-                          QTimer)
-from qtpy.QtGui import QColor, QPalette, QTextCursor, QTextDocument
+from qtpy.QtCore import (Qt)
 
-from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 
-from qtpy.QtWidgets import (QAction,
-                             QApplication,
-                             QButtonGroup,
-                             QCheckBox,
-                             QComboBox,
-                             QDateEdit,
-                             QDateTimeEdit,
-                             QGridLayout,
+from qtpy.QtWidgets import (QGridLayout,
                              QHBoxLayout,
-                             QLabel,
                              QLineEdit,
-                             QListWidget,
-                             QListWidgetItem,
-                             QMainWindow,
-                             QMenu,
-                             QMessageBox,
                              QPushButton,
-                             QRadioButton,
                              QSizePolicy,
-                             QTableView,
-                             QTableWidget,
-                             QTableWidgetItem,
-                             QTabWidget,
-                             QTextEdit,
-                             QTimeEdit,
-                             QVBoxLayout,
                              QWidget )
 
-import parameters
 import tab_base
 import utils_for_tabs as uft
 import wat_inspector

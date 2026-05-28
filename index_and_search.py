@@ -9,81 +9,23 @@ build the database to search for tabs
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
-    import main
+    pass
     # import qt_search
     # qt_search.main()
 # --------------------
 
 import logging
-import inspect
 import os
-import sqlite3 as lite
-import subprocess
-import sys
-from functools import partial
-from pathlib import Path
-from platform import python_version
-from subprocess import PIPE, STDOUT, Popen, run
+from   pathlib import Path
+
+
+from qtpy.QtSql import ( QSqlDatabase,
+                         QSqlQuery)
 
 import key_word_indexer
-
-#from app_global import AppGlobal
-from qtpy import QtGui
-from qtpy.QtCore import (QDate,
-                          QModelIndex,
-                          QSize,
-                          QSortFilterProxyModel,
-                          Qt,
-                          QTimer)
-# sql
-from qtpy.QtSql import (QSqlDatabase,
-                         QSqlField,
-                         QSqlQuery,
-                         QSqlQueryModel,
-                         QSqlRecord,
-                         QSqlRelation,
-                         QSqlRelationalDelegate,
-                         QSqlRelationalTableModel,
-                         QSqlTableModel)
-
-from qtpy.QtWidgets import (QAbstractItemView,
-                             QAction,
-                             QApplication,
-                             QButtonGroup,
-                             QCheckBox,
-                             QComboBox,
-                             QDataWidgetMapper,
-                             QDateEdit,
-                             QDialog,
-                             QDoubleSpinBox,
-                             QFormLayout,
-                             QGridLayout,
-                             QGroupBox,
-                             QHBoxLayout,
-                             QHeaderView,
-                             QLabel,
-                             QLineEdit,
-                             QListWidget,
-                             QListWidgetItem,
-                             QMainWindow,
-                             QMenu,
-                             QMessageBox,
-                             QPushButton,
-                             QRadioButton,
-                             QSpinBox,
-                             QStyledItemDelegate,
-                             QTableView,
-                             QTableWidget,
-                             QTableWidgetItem,
-                             QTabWidget,
-                             QTextEdit,
-                             QVBoxLayout,
-                             QWidget)
-
 import global_vars
 import parameters
 import utils_for_tabs as uft
-import wat_inspector
 
 # ---- ---- local imports
 
@@ -108,11 +50,11 @@ def delete_db_file( file_name ):
             msg    = f"{error = }"
             logging.debug( msg )
 
-            msg        = ( f"delete_db_file os.remove threw error on file {file_name}")
+            msg        = ( f"delete_db_file os.remove threw error on file {file_name}" )
             logging.debug( msg )
 
     else:
-        msg         = ( f"delete_db_file file already gone  {file_name}   ")
+        msg         = ( f"delete_db_file file already gone  {file_name}   " )
         logging.debug( msg )
 
 # -------------------------------------
@@ -139,15 +81,15 @@ class TabDBBuilder():
         """
         Reset and rebuild the db
         """
-        self.widget_set   = set( )
+        self.widget_set     = set( )
         self.create_connection()
         self.create_populate_tables()
-        self.widget_set = self.widget_set - { "" }
+        self.widget_set     = self.widget_set - { "" }
 
-        widget_list   = list( self.widget_set )
+        widget_list         = list( self.widget_set )
         widget_list.sort()
-        self.widget_list   = widget_list   # intervace
-        #rint( f"reset {widget_list = }")
+        self.widget_list    = widget_list
+
 
     #------------
     def create_connection( self, ):
@@ -158,17 +100,17 @@ class TabDBBuilder():
             self.db.close()
             self.db    = None  # or delete?
 
-        db_file_name             = parameters.PARAMETERS.tab_db_file_name
+        db_file_name    = parameters.PARAMETERS.tab_db_file_name
 
         if db_file_name !=  ':memory:':  # delete for a fresh start
             delete_db_file( db_file_name )
 
         db              = QSqlDatabase.addDatabase( parameters.PARAMETERS.tab_db_type, "tab_db" )
         db.setDatabaseName( db_file_name )
-        self.db         = QSqlDatabase.database( "tab_db" )  # may need to do neare to use lets see
+        self.db         = QSqlDatabase.database( "tab_db" )  # may need to do more to use lets see
 
         if not db.open():
-            msg       = ("IndexDB Error: Unable to establish a database connection.")
+            msg       = ( "IndexDB Error: Unable to establish a database connection." )
             logging.error( msg )
             return False
 
@@ -214,6 +156,7 @@ class TabDBBuilder():
         if not query.exec_(sql):
             msg      = ("Error executing query: {query.lastError().text() }" )
             logging.error( msg )
+
         else:
             pass
             #rint("Query executed successfully.")
@@ -231,11 +174,11 @@ class TabDBBuilder():
                 key_word        TEXT
             )
         """
-
         if not query.exec_(sql):
 
-            msg     = ("create_tab_key_words_table Error executing query: {query.lastError().text()}" )
+            msg     = ( "create_tab_key_words_table Error executing query: {query.lastError().text()}" )
             logging.error( msg )
+
         else:
             pass
             #rint("create_tab_key_words_table Query executed successfully.")
@@ -253,7 +196,7 @@ class TabDBBuilder():
         for i_directory in directory_list:
             i_directory     = Path( i_directory )
             i_file_list     = [file  for file in i_directory.glob('tab*.py')  ]
-                    # not .stem or .name whic may be needed later
+                    # not .stem or .name which may be needed later
             file_list       = file_list + i_file_list
 
         msg         = "index_and_search.py find_doc_files this is the file list"
@@ -274,7 +217,7 @@ class TabDBBuilder():
             doc_data  = self.get_doc_data( i_doc )
             # if str( i_doc ) == "tab_box_layout.py":
 
-            module              = doc_data[ "module" ].strip()  # !! redundatan hack fix
+            module              = doc_data[ "module" ].strip()  # !! redundant hack fix
             how_complete        = doc_data[ "how_complete" ].strip()
             how_complete        = how_complete.replace( "#", " ")
 
@@ -295,6 +238,7 @@ class TabDBBuilder():
 
             module       = doc_data[ "module" ].strip()
             class_name   = doc_data[ "class_name" ].strip()
+
             if not bool( class_name ) or not bool( module ):
                 msg    = ( f"TabDBBuilder dropping {module = } because of "
                             "-- not bool( {class_name = } ) or not bool( module )" )
@@ -308,6 +252,7 @@ class TabDBBuilder():
         """
         add a doc data to the db
         and our set ... read it
+            when doe we import the modules
         """
         widget_list     = doc_data[ "widgets"].split( " " )
 
@@ -316,7 +261,7 @@ class TabDBBuilder():
 
         query           = QSqlQuery( self.db )
 
-        # think we can just unpack the dict, did a chatbot tell me to do this
+        # think we can just unpack the dict, did a chat bot tell me to do this
         table_data = [
             ( str( doc_data[ "doc_file_name"] ),
               "name??",
@@ -375,7 +320,7 @@ class TabDBBuilder():
         change to with
 
         !! better code would probably be a generator -- chat to fix??
-        !! do the stip here
+        !! do the strip here
         """
         #rint( f"get_doc_data {file_name = }")
         #rint( "could make a loop to do this maybe a comp !!")
@@ -390,23 +335,21 @@ class TabDBBuilder():
                                   "web_link"] # omit doc_file_name -- for sure
 
         doc_data    = {}
-        doc_data[ "module"  ]    = str( file_name )[ :-3 ]
+        doc_data[ "module"  ]       = str( file_name )[ :-3 ]
+
         for i_doc_item in doc_data_items:
             doc_data[ i_doc_item ] = ""
 
         doc_data[ "doc_file_name" ] = file_name
-        doc_data[ "description" ]   = "Description comming soon"
-        doc_data[ "web_link" ]      = "https://github.com/russ-hensel/qt5_by_example/wiki"
+        doc_data[ "description" ]   = "Description coming soon"
+        doc_data[ "web_link" ]      = "https://github.com/russ-hensel/pyqt_by_example/wiki"
 
         a_file  = open( file_name, 'r', encoding = "utf8", errors = 'ignore' )
 
         for ix, i_line in enumerate( a_file ):
-
-            # looks like a loop woruld do all this
             i_line    = i_line.rstrip('\n')   # this i think is the best way --- think is arg to have python strip
             i_line    = i_line.strip()
             #rint( f"reading line no {ix} =  {i_line }")
-
 
             if i_line.startswith( "KEY_WORDS:"):
                 i_line    = i_line[ 10: ].strip()
@@ -480,12 +423,11 @@ class TabDBBuilder():
 
         query           = QSqlQuery( self.db )
 
-        #rint("tab table")
-
         sql   = "SELECT id, module, class, widgets, key_words FROM tabs"
 
         if not query.exec_( sql ):  # Check if execution failed
-            msg        = ("query_print_tab Error executing query:  {query.lastError().text()}" )
+            msg        = ( "query_print_tab Error executing query:  "
+                          f"{query.lastError().text()}" )
             logging.error( msg )
 
         while query.next():
@@ -494,16 +436,16 @@ class TabDBBuilder():
             a_class             = query.value(2)
             #rint(f"ID: {a_id},  {module = },   {a_class = }")
 
-# ---- useless object but requred delete it later
+# ---- useless object but required delete it later
 class IndexSearch(   ):
     def __init__(self):
         """
         obj.index_db.
 
         """
-        pass
         self.build_stuff()
 
+    #------------
     def build_stuff( self ):
         self.index_db     = TabDBBuilder( )
         return self.index_db.db

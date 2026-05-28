@@ -18,7 +18,7 @@ TAB_TITLE:      QMainWindow
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
-    import main
+    pass
     #main.main()
 # --------------------
 
@@ -32,78 +32,16 @@ if __name__ == "__main__":
 # # --------------------
 
 
-import glob
-import inspect
-import json
-import math
-import os
-import subprocess
-import sys
-import time
-from collections import namedtuple
-from datetime import datetime
-from functools import partial
-from random import randint
-from subprocess import PIPE, STDOUT, Popen, run
 
-import pyqtgraph as pg  # import PyQtGraph after PyQt5
-import wat
-from PyQt5 import QtGui
-from PyQt5.QtCore import (QAbstractListModel,
-                          QAbstractTableModel,
-                          QDate,
-                          QDateTime,
-                          QModelIndex,
-                          QSize,
-                          Qt,
-                          QTime,
-                          QTimer)
-from PyQt5.QtGui import QColor, QImage, QPalette, QTextCursor, QTextDocument
 # sql
-from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
-from PyQt5.QtWidgets import (QAction,
-                             QApplication,
-                             QButtonGroup,
-                             QCheckBox,
-                             QComboBox,
-                             QDateEdit,
-                             QDateTimeEdit,
-                             QDial,
-                             QDoubleSpinBox,
-                             QFontComboBox,
-                             QGridLayout,
-                             QGroupBox,
-                             QHBoxLayout,
+from PyQt5.QtWidgets import (QHBoxLayout,
                              QLabel,
-                             QLCDNumber,
-                             QLineEdit,
-                             QListView,
-                             QListWidget,
-                             QListWidgetItem,
-                             QMainWindow,
-                             QMenu,
-                             QMessageBox,
-                             QProgressBar,
                              QPushButton,
-                             QRadioButton,
-                             QSizePolicy,
-                             QSlider,
-                             QSpinBox,
-                             QStyledItemDelegate,
-                             QTableView,
-                             QTableWidget,
-                             QTableWidgetItem,
-                             QTabWidget,
-                             QTextEdit,
-                             QTimeEdit,
                              QVBoxLayout,
                              QWidget)
 
-import parameters
 
 import utils_for_tabs as uft
-import wat_inspector
-import custom_widgets
 import global_vars
 
 

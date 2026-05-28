@@ -22,50 +22,18 @@ import logging
 import sys
 import traceback
 
-import parameters
 
 
-from qt_compat import QApplication, QAction, exec_app, qt_version
-from PyQt.QtWidgets import QMainWindow, QToolBar, QMessageBox
 
 #from PyQt.QtGui import ( QAction, QActionGroup, )
 
-from PyQt.QtWidgets import (
-                             QApplication,
-                             QButtonGroup,
-                             QCheckBox,
+from qtpy.QtWidgets import (
                              QComboBox,
-                             QDataWidgetMapper,
-                             QDateEdit,
                              QDialog,
-                             QDockWidget,
-                             QFileDialog,
-                             QFrame,
-                             QGraphicsPixmapItem,
-                             QGraphicsScene,
-                             QGraphicsView,
-                             QGridLayout,
                              QHBoxLayout,
-                             QInputDialog,
                              QLabel,
-                             QLineEdit,
-                             QListWidget,
-                             QMainWindow,
-                             QMdiArea,
-                             QMdiSubWindow,
-                             QMenu,
-                             QMessageBox,
                              QPushButton,
-                             QSizePolicy,
-                             QSpacerItem,
-                             QSpinBox,
-                             QTableView,
-                             QTableWidget,
-                             QTableWidgetItem,
-                             QTabWidget,
-                             QTextEdit,
-                             QVBoxLayout,
-                             QWidget)
+                             QVBoxLayout)
 
 
 # ---- local imports

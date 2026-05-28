@@ -32,59 +32,26 @@ Home · russ-hensel/qt5_by_example Wiki
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
-    import main
+    pass
 # --------------------------------
 
-import inspect
-import subprocess
-import sys
-import time
-from   datetime import datetime
 from   functools import partial
-from   subprocess import PIPE, STDOUT, Popen, run
 
-import wat
-from qtpy import QtGui
-from qtpy.QtCore import ( QDate,
-                          QDateTime,
-                          QModelIndex,
-                          QSize,
-                          Qt,
-                          QTime,
-                          QTimer)
-from qtpy.QtGui import QColor, QPalette, QTextCursor, QTextDocument
+from qtpy.QtCore import ( Qt)
+from qtpy.QtGui import QColor, QPalette
 
-from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 
-from qtpy.QtGui import QIcon, QIntValidator, QStandardItem, QStandardItemModel
+from qtpy.QtGui import QIcon
 
 from qtpy.QtWidgets import ( QAction,
-                             QApplication,
-                             QButtonGroup,
                              QSpacerItem,
-                             QCheckBox,
-                             QComboBox,
-                             QDateEdit,
-                             QDateTimeEdit,
                              QGridLayout,
-                             QGroupBox,
                              QHBoxLayout,
                              QLabel,
                              QLineEdit,
-                             QListWidget,
-                             QListWidgetItem,
                              QMainWindow,
-                             QMenu,
-                             QMessageBox,
                              QPushButton,
-                             QRadioButton,
                              QSizePolicy,
-                             QTableView,
-                             QTableWidget,
-                             QTableWidgetItem,
-                             QTabWidget,
-                             QTextEdit,
-                             QTimeEdit,
                              QVBoxLayout,
                              QToolBar,
                              QWidget )

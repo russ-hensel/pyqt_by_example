@@ -10,38 +10,13 @@ which need to move out
 
 
 import importlib
-import sys
 
-from qtpy.QtCore import Qt
 from qtpy.QtGui import QColor, QPalette
-from qtpy.QtSql import (QSqlDatabase,
-                         QSqlDriver,
-                         QSqlQuery,
-                         QSqlRecord,
-                         QSqlRelation,
-                         QSqlRelationalDelegate,
-                         QSqlRelationalTableModel,
-                         QSqlTableModel)
 # ----QtWidgets layouts
 # ---- tof
-from qtpy.QtWidgets import (QApplication,
-                             QButtonGroup,
-                             QCheckBox,
-                             QComboBox,
-                             QDialog,
-                             QFormLayout,
-                             QGridLayout,
-                             QHBoxLayout,
+from qtpy.QtWidgets import (QDialog,
                              QLabel,
-                             QLineEdit,
-                             QListWidget,
-                             QListWidgetItem,
-                             QMainWindow,
-                             QMessageBox,
                              QPushButton,
-                             QRadioButton,
-                             QTableView,
-                             QTabWidget,
                              QTextEdit,
                              QVBoxLayout,
                              QWidget)

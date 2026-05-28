@@ -20,7 +20,6 @@ if __name__ == "__main__":
 
 
 # ---- imports
-import logging
 import psutil
 
 import os
@@ -35,54 +34,15 @@ from functools import partial
 
 #from app_global import AppGlobal
 from qtpy import QtGui
-from qtpy.QtCore import (QDate,
-                          QModelIndex,
-                          QSize,
-                          QSortFilterProxyModel,
-                          Qt,
-                          QTimer)
 # sql
-from qtpy.QtSql import (QSqlDatabase,
-                         QSqlField,
-                         QSqlQuery,
-                         QSqlQueryModel,
-                         QSqlRecord,
 
-                         QSqlRelationalDelegate,
-                         QSqlRelationalTableModel,
-                         QSqlTableModel)
-
-from qtpy.QtWidgets import (QAbstractItemView,
-                             QAction,
+from qtpy.QtWidgets import (QAction,
                              QApplication,
-                             QButtonGroup,
-                             QCheckBox,
-                             QComboBox,
-                             QDataWidgetMapper,
-                             QDateEdit,
                              QDialog,
-                             QDoubleSpinBox,
-                             QFormLayout,
-                             QGridLayout,
-                             QGroupBox,
                              QHBoxLayout,
-                             QHeaderView,
-                             QLabel,
-                             QLineEdit,
-                             QListWidget,
-                             QListWidgetItem,
                              QMainWindow,
-                             QMenu,
                              QMessageBox,
-                             QPushButton,
-                             QRadioButton,
-                             QSpinBox,
-                             QStyledItemDelegate,
-                             QTableView,
-                             QTableWidget,
-                             QTableWidgetItem,
                              QTabWidget,
-                             QTextEdit,
                              QVBoxLayout,
                              QWidget)
 

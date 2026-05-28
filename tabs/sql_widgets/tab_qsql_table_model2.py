@@ -25,73 +25,39 @@ WIKI_LINK      =  "https://github.com/russ-hensel/qt5_by_example/wiki/What-We-Kn
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
-    import main
+    pass
 # -------------------
 
 
-import inspect
-import subprocess
-import sys
-import time
-from datetime import datetime
 from functools import partial
-from subprocess import PIPE, STDOUT, Popen, run
 
-import wat
-from qtpy import QtGui
-from qtpy.QtCore import (QDate,
-                          QDateTime,
-                          QModelIndex,
-                          QSize,
-                          Qt,
-                          QTime,
-                          QTimer)
+from qtpy.QtCore import (QDateTime,
+                          Qt)
 
 
-from qtpy.QtWidgets import QApplication, QTableView, QStyledItemDelegate
-from qtpy.QtSql import QSqlDatabase, QSqlTableModel
+from qtpy.QtWidgets import QTableView, QStyledItemDelegate
+from qtpy.QtSql import QSqlTableModel
 from qtpy.QtCore import Qt
 
 
-from qtpy.QtGui import QColor, QPalette, QTextCursor, QTextDocument, QBrush
+from qtpy.QtGui import QColor, QBrush
 
-from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
+from qtpy.QtSql import QSqlTableModel
 
 from qtpy.QtWidgets import (  QDialog, )
 from qtpy.QtWidgets import (  QSpinBox, )
 from qtpy.QtWidgets import ( QHBoxLayout, QFormLayout, )
 from qtpy.QtWidgets import ( QSpinBox, QComboBox, QDialogButtonBox, QMessageBox, )
-from qtpy.QtWidgets import (QAction,
-                             QApplication,
-                             QButtonGroup,
-                             QCheckBox,
-                             QComboBox,
-                             QDateEdit,
+from qtpy.QtWidgets import (QComboBox,
                              QDateTimeEdit,
-                             QGridLayout,
-                             QGroupBox,
                              QHBoxLayout,
-                             QHeaderView,
-                             QLabel,
                              QLineEdit,
-                             QListWidget,
-                             QListWidgetItem,
-                             QMainWindow,
-                             QMenu,
                              QMessageBox,
                              QPushButton,
-                             QRadioButton,
-                             QSizePolicy,
                              QTableView,
-                             QTableWidget,
-                             QTableWidgetItem,
-                             QTabWidget,
                              QTextEdit,
-                             QTimeEdit,
-                             QVBoxLayout,
-                             QWidget)
+                             QVBoxLayout)
 
-import parameters
 import info_about
 import utils_for_tabs as uft
 import wat_inspector

@@ -23,7 +23,7 @@ see also the wat window and the python execute window in stuffdb
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
-    import main
+    pass
     # qt_widgets.main( )
 # --------------------
 
@@ -32,61 +32,22 @@ if __name__ == "__main__":
 #import subprocess
 #import sys
 #import time
-from datetime import datetime
-from functools import partial
-from subprocess import PIPE, STDOUT, Popen, run
 
-import wat
-from PyQt5 import QtGui
-from PyQt5.QtCore import (QDate,
-                          QDateTime,
-                          QModelIndex,
-                          QSize,
-                          Qt,
-                          QTime,
-                          QTimer)
-from PyQt5.QtGui import QColor, QPalette, QTextCursor, QTextDocument
 # sql
-from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 
-from PyQt5.QtWidgets import (QAction,
-                             QApplication,
-                             QButtonGroup,
-                             QCheckBox,
-                             QComboBox,
-                             QDateEdit,
-                             QDateTimeEdit,
-                             QDialog,
+from PyQt5.QtWidgets import (QDialog,
                              QFileDialog,
-                             QGridLayout,
-                             QGroupBox,
                              QHBoxLayout,
                              QLabel,
                              QLineEdit,
-                             QListWidget,
-                             QListWidgetItem,
-                             QMainWindow,
-                             QMenu,
                              QMessageBox,
                              QPushButton,
-                             QRadioButton,
-                             QSizePolicy,
-                             QTableView,
-                             QTableWidget,
-                             QTableWidgetItem,
-                             QTabWidget,
-                             QTextEdit,
-                             QTimeEdit,
-                             QVBoxLayout,
-                             QWidget)
+                             QVBoxLayout)
 
 
-from PyQt5.QtWidgets import (QApplication, QWidget, QPushButton, QLineEdit,
-                             QDialog, QVBoxLayout, QHBoxLayout, QLabel,
-                             QDialogButtonBox)
-from PyQt5.QtCore import pyqtSignal, pyqtSlot
+from PyQt5.QtWidgets import (QPushButton, QLineEdit,
+                             QDialog, QVBoxLayout, QHBoxLayout, QLabel)
 
-import parameters
 
 import utils_for_tabs as uft
 import wat_inspector

@@ -40,76 +40,26 @@ looked at
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
-    import main
+    pass
 # --------------------
 
 
-import inspect
 import json
 import os
-import subprocess
-import sys
-import time
-from datetime import datetime
-from functools import partial
-from subprocess import PIPE, STDOUT, Popen, run
 
-import wat
-from qtpy import QtGui
-from qtpy.QtCore import (QAbstractListModel,
-                          QAbstractTableModel,
-                          QDate,
-                          QDateTime,
-                          QModelIndex,
-                          QSize,
-                          Qt,
-                          QTime,
-                          QTimer)
-from qtpy.QtGui import QColor, QImage, QPalette, QTextCursor, QTextDocument, QIcon
+from qtpy.QtCore import (Qt)
+from qtpy.QtGui import QImage
 # sql
-from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel, QSqlQueryModel
+from qtpy.QtSql import QSqlTableModel
 # widgets biger
 # widgets -- small
 # layouts
-from qtpy.QtWidgets import (QAction,
-                             QApplication,
-                             QButtonGroup,
-                             QCheckBox,
-                             QComboBox,
-                             QDateEdit,
-                             QDateTimeEdit,
-                             QDial,
-                             QDoubleSpinBox,
-                             QFontComboBox,
-                             QGridLayout,
-                             QGroupBox,
-                             QHBoxLayout,
-                             QHeaderView,
-                             QLabel,
-                             QLCDNumber,
-                             QLineEdit,
-                             QListView,
-                             QListWidget,
-                             QListWidgetItem,
-                             QMainWindow,
-                             QMenu,
-                             QMessageBox,
-                             QProgressBar,
+from qtpy.QtWidgets import (QHBoxLayout,
                              QPushButton,
-                             QRadioButton,
-                             QSizePolicy,
-                             QSlider,
-                             QSpinBox,
                              QTableView,
-                             QTableWidget,
-                             QTableWidgetItem,
-                             QTabWidget,
                              QTextEdit,
-                             QTimeEdit,
-                             QVBoxLayout,
-                             QWidget)
+                             QVBoxLayout)
 
-import parameters
 #import qt_widgets
 import utils_for_tabs as uft
 import wat_inspector

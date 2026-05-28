@@ -18,67 +18,20 @@ if __name__ == "__main__":
 
 # ---- imports
 
-import inspect
-import os
-import subprocess
-import sys
-from functools import partial
-from platform import python_version
-from subprocess import PIPE, STDOUT, Popen, run
 
 #from app_global import AppGlobal
-from PyQt5 import QtGui
-from PyQt5.QtCore import (QDate,
-                          QModelIndex,
-                          QSize,
-                          QSortFilterProxyModel,
-                          Qt,
-                          QTimer)
+from PyQt5.QtCore import (QSortFilterProxyModel,
+                          Qt)
 # sql
-from PyQt5.QtSql import (QSqlDatabase,
-                         QSqlField,
-                         QSqlQuery,
-                         QSqlQueryModel,
-                         QSqlRecord,
+from PyQt5.QtSql import (QSqlQuery,
                          QSqlRelation,
-                         QSqlRelationalDelegate,
-                         QSqlRelationalTableModel,
-                         QSqlTableModel)
-from PyQt5.QtWidgets import (QAbstractItemView,
-                             QAction,
-                             QApplication,
-                             QButtonGroup,
-                             QCheckBox,
-                             QComboBox,
-                             QDataWidgetMapper,
-                             QDateEdit,
-                             QDialog,
-                             QDoubleSpinBox,
-                             QFormLayout,
-                             QGridLayout,
-                             QGroupBox,
-                             QHBoxLayout,
-                             QHeaderView,
-                             QLabel,
-                             QLineEdit,
-                             QListWidget,
-                             QListWidgetItem,
-                             QMainWindow,
-                             QMenu,
-                             QMessageBox,
+                         QSqlRelationalTableModel)
+from PyQt5.QtWidgets import (QHBoxLayout,
                              QPushButton,
-                             QRadioButton,
-                             QSpinBox,
-                             QStyledItemDelegate,
                              QTableView,
-                             QTableWidget,
-                             QTableWidgetItem,
-                             QTabWidget,
-                             QTextEdit,
                              QVBoxLayout,
                              QWidget)
 
-import parameters
 import utils_for_tabs as uft
 import wat_inspector
 
@@ -531,7 +484,6 @@ class QSqlRelationalTableModelTab_3( QWidget ):
             #     print("Error committing changes:", model.lastError().text())
         else:
             print("Error inserting record:", model.lastError().text())
-        pass
 
         print( "the database has not yet been updated -- you may want to update_db, select_all or get_data_from_model next ")
 
@@ -568,7 +520,6 @@ class QSqlRelationalTableModelTab_3( QWidget ):
 
         else:
             print("Error inserting record:", model.lastError().text())
-        pass
 
         print( "the database has not yet been updated -- you may want to update_db, select_all or get_data_from_model next ")
 

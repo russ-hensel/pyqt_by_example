@@ -11,12 +11,7 @@ Note the setup code that allows it to work.
 import sys
 import time
 
-from qtpy.QtWidgets import (QAction,
-                             QApplication,
-                             QDateEdit,
-                             QMainWindow,
-                             QMenu,
-                             QSizePolicy)
+from qtpy.QtWidgets import (QApplication)
 
 #import qt_wat_app.py
 import wat_inspector
@@ -76,7 +71,6 @@ def a_wat_function():
 
 # --------------------
 if __name__ == "__main__":
-    pass
 
 
     # wat_setup()

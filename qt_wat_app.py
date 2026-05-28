@@ -14,23 +14,13 @@ qt_wat_app.py
 """
 
 import sys
-from functools import partial
 
-from qtpy import QtGui
 from qtpy.QtWidgets import (QApplication,
-                             QButtonGroup,
-                             QCheckBox,
-                             QComboBox,
                              QGridLayout,
-                             QGroupBox,
                              QLabel,
                              QLineEdit,
                              QMainWindow,
-                             QMessageBox,
                              QPushButton,
-                             QRadioButton,
-                             QTextEdit,
-                             QVBoxLayout,
                              QWidget)
 
 import wat_inspector  # wat_setup

@@ -8,10 +8,10 @@
 KEY_WORDS:      chapter View  formating fitzz rsh
 CLASS_NAME:     Fitz_22_Tab
 WIDGETS:        QAbstractTableModel  QTableView DecorationRole    BackgroundRole QIcon TextAlignmentRole
-STATUS:         runs_correctly_5_10      demo_complete_2_10   !! review_key_words   !! review_help_0_10
+STATUS:         runs_correctly_but lots unimplemented
 TAB_TITLE:      Fitz Chapt 22 / Table Model
 DESCRIPTION:    Code modeled on FitzBook ...
-HOW_COMPLETE:   15  #  AND A COMMENT -- <10 major probs  <15 runs but <20 fair not finished  <=25 not to shabby
+HOW_COMPLETE:   13  #  AND A COMMENT -- <10 major probs  <15 runs but <20 fair not finished  <=25 not to shabby
 """
 WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/fitz-22-model-view"
 """
@@ -38,76 +38,27 @@ largely the last
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
-    import main
+    pass
 # --------------------
 
 
-import inspect
 import json
 import os
-import subprocess
-import sys
-import time
 from datetime import datetime
-from functools import partial
-from subprocess import PIPE, STDOUT, Popen, run
 
-import wat
 from qtpy import QtGui
-from qtpy.QtCore import (QAbstractListModel,
-                          QAbstractTableModel,
-                          QDate,
-                          QDateTime,
-                          QModelIndex,
-                          QSize,
-                          Qt,
-                          QTime,
-                          QTimer)
-from qtpy.QtGui import QColor, QImage, QPalette, QTextCursor, QTextDocument, QIcon
+from qtpy.QtCore import (QAbstractTableModel,
+                          Qt)
+from qtpy.QtGui import QColor, QImage, QIcon
 # sql
-from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 # widgets biger
 # widgets -- small
 # layouts
-from qtpy.QtWidgets import (QAction,
-                             QApplication,
-                             QButtonGroup,
-                             QCheckBox,
-                             QComboBox,
-                             QDateEdit,
-                             QDateTimeEdit,
-                             QDial,
-                             QDoubleSpinBox,
-                             QFontComboBox,
-                             QGridLayout,
-                             QGroupBox,
-                             QHBoxLayout,
-                             QLabel,
-                             QLCDNumber,
-                             QLineEdit,
-                             QListView,
-                             QListWidget,
-                             QListWidgetItem,
-                             QMainWindow,
-                             QMenu,
-                             QMessageBox,
-                             QProgressBar,
-                             QPushButton,
-                             QRadioButton,
-                             QSizePolicy,
-                             QSlider,
-                             QSpinBox,
+from qtpy.QtWidgets import (QHBoxLayout,
                              QTableView,
-                             QTableWidget,
-                             QTableWidgetItem,
-                             QTabWidget,
                              QTextEdit,
-                             QTimeEdit,
-                             QVBoxLayout,
-                             QWidget)
+                             QVBoxLayout)
 
-import parameters
-import utils_for_tabs as uft
 import wat_inspector
 import tab_base
 
@@ -217,7 +168,6 @@ class TableModel( QAbstractTableModel ):
     def set_row_color(self, row, color):
         self._row_colors[row] = color
 
-
 #  --------
 class Fitz_22_Tab( tab_base.TabBase ) :
     def __init__(self):
@@ -225,8 +175,7 @@ class Fitz_22_Tab( tab_base.TabBase ) :
 
         """
         super().__init__()
-        self.module_file       = __file__      # save for help file usage
-
+        self.module_file        = __file__      # save for help file usage
 
         global WIKI_LINK
         self.wiki_link          = WIKI_LINK
@@ -240,15 +189,6 @@ class Fitz_22_Tab( tab_base.TabBase ) :
         self._build_gui()
 
     # -------------------------------
-    def _build_guixxxxx(self,   ):
-        """
-        layouts
-            a vbox for main layoutnew base tab stagetwo
-            h_box for or each row of widgets
-        """
-        tab_page      = self
-        layout        = QVBoxLayout( tab_page )
-
     def _build_gui_widgets(self, main_layout  ):
         """
         the usual, build the gui with the widgets of interest
@@ -290,29 +230,6 @@ class Fitz_22_Tab( tab_base.TabBase ) :
         #widget.clicked.connect( self.inspect    )
         row_layout.addWidget( widget,   )
 
-        # # # ---- new row,
-        # # button_layout = QHBoxLayout(   )
-        # # layout.addLayout( button_layout,  )
-
-        # # ---- "add\n_todo"
-        # widget = QPushButton("add\n_todo")
-        # widget.clicked.connect( self.add    )
-        # row_layout.addWidget( widget,   )
-
-        # # ---- new row,
-        # row_layout = QHBoxLayout(   )
-        # layout.addLayout( row_layout,  )
-
-        # # ---- PB self.load
-        # widget = QPushButton("load\n")
-        # widget.clicked.connect( self.load    )
-        # row_layout.addWidget( widget,   )
-
-        # # ---- PB self.save
-        # widget = QPushButton("save\n")
-        # widget.clicked.connect( self.save    )
-        # row_layout.addWidget( widget,   )
-
         # ---- new row,
         row_layout = QHBoxLayout(   )
         layout.addLayout( row_layout,  )
@@ -338,7 +255,7 @@ class Fitz_22_Tab( tab_base.TabBase ) :
 
         data            = 5 * data
         self.data       = data # just for debug
-        self.model      = TableModel(data)
+        self.model      = TableModel( data )
         self.model.set_row_color(1, "#b2182b")
         self.model.set_row_color(3, "#92c5de")
 
@@ -347,6 +264,7 @@ class Fitz_22_Tab( tab_base.TabBase ) :
         # too soon form mesages
         # self.append_msg( "button code from other example may reacivate some ")
 
+    # -------------------------------
     def add(self):
         """
         Add an item to our todo list, getting the text from the QLineEdit .todoEdit
@@ -365,6 +283,7 @@ class Fitz_22_Tab( tab_base.TabBase ) :
             # Empty the input
             self.todoEdit.setText("")
 
+    # -------------------------------
     def delete(self):
         """ """
         self.append_function_msg( "delete()" )
@@ -379,6 +298,7 @@ class Fitz_22_Tab( tab_base.TabBase ) :
             # Clear the selection (as it is no longer valid).
             self.todoView.clearSelection()
 
+    # -------------------------------
     def complete(self):
         """
         mark selected row as complete
@@ -403,6 +323,7 @@ class Fitz_22_Tab( tab_base.TabBase ) :
             self.append_msg( msg )
 
     # tag::loadsave[]
+    # -------------------------------
     def load(self):
         self.append_function_msg( "load()" )
 
@@ -415,7 +336,7 @@ class Fitz_22_Tab( tab_base.TabBase ) :
         self.model.layoutChanged.emit()
             # This triggers a refresh of the entirety of the view. I
 
-
+    # -------------------------------
     def save(self):
         self.append_function_msg( "save()" )
 
@@ -463,6 +384,7 @@ class Fitz_22_Tab( tab_base.TabBase ) :
              a_globals      = globals(), )
 
         self.append_msg( tab_base.DONE_MSG )
+
     # ------------------------
     def breakpoint(self):
         """
@@ -476,3 +398,6 @@ class Fitz_22_Tab( tab_base.TabBase ) :
         self.append_msg( tab_base.DONE_MSG )
 
 # ---- eof
+
+
+

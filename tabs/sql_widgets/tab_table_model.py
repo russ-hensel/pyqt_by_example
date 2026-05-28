@@ -5,89 +5,42 @@
 tab_table_model.py
 
 
-
-self.help_file_name     =  "table_model_tab.txt"
-
 KEY_WORDS:      programatically populated tabe for data add remove select
 CLASS_NAME:     TableModelTab
 WIDGETS:        QAbstractTableModel QTableView QSortFilterProxyModel
-STATUS:         works
-TAB_TITLE:      TableModel with Proxy
-
+STATUS:         more or less a mess, think never finished
+TAB_TITLE:      QAbstractTableModel / with Proxy
+DESCRIPTION:    A reference for the QAbstractTableModel widget
+HOW_COMPLETE:   10  #  AND A COMMENT -- <10 major probs  <15 runs but <20 fair not finished  <=25 not to shabby
 
 """
+WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-About-QPushButtons"
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
-    import main
-
+    import main   # noqa  stops auto removal by pycln
 # --------------------
 
-
-import inspect
-import subprocess
-import sys
-import time
-from datetime import datetime
 from functools import partial
-from subprocess import PIPE, STDOUT, Popen, run
 
-import wat
-from qtpy import QtGui
 from qtpy.QtCore import (QAbstractTableModel,
-                          QDate,
-                          QDateTime,
                           QModelIndex,
-                          QRectF,
-                          QSize,
                           QSortFilterProxyModel,
                           Qt,
-                          QTime,
-                          QTimer,
-                          # pyqtSlot seem to be qtpy error  was not used
                           )
 
-# from qtpy.QtCore import Slot
-
-
-from qtpy.QtGui import QColor, QPalette, QTextCursor, QTextDocument
-
-from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
-
-from qtpy.QtWidgets import (QAction,
-                             QApplication,
-                             QButtonGroup,
-                             QCheckBox,
-                             QComboBox,
-                             QDateEdit,
-                             QDateTimeEdit,
-                             QGridLayout,
-                             QGroupBox,
-                             QHBoxLayout,
+from qtpy.QtWidgets import ( QHBoxLayout,
                              QHeaderView,
-                             QLabel,
-                             QLineEdit,
-                             QListWidget,
-                             QListWidgetItem,
-                             QMainWindow,
-                             QMenu,
-                             QMessageBox,
                              QPushButton,
-                             QRadioButton,
-                             QSizePolicy,
                              QTableView,
-                             QTableWidget,
-                             QTableWidgetItem,
-                             QTabWidget,
-                             QTextEdit,
-                             QTimeEdit,
-                             QVBoxLayout,
-                             QWidget)
+                             QVBoxLayout)
 
-import parameters
 
 import utils_for_tabs as uft
 import wat_inspector
+
+import tab_base
+
 
 print_func_header =  uft.print_func_header
 
@@ -107,20 +60,8 @@ class ATableModel( QAbstractTableModel ):
         self._data      = []
         self._headers   = headers
         self.indexer    = None
-        """
-        model.indexer.index_tuple = ( 0, 1 )
-        """
 
-    #-------
-    def add_indexer (self, index_tuple ):
-        """
-        what it says read
-        index tuple for now pair of column numbers to use as an index to model
-
-        """
-        self.indexer    = ModelIndexer( self, index_tuple  )
-
-    #-------
+    # ------------------------
     def rowCount(self, index=None):
         """
         what it says read
@@ -128,20 +69,20 @@ class ATableModel( QAbstractTableModel ):
         """
         return len(self._data)
 
+    # ------------------------
     def columnCount(self, index=None):
         return len(self._headers)
 
+    # ------------------------
     def data(self, index, role=Qt.DisplayRole):
         if role == Qt.DisplayRole:
             return self._data[index.row()][index.column()]
 
+    # ------------------------
     def set_data(self, data ):
         self._data      = data
 
-    # def add_data(self, data ):
-    #     pass
-
-
+    # ------------------------
     def set_data_at_index(self, index, value, role=Qt.EditRole):
         """
         index might be index = model.index(ix_row,  ix_col )  # Row 1, Column 1
@@ -162,6 +103,7 @@ class ATableModel( QAbstractTableModel ):
             return True
         return False
 
+    # ------------------------
     def headerData(self, section, orientation, role=Qt.DisplayRole):
         if role == Qt.DisplayRole:
             if orientation == Qt.Horizontal:
@@ -169,7 +111,7 @@ class ATableModel( QAbstractTableModel ):
             elif orientation == Qt.Vertical:
                 return str(section + 1)
 
-
+    # ------------------------
     def addRow(self, row_data):
         """
         read
@@ -180,17 +122,18 @@ class ATableModel( QAbstractTableModel ):
         self._data.append(row_data)
         self.endInsertRows()
 
-
+    # ------------------------
     def removeRow(self, row_index):
         """
         what it says, read
+        !! emits seem to be messed up fixed ?
         """
         # self.beginRemoveRows(self.index(row_index, 0), row_index, row_index)
         self.beginRemoveRows(self.createIndex(row_index, 0).parent(), row_index, row_index)
         self._data.pop( row_index )
         self.endRemoveRows()
         self.layoutChanged.emit()
-        self.datatChanged.emit()
+        self.dataChanged.emit()
         #return True
 
     # ---------------------------
@@ -203,46 +146,63 @@ class ATableModel( QAbstractTableModel ):
         self.endResetModel()
 
 #-----------------------------------------------
-class TableModelTab( QWidget ):
+class TableModelTab( tab_base.TabBase  ):
     """
-    and table view
-    from  QAbstractTableModel
-    see ez_qt table_widget and table_model table_widget
+        see ez_qt table_widget and table_model table_widget
     """
     def __init__(self, ):
         """
         the usual
         """
-        super().__init__( )
+        super().__init__()
+
         self.help_file_name     =  "table_model_tab.txt"
         self.sort_ix            = 0 # modify sort each time
+
+        self.module_file        = __file__      # save for help file usage
+
+        global WIKI_LINK
+        self.wiki_link          = WIKI_LINK
+
+        # modify to match the number of mutate methods in this module
+        self.mutate_dict[0]     = self.mutate_0
+        self.mutate_dict[1]     = self.mutate_1
+        # self.mutate_dict[2]     = self.mutate_2
+        # self.mutate_dict[3]     = self.mutate_3
+        # self.mutate_dict[4]     = self.mutate_4
+        self.table_model_is_hidden = False   # !! really needs a rework
         self.build_model()
-        self.build_tab()
+        self._build_gui()
 
-        self.mutation_ix        = 0
-        self.mutation_max       = 0  # inclusive
-        self.mutation_dispatch  = { 0: self.mutate_0,
-                                    # 1: self.mutate_1,
-                                    # 2: self.mutate_2,
-                                    # 3: self.mutate_3,
-                                    }
-
-
-
-    #-----------------------------------------------
-    def build_tab( self, ):
+    #--------------------------
+    def _build_gui_widgets( self, main_layout ):
         """
-        the usual
-        """
-        self.table_model_is_hidden  = False
+        the usual, build the gui with the widgets of interest
 
-        tab_page      = self
-        layout        = QVBoxLayout( tab_page )
+        main_layout will be a QVBoxLayout
+        this just does a basic build -- the framework will then automatically
+        call mutate_0()
+
+        this is important content for the widgets referenced on this tab
+
+        """
+        layout              = QHBoxLayout()
+        main_layout.addLayout( layout )
+
+        # too clever ??
+        main_layout.addLayout( layout := QVBoxLayout() )
+
+        # ---- new row
+        row_layout          = QHBoxLayout(   )
+        layout.addLayout( row_layout )
+
+        table_view    = self.table_view
+        row_layout.addWidget( table_view )
 
         button_layout = QHBoxLayout(   )
 
-        table_view    = self.table_view
-        layout.addWidget( table_view )
+        # ---- QPushButtons
+        layout.addLayout( button_layout )
 
         # ---- QPushButtons
         layout.addLayout( button_layout )
@@ -307,21 +267,19 @@ class TableModelTab( QWidget ):
         widget.clicked.connect(self.table_model_inspect )
         button_layout.addWidget( widget )
 
-        # ---- PB inspect
-        widget = QPushButton("inspect\n")
-        widget.clicked.connect( self.inspect    )
-        button_layout.addWidget( widget,   )
+        # ---- new row, for build_gui_last_buttons
+        button_layout = QHBoxLayout(   )
+        layout.addLayout( button_layout, )
 
-        # ---- PB breakpoint
-        widget = QPushButton("breakpoint\n")
-        widget.clicked.connect( self.breakpoint    )
-        button_layout.addWidget( widget,   )
+        # our ancestor finishes off the tab with some
+        # standard buttons
+        self.build_gui_last_buttons( button_layout )
 
     # -------------------------------------
     def build_model(self,   ):
         """
         what it says
-        and view.....
+        and view..... self.table_view
         """
         headers = ["Name", "Age", "Occupation" ]
         #self.view           = QTableView()
@@ -360,17 +318,14 @@ class TableModelTab( QWidget ):
             seems ok
         populates a row at a time
         """
-        print_func_header( "table_model_tab_populate" )
+        self.append_msg( "table_model_tab_populate -- add rows" )
 
         model      = self.table_model
-        #print( f" add_to_model_all_subjects {photo_id = } , {table = }, {table_id = },  {info =} "  )
-        #key           = ( table, table_id )
-        #key_row       = model_display.indexer.find( key )
-        # set_row_of_data
+
         for ix in range( 3 ):
             # self.view_all_subjects.setModel(  self.model_all_subjects )
             # model        = self.model_display
-            row_data     = [  f"a{ix}", f"b{ix}",   f"c{ix}", f"d{ix}"   ]
+            row_data     = [ f"a{ix}", f"b{ix}",   f"c{ix}", f"d{ix}" ]
             #rint( f"{row_data = }")
             model.addRow( row_data)
             #model_display.indexer.set_is_valid( False )
@@ -386,10 +341,10 @@ class TableModelTab( QWidget ):
         this is messed up might want to start over with chat
         !! revisit
         """
-        print_func_header( "table_model_hide_unhide !! fix me " )
+        self.append_msg(  "table_model_hide_unhide !! fix me " )
 
-        if self.table_model_filter:
-            self.table_model_filter   = FilterProxyModelHideRows( )
+        # if self.table_model_filter:
+        #     self.table_model_filter   = FilterProxyModelHideRows( )
 
     #-----------------------------------------------
     def double_clicked( self, index: QModelIndex):
@@ -397,11 +352,11 @@ class TableModelTab( QWidget ):
         what it says,
         index comes from table view
         """
-        print_func_header( "double_clicked" )
+        self.append_msg( "double_clicked" )
 
         model    = self.table_model
         row      = index.row()
-        print( f"on_row_other_clicked {row = }")
+        self.append_msg(  f"on_row_other_clicked {row = }")
         #self.add_ix_other( row )
 
     #-----------------------------------------------
@@ -410,22 +365,21 @@ class TableModelTab( QWidget ):
         what it says,
         index comes from table view
         """
-        print_func_header( "clicked" )
+        self.append_msg( "clicked" )
 
         model    = self.table_model
         row      = index.row()
-        print( f"on_row_other_clicked {row = }")
+        self.append_msg(  f"on_row_other_clicked {row = }" )
 
         self.select_row( row )
 
-
-
+    #-----------------------------------------------
     def select_column(self, ):
         """
         Select a specific column.
         may want to test and hook up
         """
-        print_func_header( "select_column" )
+        self.append_msg( "select_column" )
 
         col_index       = 1
 
@@ -441,29 +395,33 @@ class TableModelTab( QWidget ):
     # ------------------------
     def get_selected_rows(self, index,   ):
         """ """
-        print_func_header( "get_selected_rows" )
+        self.append_msg( "get_selected_rows" )
 
         view            = self.table_view
 
-        print( "the selected rows follow.... ")
+        self.append_msg( "the selected rows follow.... " )
+
         selection_model = view.selectionModel()
+
         if selection_model:
             selected_indexes = selection_model.selectedRows()
 
             for index in selected_indexes:
                 row = index.row()
-                print(f"Selected row: {row = }")
+                self.append_msg( f"Selected row: {row = }" )
 
     #-----------------------------------------------
     def table_model_toggle_hide_column(self,   ):
         """
         we actually use the view
         """
-        print_func_header( "table_model_toggle_hide_column" )
+        self.append_msg( "table_model_toggle_hide_column" )
 
         self.table_model_is_hidden  = not self.table_model_is_hidden
+
         if self.table_model_is_hidden:
             self.table_model_table_view.hideColumn( 1 )
+
         else:
             self.table_model_table_view.showColumn( 1 )
 
@@ -475,75 +433,66 @@ class TableModelTab( QWidget ):
         what it says
         seem ok
         """
-        print_func_header( "table_model_tab_get_data" )
+        self.append_msg( "table_model_tab_get_data" )
 
         model           = self.table_model
 
         data_list       = [  ]
         ix_row          = 0
+
         for ix_col in range( 3 ):
             index     = model.index( ix_row, ix_col )
             data      = model.data( index, ) #role=Qt.DisplayRole)
             data_list.append( data )
-        print( f"table_model_tab_get_data   {data_list = }" )
+
+        self.append_msg( f"table_model_tab_get_data {data_list = }" )
 
     # ------------------------------------------
     def table_model_inspect(self):
         """
         what it says, read
         """
-        print_func_header( "table_model_inspect" )
+        self.append_msg( "table_model_inspect" )
 
         view     = self.table_model_table_view
         # def get_selected_row_and_column():
         selected_indexes = view.selectionModel().selectedIndexes()
+
         if selected_indexes:
+
             for index in selected_indexes:
                 row     = index.row()
                 column  = index.column()
-                print(f"Selected Cell - Row: {row}, Column: {column}")
+                self.append_msg( f"Selected Cell - Row: {row}, Column: {column}")
+
         else:
-            print("No selection")
-
-    # # -------------------------------------
-    # def select_row(self, row_index ):
-    #     """
-    #     Select a specific row.
-    #     may depend on selection mode
-    #     """
-    #     print_func_header( "select_row" )
-
-    #     print( f"select_row {row_index = }")
-    #     self.table_widget.selectRow( row_index )
-    #     self.table_widget.show()
+            self.append_msg( "No selection" )
 
     #-----------------------------------------------
     def select_row(self, row_index ):
           """
           Select a specific row.
           """
-
-          print_func_header( "select_row" )
+          self.append_msg( "\nselect_row" )
           model           = self.table_model
           view            = self.table_view
           # Get the selection model from the view
           selection_model = view.selectionModel()
 
-          row_start       = model.index(row_index, 0)
-          row_end         = model.index(row_index, model.columnCount() - 1)
+          row_start       = model.index( row_index, 0 )
+          row_end         = model.index( row_index, model.columnCount() - 1 )
 
-          selection_model.select(row_start, selection_model.Select | selection_model.Rows)
+          selection_model.select( row_start, selection_model.Select | selection_model.Rows )
 
     # ------------------------------------------
     def add_row_at_end(self):
         """
         may work needs to be hooked up
         """
-        print_func_header( "add_row_at_end" )
+        self.append_msg( "\nadd_row_at_end" )
 
-        row_position = self.table_widget_1.rowCount()
-        self.table_widget_1.insertRow( row_position )
-
+        row_position = self.table_model.rowCount()
+        self.table_model.insertRow( row_position )
 
     # ------------------------------------------
     def clear_all_rows(self):
@@ -551,6 +500,7 @@ class TableModelTab( QWidget ):
         what it says
 
         """
+        self.append_msg( "\nclear_all_rows" )
         model           = self.table_model
         model.clear_data()
 
@@ -560,7 +510,7 @@ class TableModelTab( QWidget ):
         what it says
         see also selection in get_selected_rows
         """
-        print_func_header( "get_selected_rows" )
+        self.append_msg( "\nget_selected_rows" )
 
         model           = self.table_model
         view            = self.table_view
@@ -568,22 +518,21 @@ class TableModelTab( QWidget ):
         row             = -1
         # Assuming `view` is your QTableView
         selection_model = view.selectionModel()
+
         if selection_model:
             selected_indexes = selection_model.selectedRows()
 
             # will get the first selected
             for index in selected_indexes:
                 row = index.row()
-                print(f"Selected row: {row = }")
+                self.append_msg(f"Selected row: {row = }")
                 break   # only get one
 
         if row == -1:
-            print( "no selected row")
+            self.append_msg( "no selected row")
             return
 
         model.removeRow( row )
-
-
 
     # ------------------------------
     def set_size(self):
@@ -591,11 +540,11 @@ class TableModelTab( QWidget ):
         read it
         may work needs to be hooked up
         """
-        print_func_header( "set_size" )
+        self.append_msg( "\nset_size" )
 
-        self.table_widget_1.horizontalHeader().setStretchLastSection(True)
-        self.table_widget_1.horizontalHeader().setSectionResizeMode(
-            QHeaderView.Stretch)
+        self.table_model.horizontalHeader().setStretchLastSection( True )
+        self.table_model.horizontalHeader().setSectionResizeMode(
+                                               QHeaderView.Stretch )
 
     # ------------------------------
     def sort(self):
@@ -603,7 +552,7 @@ class TableModelTab( QWidget ):
         read it
 
         """
-        print_func_header( "sort" )
+        self.append_msg( "\nsort" )
 
         # !! more research on args
         self.sort_ix  += 1
@@ -612,43 +561,48 @@ class TableModelTab( QWidget ):
 
         if self.sort_ix == 0:
             sort_order  = Qt.AscendingOrder
+
         else:
-            sort_order  = Qt.DescendingOrder
-        print( "sort on column 1 {sort_order = }" )
+            sort_order  = Qt.DescendingOrder   # Qt.AscendingOrder
+
+        self.append_msg( f"sort on column 1 {sort_order = }" )
         self.proxy_model.sort(  1, sort_order  )
-        #proxy_model.sort(1, Qt.AscendingOrder)  # Column index 1, ascending
-
-    # ------------------------------
-    # def on_list_clicked( self  index: QModelIndex ): ) :
-    #     """
-    #     read it
-    #     """
-    #     msg   = "click headers to sort   "
-    #     print( msg )
-
-    #----------------------------
-    def mutate( self  ):
-        """
-        read it
-        """
-        print_func_header( "mutate -- likely broken " )
-        self.mutation_ix   += 1
-        if self.mutation_ix > self.mutation_max:
-            self.mutation_ix = 0
-        self.mutation_dispatch[ self.mutation_ix ]()
 
     #----------------------------
     def mutate_0( self  ):
         """
         read it
-        getText get text
+
         """
-        print_func_header( "mutate_0" )
-        table   = self.table_widget
-        table.hideRow( 1 )
-        table.hideColumn( 1 )
+        self.append_function_msg( "mutate_0()" )
+        table   = self.table_model
+        view    = self.table_view
 
+        msg     = "hide row and column 1"
+        self.append_msg( msg )
 
+        view.hideRow( 1 )
+        view.hideColumn( 1 )
+
+        self.append_msg( tab_base.DONE_MSG )
+
+    #----------------------------
+    def mutate_1( self  ):
+        """
+        read it
+
+        """
+        self.append_function_msg( "mutate_1()" )
+        table   = self.table_model
+        view    = self.table_view
+
+        msg     = "show row and column 1"
+        self.append_msg( msg )
+
+        view.showRow( 1 )
+        view.showColumn( 1 )
+
+        self.append_msg( tab_base.DONE_MSG )
 
     # ------------------------------
     def on_cell_clicked( self, row, col  ):
@@ -657,15 +611,7 @@ class TableModelTab( QWidget ):
 
         may work needs to be hooked up
         """
-        print_func_header( "on_cell_clicked" )
-
-        table      = self.table_widget_1
-
-        item       = table.item( row, col )
-        if item:
-            print(f"Cell clicked: Row {row}, Column {col}, Data: {item.text()}")
-        else:
-            print(f"Cell clicked: Row {row}, Column {col}, Data: None")
+        self.append_msg( "\non_cell_clicked" )
 
     # ------------------------------
     def search(self, search_for   = "1," ):
@@ -675,31 +621,35 @@ class TableModelTab( QWidget ):
 
         may work needs to be hooked up
         """
-        print_func_header( "search" )
+        self.append_msg( "\nsearch" )
 
         search_for   = "1,"
         msg          = f"search {search_for = }"
         print( msg )
-        a_widget    =    self.table_widget_1
-        # Clear current selection.
+        a_widget    =    self.table_model
+
+        # Clear current selection first ??
         a_widget.setCurrentItem( None )
 
         if not search_for:
             msg      =  "Empty string, don't search."
-            print( msg )
+            self.append_msg( msg )
             return
 
-        matching_items = a_widget.findItems(search_for,  Qt.MatchContains )
+        matching_items = a_widget.findItems( search_for, Qt.MatchContains )
+
         if matching_items:
             # We have found something.
             item       = matching_items[0]  # Take the first.
             msg        = f"found {item = }"
-            print( msg )
+            self.append_msg( msg )
             a_widget.setCurrentItem(item)
+
         else:
             msg        = f"nothing found {search_for = }"
-            print( msg )
+            self.append_msg( msg )
 
+    # ------------------------
     def find_row_with_text( self  ):
         """
         read it
@@ -707,7 +657,7 @@ class TableModelTab( QWidget ):
         """
         print_func_header( "find_row_with_text" )
 
-        table               = self.table_widget_1
+        table               = self.table_model
         ix_col_searched     = 2
         ix_found            = None
         target_text   = "Cell (2, 2)"
@@ -716,10 +666,12 @@ class TableModelTab( QWidget ):
             if item and item.text() == target_text:
                 ix_found = row
 
-        print( f"find_row_with_text {ix_found = }")
+        msg    = ( f"find_row_with_text {ix_found = }")
+        self.append_msg( msg )
 
         return ix_found
 
+    # ------------------------
     def find_row_with_text_in_column(self, ):
         """
         not used? in error
@@ -728,29 +680,30 @@ class TableModelTab( QWidget ):
         from chat
         may be ok not yet tested
         """
-        print_func_header( "find_row_with_text_in_column !! fix me " )
+        msg         = ( "find_row_with_text_in_column !! fix me " )
+        self.append_msg( msg )
 
-        table               = self.table_widget_1
+        table       = self.table_model
 
-        ix_col_searched     = 2
-        ix_found            = None
-        target_text     = "xyz"
+        # ix_col_searched     = 2
+        # ix_found            = None
+        # target_text     = "xyz"
 
-        matching_items = table_widget.findItems(target_text, QtCore.Qt.MatchExactly)
-        for item in matching_items:
-            if item.column() == column:
-                ix_found            =  item.row()
+        # matching_items = table.findItems( target_text, QtCore.Qt.MatchExactly)
+        # for item in matching_items:
+        #     if item.column() == column:
+        #         ix_found            =  item.row()
 
-        print( f"find_row_with_text {ix_found = }")
+        # print( f"find_row_with_text {ix_found = }")
 
-        return ix_found
+        # return ix_found
 
     # ------------------------
     def inspect(self):
         """
         the usual
         """
-        print_func_header( "inspect" )
+        self.append_function_msg( tab_base.INSPECT_MSG )
 
         self_table_model    = self.table_model
         self_table_view     = self.table_view
@@ -760,15 +713,21 @@ class TableModelTab( QWidget ):
              a_locals       = locals(),
              a_globals      = globals(), )
 
+        self.append_msg( tab_base.DONE_MSG )
+
     # ------------------------
     def breakpoint(self):
         """
         each tab gets its own function so we break in that
         tabs code
         """
-        print_func_header( "breakpoint" )
+        self.append_function_msg( tab_base.BREAK_MSG )
 
         breakpoint()
 
+        self.append_msg( tab_base.DONE_MSG )
 
 # ---- eof
+
+
+

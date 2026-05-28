@@ -25,68 +25,36 @@ Some Notes:
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
-    import main
+    pass
 # --------------------------------
 
 
-import inspect
 import subprocess
 # import sys
 # import time
 # from datetime import datetime
 from functools import partial
-from subprocess import PIPE, STDOUT, Popen, run
 import webbrowser
 
 
-import wat
 
 
 from qtpy.QtWidgets import QApplication, QTextEdit, QMenu
-from qtpy.QtCore import Qt, QPoint, QTimer
+from qtpy.QtCore import Qt, QPoint
 from qtpy.QtGui import QContextMenuEvent
 from qtpy.QtCore import QPoint
 from qtpy import QtCore
-from qtpy import QtGui
-from qtpy.QtCore import (QDate,
-                          QDateTime,
-                          QModelIndex,
-                          QSize,
-                          Qt,
-                          QTime,
-                          QTimer)
-from qtpy.QtGui import QColor, QPalette, QTextCursor, QTextDocument
+from qtpy.QtCore import (Qt)
+from qtpy.QtGui import QTextCursor, QTextDocument
 # sql
-from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 
-from qtpy.QtWidgets import (QAction,
-                             QApplication,
-                             QButtonGroup,
-                             QCheckBox,
-                             QComboBox,
-                             QDateEdit,
-                             QDateTimeEdit,
+from qtpy.QtWidgets import (QApplication,
                              QGridLayout,
-                             QGroupBox,
                              QHBoxLayout,
-                             QLabel,
                              QLineEdit,
-                             QListWidget,
-                             QListWidgetItem,
-                             QMainWindow,
                              QMenu,
-                             QMessageBox,
                              QPushButton,
-                             QRadioButton,
-                             QSizePolicy,
-                             QTableView,
-                             QTableWidget,
-                             QTableWidgetItem,
-                             QTabWidget,
-                             QTextEdit,
-                             QTimeEdit,
-                             QVBoxLayout,
-                             QWidget)
+                             QTextEdit)
 
 
 
@@ -555,7 +523,6 @@ class TextEditMixin(  ):
         elif cmd == "idle_file":   # want a one line and may line
             file_name     = cmd_args[0]
             self.idle_exe.idle_file( file_name  )
-            pass  # debug
 
         # ---- text
         elif cmd == "text":

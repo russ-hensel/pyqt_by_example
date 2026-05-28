@@ -14,69 +14,20 @@ tab_q_sql_relational_model_1.QSqlRelationalTableModelTab_1()
 # ---- imports
 
 
-import inspect
-import os
-import subprocess
-import sys
 #	addWidget(QWidget *widget, int stretch = 0, Qt::Alignment alignment = Qt::Alignment())
 # import PyQt5.QtWidgets as qtw    #  qt widgets avoid so much import above
-from functools import partial
-from platform import python_version
-from subprocess import PIPE, STDOUT, Popen, run
 
 #from app_global import AppGlobal
-from PyQt5 import QtGui
-from PyQt5.QtCore import (QDate,
-                          QModelIndex,
-                          QSize,
-                          QSortFilterProxyModel,
-                          Qt,
-                          QTimer)
+from PyQt5.QtCore import (Qt)
 # sql
-from PyQt5.QtSql import (QSqlDatabase,
-                         QSqlField,
-                         QSqlQuery,
-                         QSqlQueryModel,
-                         QSqlRecord,
-                         QSqlRelation,
-                         QSqlRelationalDelegate,
-                         QSqlRelationalTableModel,
-                         QSqlTableModel)
-from PyQt5.QtWidgets import (QAbstractItemView,
-                             QAction,
-                             QApplication,
-                             QButtonGroup,
-                             QCheckBox,
-                             QComboBox,
-                             QDataWidgetMapper,
-                             QDateEdit,
-                             QDialog,
-                             QDoubleSpinBox,
-                             QFormLayout,
-                             QGridLayout,
-                             QGroupBox,
-                             QHBoxLayout,
-                             QHeaderView,
-                             QLabel,
-                             QLineEdit,
-                             QListWidget,
-                             QListWidgetItem,
-                             QMainWindow,
-                             QMenu,
-                             QMessageBox,
+from PyQt5.QtSql import (QSqlRelation,
+                         QSqlRelationalTableModel)
+from PyQt5.QtWidgets import (QHBoxLayout,
                              QPushButton,
-                             QRadioButton,
-                             QSpinBox,
-                             QStyledItemDelegate,
                              QTableView,
-                             QTableWidget,
-                             QTableWidgetItem,
-                             QTabWidget,
-                             QTextEdit,
                              QVBoxLayout,
                              QWidget)
 
-import parameters
 import utils_for_tabs as uft
 import wat_inspector
 
@@ -287,7 +238,6 @@ class QSqlRelationalTableModelTab_1( QWidget ):
                 print("Error committing changes:", model.lastError().text())
         else:
             print("Error inserting record:", model.lastError().text())
-        pass
 
     # ------------------------
     def xxxx(self):

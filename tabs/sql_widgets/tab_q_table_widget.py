@@ -20,66 +20,20 @@ WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/QTableWid
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
-    import main
+    pass
     #main.main()
 # --------------------
 
 
-import inspect
-import subprocess
-import sys
-import time
-from datetime import datetime
-from functools import partial
-from subprocess import PIPE, STDOUT, Popen, run
 
-import wat
-from qtpy import QtGui
-from qtpy.QtCore import (QDate,
-                          QDateTime,
-                          QModelIndex,
-                          QSize,
-                          Qt,
-                          QTime,
-                          QTimer)
-from qtpy.QtGui import QColor, QPalette, QTextCursor, QTextDocument
-from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
+from qtpy.QtCore import (Qt)
 from qtpy.QtWidgets import (QAbstractItemView,
-                             QAction,
-                             QApplication,
-                             QButtonGroup,
-                             QCheckBox,
-                             QComboBox,
-                             QDataWidgetMapper,
-                             QDateEdit,
-                             QDateTimeEdit,
-                             QDialog,
-                             QDoubleSpinBox,
-                             QFormLayout,
-                             QGridLayout,
-                             QGroupBox,
                              QHBoxLayout,
                              QHeaderView,
-                             QLabel,
-                             QLineEdit,
-                             QListWidget,
-                             QListWidgetItem,
-                             QMainWindow,
-                             QMenu,
-                             QMessageBox,
                              QPushButton,
-                             QRadioButton,
-                             QSizePolicy,
-                             QSpinBox,
-                             QStyledItemDelegate,
-                             QTableView,
                              QTableWidget,
                              QTableWidgetItem,
-                             QTabWidget,
-                             QTextEdit,
-                             QTimeEdit,
-                             QVBoxLayout,
-                             QWidget)
+                             QVBoxLayout)
 
 
 import utils_for_tabs as uft
@@ -133,7 +87,7 @@ class QTableWidgetTab( tab_base.TabBase  ):
         main_layout.addLayout( layout )
         button_layout        = QHBoxLayout(   )
 
-        table_widget        = QTableWidget(4, 5)  # row, column ??third arg parent
+        table_widget        = QTableWidget( 4, 5 )  # row, column ??third arg parent
         self.table_widget   = table_widget
         layout.addWidget( table_widget )
 
@@ -373,17 +327,6 @@ class QTableWidgetTab( tab_base.TabBase  ):
             msg        = f"nothing found {search_for = }"
             self.append_msg( msg,  )
 
-    # ------------------------------------
-    def mutate_x( self ):
-        """
-        read it -- mutate the widgets
-        """
-        self.append_function_msg( "mutate_0" )
-
-        msg    = "so far not implemented "
-        self.append_msg( msg,  )
-
-        self.append_msg( "mutate_0 done" )
 
     # ------------------------------------
     def mutate_0( self ):
@@ -392,14 +335,19 @@ class QTableWidgetTab( tab_base.TabBase  ):
         """
         self.append_function_msg( "mutate_0" )
 
-        msg    = "hide some stuff"
+        msg    = "hide some stuff a row and a column"
         self.append_msg( msg, clear = False )
 
         table   = self.table_widget
         table.hideRow( 1 )
         table.hideColumn( 1 )
 
-        self.append_msg( "mutate_0 done" )
+        for ix_row in range( table.rowCount() ):
+            currently_hidden = table.isRowHidden( ix_row )
+            msg    = ( f"{ix_row} is hidden {currently_hidden}")
+            self.append_msg( msg )
+
+        self.append_msg( tab_base.DONE_MSG )
 
     # ------------------------------------
     def mutate_1( self ):
@@ -414,7 +362,7 @@ class QTableWidgetTab( tab_base.TabBase  ):
         table.showRow( 1 )
         table.showColumn( 1 )
 
-        self.append_msg( "mutate_1 done" )
+        self.append_msg( tab_base.DONE_MSG )
 
     #----------------------------
     def mutate_2( self  ):
@@ -424,7 +372,7 @@ class QTableWidgetTab( tab_base.TabBase  ):
         self.append_function_msg( "mutate_2" )
         self.append_msg( "was copy of mutat_1 now nothing " )
 
-        self.append_msg( "mutate_2 done" )
+        self.append_msg( tab_base.DONE_MSG )
 
     # ------------------------------------
     def mutate_3( self ):
@@ -461,7 +409,7 @@ class QTableWidgetTab( tab_base.TabBase  ):
 
         table.setColumnWidth(2, 100)  # Set specific width for a column
 
-        self.append_msg( "mutate_3 done" )
+        self.append_msg( tab_base.DONE_MSG )
 
     # ------------------------------------
     def mutate_4( self ):
@@ -528,7 +476,7 @@ class QTableWidgetTab( tab_base.TabBase  ):
     # vertical_header = table_widget.verticalHeader()
     # vertical_header.setSectionResizeMode(QHeaderView.Stretch)  # Stretch rows
 
-        self.append_msg( "mutate_4 done" )
+        self.append_msg( tab_base.DONE_MSG )
 
     #----------------------------
     def find_row_with_text_in_column(self, ):
@@ -572,7 +520,7 @@ class QTableWidgetTab( tab_base.TabBase  ):
              a_locals       = locals(),
              a_globals      = globals(), )
 
-        self.append_msg( "inspect done" )
+        self.append_msg(  tab_base.DONE_MSG )
 
     # ------------------------
     def breakpoint(self):
@@ -583,7 +531,9 @@ class QTableWidgetTab( tab_base.TabBase  ):
 
         breakpoint()
 
-        self.append_msg( "breakpoint done" )
+        self.append_msg(  tab_base.DONE_MSG )
 
 # ---- eof
+
+
 

@@ -24,65 +24,26 @@ chat = """
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
-    import main
+    pass
 # --------------------
 
-import inspect
-import subprocess
-import sys
-import time
-from datetime import datetime
-from functools import partial
-from subprocess import PIPE, STDOUT, Popen, run
-
-import wat
+from   functools import partial
 
 
-from qtpy.QtWidgets import QSpacerItem, QSizePolicy
-from qtpy import QtGui
-from qtpy.QtCore import (QDate,
-                          QDateTime,
-                          QModelIndex,
-                          QSize,
-                          Qt,
-                          QTime,
-                          QTimer)
-from qtpy.QtGui import QColor, QPalette, QTextCursor, QTextDocument
+from qtpy.QtGui  import QCursor
+from qtpy.QtCore import (Qt)
 
-from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 
-from qtpy.QtWidgets import (QAction,
-                             QFormLayout,
-                             QApplication,
-                             QButtonGroup,
-                             QCheckBox,
-                             QComboBox,
-                             QDateEdit,
-                             QDateTimeEdit,
+from qtpy.QtWidgets import ( QFormLayout,
                              QGridLayout,
                              QHBoxLayout,
                              QLabel,
                              QLineEdit,
-                             QListWidget,
-                             QListWidgetItem,
-                             QMainWindow,
-                             QMenu,
-                             QMessageBox,
                              QPushButton,
-                             QRadioButton,
-                             QSizePolicy,
-                             QTableView,
-                             QTableWidget,
-                             QTableWidgetItem,
-                             QTabWidget,
-                             QTextEdit,
-                             QTimeEdit,
                              QVBoxLayout,
                              QWidget )
 
-import parameters
 import tab_base
-import utils_for_tabs as uft
 import wat_inspector
 import tab_base
 
@@ -93,31 +54,19 @@ WINDOW_SIZE     = 235
 DISPLAY_HEIGHT  = 35
 BUTTON_SIZE     = 40
 
-# # these must be defined at import time in uft
-# INDENT          = uft.INDENT
-# INDENT          = uft.BEGIN_MARK_1
-# INDENT          = uft.BEGIN_MARK_2
-# #INDENT          = qt_sql_widgets.
+# ----------------------------
+def move_under_mouse( widget ):
+    """
+    widget right now expected to be a window
+    perhaps this can be generalized
+    """
+    mouse_pos = QCursor.pos()
+        # Get the current global position of the mouse
 
-# print_func_header =  uft.print_func_header
+    # Move the window so its top-left corner is at the mouse
+    widget.move( mouse_pos )
 
-# def layout_at_str( layout_at ):
-#     return f"{layout_at[0] }, {layout_at[1] }, {layout_at[2] }, {layout_at[3] }"
-
-# def layout_widget( widget, layout, layout_at, widget_list ):
-#     """only for a grid
-#         self.line_edits.append(QLineEdit( "Edit 1") )
-#         layout_at    = 0, 0, 1, 2   # row coulum rowspan column_span
-#         text         = layout_at_str( layout_at )
-#         self.grid_layout.addWidget( self.line_edits[-1], *layout_at)  # spans 2 columns
-#         widget       = self.line_edits[-1]
-
-#      """
-#     text         = layout_at_str( layout_at )
-#     layout.addWidget( widget, * layout_at )
-#     widget.setText( text )
-#     widget_list.append( widget )
-
+    widget.show()
 
 # ----------------------------
 class RealPython1Tab( tab_base.TabBase  ) :
@@ -133,7 +82,6 @@ class RealPython1Tab( tab_base.TabBase  ) :
         global WIKI_LINK
         self.wiki_link          = WIKI_LINK
 
-
         self.mutate_dict[0]    = self.mutate_0
         self.mutate_dict[1]    = self.mutate_1
         # self.mutate_dict[2]    = self.mutate_2
@@ -142,7 +90,7 @@ class RealPython1Tab( tab_base.TabBase  ) :
 
         self._build_gui()
 
-
+    # ----------------------------
     def _build_gui_widgets(self, main_layout  ):
         """
         the usual, build the gui with the widgets of interest
@@ -154,7 +102,6 @@ class RealPython1Tab( tab_base.TabBase  ) :
 
         button_layout        = layout
 
-
         widget       = QPushButton("Vertical\nLayout")
         connect_to   = partial( self.open_example_window, ExampleWindow.build_v_layout  )
         widget.clicked.connect( connect_to  )
@@ -164,7 +111,6 @@ class RealPython1Tab( tab_base.TabBase  ) :
         connect_to   = partial( self.open_example_window, ExampleWindow.build_grid  )
         widget.clicked.connect( connect_to  )
         button_layout.addWidget( widget )
-
 
         widget       = QPushButton("Form\nLayout")
         connect_to   = partial( self.open_example_window, ExampleWindow.build_form  )
@@ -248,12 +194,12 @@ class RealPython1Tab( tab_base.TabBase  ) :
 
         self.append_msg( tab_base.DONE_MSG )
 
-
+# ------------------------
 class ExampleWindow( QWidget ):
     def __init__(self, tab,  build_method ):
         """
         build method is called to build after
-        basics, not sure why we do not just have seperate
+        basics, not sure why we do not just have separate
         windows
         guess this is experiment
 
@@ -267,13 +213,13 @@ class ExampleWindow( QWidget ):
 
         self.setGeometry(800, 200, 400, 300)  # x=100, y=100, width=800, height=600
 
-
         self.tab     = tab
         build_method( self )
 
         # Ensure window is deleted when closed
         self.setAttribute( Qt.WA_DeleteOnClose )
 
+        move_under_mouse( self )
 
     # ---- v layout
     def  build_v_layout( self,  ):
@@ -303,7 +249,7 @@ class ExampleWindow( QWidget ):
         inspired by g_layout.py
 
         Grid layout example
-        content of the excercise
+        content of the exercise
         """
         self.tab.append_function_msg( "Grid Layout" )
         self.setWindowTitle(   "Grid Layout" )
@@ -329,7 +275,7 @@ class ExampleWindow( QWidget ):
     #def build_gui_widgets_3( self, ):
         """
 
-        content of the excercise
+        content of the exercise
         """
         # self.post_build_msg  = [ "code from build_gui_widgets_3",
         #                          "Like RP f_layout.py" ]
@@ -363,15 +309,13 @@ class ExampleWindow( QWidget ):
         Signals and slots example.
         signals_slots.py
 
-
-        content of the excercise
+        content of the exercise
         """
         self.tab.append_function_msg( "Signals and Slots" )
         self.setWindowTitle( f"Signals and Slots")
 
         main_layout         = QVBoxLayout( self )
         self.main_layout    = main_layout
-
 
         layout = QVBoxLayout()
         main_layout.addLayout( layout )
@@ -397,6 +341,7 @@ class ExampleWindow( QWidget ):
             self.msg_label.setText("")
         else:
             self.msg_label.setText(f"Hello, from greet_with_arg -- {name = }")
+
     # ------------------------
     def greet_no_arg( self, ):
         """ """
@@ -405,23 +350,19 @@ class ExampleWindow( QWidget ):
         else:
             self.msg_label.setText(f"Hello, from greet_no_arg -- World")
 
-
     # ---- calc code
     def build_calc( self, ):
         """
         really build the calculator here
 
-
         """
        # self.post_build_msg  = [ "code from build_gui_widgets_5",
-       #                            "work still to be done on this excercise " ]
+       #                            "work still to be done on this exercise " ]
         self.tab.append_function_msg( "Calculator" )
         self.setWindowTitle( f"Calculator")
         #layout = QGridLayout( self )
 
 
-        #main_layout         = QVBoxLayout( self )
-        #self.main_layout    = main_layout
         layout              = QVBoxLayout( self )
         # main_layout.addLayout( layout )
         self.calc_layout    = layout
@@ -432,9 +373,8 @@ class ExampleWindow( QWidget ):
         # layout.addWidget( widget )
 
         # ---- controller
-        self.controller   = PyCalc( model       =evaluateExpression,
-                                     view       = self )
-
+        self.controller   = PyCalc( model = evaluateExpression,
+                                     view = self )
 
         self.tab.append_msg( "...done" )
 
@@ -446,8 +386,8 @@ class ExampleWindow( QWidget ):
         widget          = QLineEdit()
         self.display    = widget
         widget.setFixedHeight(DISPLAY_HEIGHT)
-        widget.setAlignment(Qt.AlignmentFlag.AlignRight)
-        widget.setReadOnly(True)
+        widget.setAlignment( Qt.AlignmentFlag.AlignRight )
+        widget.setReadOnly( True )
         self.calc_layout.addWidget( widget )
 
     # ------------------------
@@ -473,26 +413,29 @@ class ExampleWindow( QWidget ):
                 self.buttonMap[key].setFixedSize(BUTTON_SIZE, BUTTON_SIZE)
                 button_layout.addWidget(self.buttonMap[key], row, col)
 
-    def setDisplayText(self, text):
+    # ------------------------
+    def setDisplayText(self, text ):
         """
         Set the display's text.
         """
-        self.display.setText(text)
+        self.display.setText( text )
         self.display.setFocus()
 
+    # ------------------------
     def displayText(self):
         """
         Get the display's text.
         """
         return self.display.text()
 
+    # ------------------------
     def clearDisplay(self):
         """
         Clear the display.
         """
         self.setDisplayText("")
 
-
+# ------------------------
 def evaluateExpression(expression):
     """Evaluate an expression (Model)."""
     try:
@@ -501,7 +444,7 @@ def evaluateExpression(expression):
         result = ERROR_MSG
     return result
 
-
+# ------------------------
 class PyCalc:
     """PyCalc's controller class."""
 
@@ -529,7 +472,5 @@ class PyCalc:
         self._view.buttonMap["="].clicked.connect(self._calculateResult)
         self._view.display.returnPressed.connect(self._calculateResult)
         self._view.buttonMap["C"].clicked.connect(self._view.clearDisplay)
-
-
 
 # ---- eof
