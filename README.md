@@ -10,4 +10,4 @@ Find the Wiki at the link above or:
 
 * Status:
     * works in my machine
-    * moving from the repo at https://github.com/russ-hensel/pyqt_by_example almost complete.
+    * https://github.com/russ-hensel/pyqt_by_example/wiki/Application-Status
