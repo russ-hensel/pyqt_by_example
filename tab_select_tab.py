@@ -12,13 +12,11 @@ if __name__ == "__main__":
 
 
 
-import key_words
 from qtpy.QtCore import ( Qt,
                           QSortFilterProxyModel )
 
 # sql
 from qtpy.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
-
 
 
 from qtpy.QtWidgets import ( QHBoxLayout,
@@ -31,12 +29,10 @@ from qtpy.QtWidgets import ( QHBoxLayout,
                              QVBoxLayout,
                              QWidget )
 
+import key_words
 #import app_services
 import global_vars
-#import parameters
-#import qt_search
 import qt_sql_query
-#import qt_widgets
 import utils_for_tabs as uft
 import parameters
 

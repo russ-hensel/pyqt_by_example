@@ -412,7 +412,7 @@ class MiscWidgetTab(  tab_base.TabBase  ):
 
         cbox = self.sender()   # look into self.sender() looks like it might be standard !!
 
-        self.append_msg(  f"check box text() = { cbox.text()} ")
+        self.append_msg( f"check box text() = { cbox.text()} " )
 
         self.append_msg( "<<-- done" )
 

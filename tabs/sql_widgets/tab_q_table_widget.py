@@ -12,28 +12,28 @@ WIDGETS:        QTableWidget
 STATUS:         runs_correctly_5_10      demo_complete_2_10   !! review_key_words   !! review_help_0_10
 TAB_TITLE:      QTableWidget / A Table
 DESCRIPTION:    QTableWidget Reference
-HOW_COMPLETE:   15  #  AND A COMMENT -- <10 major probs  <15 runs but <20 fair not finished  <=25 not to shabby
+HOW_COMPLETE:   11  #  AND A COMMENT -- <10 major probs  <15 runs but <20 fair not finished  <=25 not to shabby
 """
 WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/QTableWidget Reference"
 
-# --------------------
+
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
-    pass
-    #main.main()
+    import main   # noqa  stops auto removal by pycln
 # --------------------
 
 
-
 from qtpy.QtCore import (Qt)
-from qtpy.QtWidgets import (QAbstractItemView,
+from qtpy.QtWidgets import (
+                             QAbstractItemView,
                              QHBoxLayout,
                              QHeaderView,
                              QPushButton,
                              QTableWidget,
                              QTableWidgetItem,
-                             QVBoxLayout)
+                             QVBoxLayout
+                             )
 
 
 import utils_for_tabs as uft
@@ -48,8 +48,6 @@ INDENT          = uft.INDENT
 INDENT          = uft.BEGIN_MARK_1
 INDENT          = uft.BEGIN_MARK_2
 #INDENT          = qt_sql_widgets.
-
-
 
 
 #-----------------------------------------------
@@ -91,13 +89,14 @@ class QTableWidgetTab( tab_base.TabBase  ):
         self.table_widget   = table_widget
         layout.addWidget( table_widget )
 
-        # ---- insert data --- now a mess, parameterize this
-        print( "this adds cell 'upside down' and cell cords are ng ")
-        for i in range( 4, 0,   -1 ):  # better match table
-            for j in range( 5,  0, -1 ):  # col
-                # these items arguments must be strings
-                item     = QTableWidgetItem( "Cell ({}, {})".format( i, j) )
-                table_widget.setItem(i, j, item)
+
+        # # ---- insert data --- now a mess, parameterize this
+        # print( "this adds cell 'upside down' and cell cords are ng ")
+        # for i in range( 4, 0,   -1 ):  # better match table
+        #     for j in range( 5,  0, -1 ):  # col
+        #         # these items arguments must be strings
+        #         item     = QTableWidgetItem( "Cell ({}, {})".format( i, j) )
+        #         table_widget.setItem(i, j, item)
 
         ix_col   = 1
         table_widget.setColumnWidth( ix_col, 22 )
@@ -124,8 +123,6 @@ class QTableWidgetTab( tab_base.TabBase  ):
 
         table_widget.cellClicked.connect( self.on_cell_clicked )
 
-
-
         # getting an error !!
         print( f"{table_widget.currentRow()}")
             # method returns the currently selected row. It returns -1 i
@@ -145,8 +142,8 @@ class QTableWidgetTab( tab_base.TabBase  ):
         button_layout.addWidget(a_widget)
 
         # delete or remove a row
-        a_widget           = QPushButton("remove_row\n_current")
-        a_widget.clicked.connect(self.remove_row_currrent)
+        a_widget           = QPushButton("remove_row\n_current" )
+        a_widget.clicked.connect(self.remove_row_current )
         button_layout.addWidget(a_widget)
 
         # delete or remove a row
@@ -177,10 +174,12 @@ class QTableWidgetTab( tab_base.TabBase  ):
         """
         Populate the table with some sample data
         """
-        for row in range(3):
-            for col in range(3):
-                item = QTableWidgetItem(f"Item {row + 1}, {col + 1}")
-                self.table_widget.setItem(row, col, item)
+        table      = self.table_widget
+
+        for row in range( table.rowCount() ):
+            for col in range( table.columnCount() ):
+                item = QTableWidgetItem( f"Item {row + 1}, {col + 1}" )
+                self.table.setItem( row, col, item )
 
     # -------------------------------------
     def select_row_3(self,  ):
@@ -192,7 +191,7 @@ class QTableWidgetTab( tab_base.TabBase  ):
         self.select_row( 3 )
 
     # -------------------------------------
-    def select_row(self, row_index):
+    def select_row(self, row_index ):
         """
         Select a specific row.
         may depend on selection mode
@@ -204,13 +203,29 @@ class QTableWidgetTab( tab_base.TabBase  ):
         self.table_widget.show()
 
     # -------------------------------------
-    def select_column(self, col_index):
+    def select_column( self, col_index ):
         """
         Select a specific column.
         """
-        self.append_function_msg( "select_column" )
+        self.append_msg( "select_column" )
 
         self.table_widget.selectColumn(col_index)
+
+    # -------------------------------------
+    def get_selected_rows( self ):
+        """
+        look out for sorted, by any smart criteria??
+
+        """
+        table = self.table_widget
+        selection_model = table.selectionModel()
+
+        if selection_model.hasSelection():
+            # Get all selected rows
+            selected_rows = [index.row() for index in selection_model.selectedRows()]
+            return sorted( selected_rows )
+
+        return []
 
     # ------------------------------
     def on_cell_clicked( self, row, col  ):
@@ -218,13 +233,15 @@ class QTableWidgetTab( tab_base.TabBase  ):
         read it
 
         """
-        self.append_function_msg( "on_cell_clicked" )
+        self.append_msg( "on_cell_clicked" )
 
         table      = self.table_widget
 
         item       = table.item( row, col )
+
         if item:
             print(f"Cell clicked: Row {row}, Column {col}, Data: {item.text()}")
+
         else:
             print(f"Cell clicked: Row {row}, Column {col}, Data: None")
 
@@ -233,19 +250,35 @@ class QTableWidgetTab( tab_base.TabBase  ):
 
     # some of next may be mixed up with tableModel, beware
     # -------------------------------------
-    def add_row_at_end(self):
-        """ """
-        self.append_function_msg( "add_row_at_end" )
+    def add_row_at_end( self ):
+        """
+        Add a new row at the end with some data
+        table is a QTableWidget
+        """
+        self.append_msg( "add_row_at_end -- and sorting off" )
 
-        row_position = self.table_widget.rowCount()
-        self.table_widget.insertRow( row_position )
+
+        table       = self.table_widget
+
+        table.setSortingEnabled( False )  # a gotcha
+
+        row         = table.rowCount()
+        table.insertRow( row )
+
+        # Fill the row
+        for col in range( table.columnCount() ):
+            ix_data = f"data: {row =} {col =}"
+            table.setItem( row, col, QTableWidgetItem( ix_data ) )
+
+        # sorting on makes this very confusing
+        #table.setSortingEnabled( True )
 
     # -------------------------------------
-    def remove_row_currrent(self):
+    def remove_row_current( self ):
         """
         what it says
         """
-        self.append_function_msg( "remove_row_current" )
+        self.append_msg( "remove_row_current" )
 
         row_position = self.table_widget.currentRow()
         self.table_widget.removeRow( row_position )
@@ -255,7 +288,7 @@ class QTableWidgetTab( tab_base.TabBase  ):
         """
         what it says
         """
-        self.append_function_msg( "remove_row_current" )
+        self.append_msg( "remove_row_current" )
         # ---- insert data --- now a mess, parameterize this
         msg     = ( "this adds cell 'upside down' and cell cords are ng ")
         self.append_msg( msg,  )
@@ -266,22 +299,18 @@ class QTableWidgetTab( tab_base.TabBase  ):
                 item     = QTableWidgetItem( "Cell ({}, {})".format( i, j) )
                 table_widget.setItem(i, j, item)
 
-    # -------------------------------------
-    def select_column(self, col_index):
-        """Select a specific column."""
-        self.table_widget.selectColumn(col_index)
 
     # ------------------------------
     def set_size(self):
         """
         read it
         """
-        self.append_function_msg( "set_size")
+        self.append_msg( "set_size")
 
-        table   = self.table_widget
+        table       = self.table_widget
         table.horizontalHeader().setStretchLastSection(True)
         table.horizontalHeader().setSectionResizeMode(
-            QHeaderView.Stretch)
+                    QHeaderView.Stretch)
         self.append_msg( "set_size done" )
 
     # ------------------------------
@@ -335,6 +364,32 @@ class QTableWidgetTab( tab_base.TabBase  ):
         """
         self.append_function_msg( "mutate_0" )
 
+        self.add_row_at_end()
+        self.add_row_at_end()
+        self.add_row_at_end()
+        self.add_row_at_end()
+
+        msg     = "show some stuff that might be hidden"
+        self.append_msg( msg, )
+
+        table   = self.table_widget
+        table.showRow( 1 )
+        table.showColumn( 1 )
+
+        msg     = "{table.rowCount() = } {table.columnCount() = }"
+        self.append_msg( msg, )
+
+
+        self.append_msg( tab_base.DONE_MSG )
+
+
+    # ------------------------------------
+    def mutate_1( self ):
+        """
+        read it -- mutate the widgets
+        """
+        self.append_function_msg( "mutate_0" )
+
         msg    = "hide some stuff a row and a column"
         self.append_msg( msg, clear = False )
 
@@ -349,20 +404,6 @@ class QTableWidgetTab( tab_base.TabBase  ):
 
         self.append_msg( tab_base.DONE_MSG )
 
-    # ------------------------------------
-    def mutate_1( self ):
-        """
-        read it -- mutate the widgets
-        """
-        self.append_function_msg( "mutate_1" )
-
-        msg    = "show some stuff"
-        self.append_msg( msg, )
-        table   = self.table_widget
-        table.showRow( 1 )
-        table.showColumn( 1 )
-
-        self.append_msg( tab_base.DONE_MSG )
 
     #----------------------------
     def mutate_2( self  ):
@@ -409,6 +450,10 @@ class QTableWidgetTab( tab_base.TabBase  ):
 
         table.setColumnWidth(2, 100)  # Set specific width for a column
 
+        selected_rows   = self.get_selected_rows( )
+        msg             = f"{selected_rows} "
+        self.append_msg( msg, clear = False )
+
         self.append_msg( tab_base.DONE_MSG )
 
     # ------------------------------------
@@ -444,15 +489,15 @@ class QTableWidgetTab( tab_base.TabBase  ):
         print( header )
 
         # Set column widths
-        header.setSectionResizeMode(0, QHeaderView.Stretch)  # First column stretches
-        header.setSectionResizeMode(1, QHeaderView.ResizeToContents)  # Auto-size based on content
-        header.setSectionResizeMode(2, QHeaderView.Interactive)  # Manually resizable
-
+        header.setSectionResizeMode( 0, QHeaderView.Stretch)  # First column stretches
+        header.setSectionResizeMode( 1, QHeaderView.ResizeToContents)  # Auto-size based on content
+        header.setSectionResizeMode( 2, QHeaderView.Interactive)  # Manually resizable
 
         # table_widget.setColumnWidth(2, 100)  # Set specific width for a column
 
         # Customize alignment of header text
-        header_item = table.horizontalHeaderItem( 0 )  # Access a header item
+        header_item = table.horizontalHeaderItem( 0 )
+
         if header_item:
             header_item.setTextAlignment( Qt.AlignLeft )
 
@@ -497,7 +542,7 @@ class QTableWidgetTab( tab_base.TabBase  ):
         ix_found            = None
         target_text         = "xyz"
 
-        matching_items      = table.findItems(target_text, QtCore.Qt.MatchExactly )
+        matching_items      = table.findItems( target_text, QtCore.Qt.MatchExactly )
         for item in matching_items:
             if item.column() == column:
                 ix_found            =  item.row()

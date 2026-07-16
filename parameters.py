@@ -16,9 +16,7 @@ import logging
 import sys
 
 # ---- local imports
-#import string_util
-#from   app_global import AppGlobal
-#import running_on  parameters.PARAMETERSdir_for_tabs
+
 import in_spect_env
 
 global PARAMETERS
@@ -35,10 +33,10 @@ class Parameters( ):
         typically choose one mode
             and if you wish add the plus_test_mode
             if you comment all out all modes you get the default mode which should
-            run, perhaps not in the way you want
+            run, but perhaps not in the way you want
         """
-
-        self.mode_dev_debug()
+        #self.mode_dev_debug()
+        #self.mode_ram_disk_db()
         #self.mode_russ_on_theprof()
         #self.new_user_mode()
         #self.mode_disk_db()
@@ -61,6 +59,31 @@ class Parameters( ):
 
         """
         self.mode               = "mode_dc_on_linux_mint"
+
+
+    # -------
+    def mode_ram_disk_db( self ):
+        """
+        run for debugging when you want the db on a fast disk
+
+        /tmp/ramdisk/new_user.db
+        """
+        self.mode               = "mode_ram_disk_db"
+        # expose tabs that are not ready
+        self.min_complete       = 6 # minimum value for HOW_COMPLETE
+
+        # ---- search and default
+        self.default_search     = "progress"
+        self.do_search_on_init  = True
+
+        # ---- database there are 2 ........
+        # ---- for sample database
+        self.db_type            = "QSQLITE"
+        self.db_file_name        = "/tmp/ramdisk/qt_sql.db"
+
+        # ---- for qt tabs
+        self.tab_db_type         = "QSQLITE"
+        self.tab_db_file_name    = "/tmp/ramdisk/tab.db"
 
     # -------
     def mode_disk_db( self ):
@@ -344,7 +367,6 @@ class Parameters( ):
         # ---- logging
         self.pylogging_fn       = "./app.py_log"   # file name for the python logging
 
-
         self.log_mode               = "w"    # "a" append "w" truncate and write
         self.delete_log_on_start    = True
 
@@ -564,4 +586,4 @@ class Parameters( ):
 
 
 
-# ---- eof ==============================
+# ---- eof

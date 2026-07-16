@@ -5,7 +5,7 @@
 tab_table_model.py
 
 
-KEY_WORDS:      programatically populated tabe for data add remove select
+KEY_WORDS:      programatically populated tabe for data add remove select QTableModel
 CLASS_NAME:     TableModelTab
 WIDGETS:        QAbstractTableModel QTableView QSortFilterProxyModel
 STATUS:         more or less a mess, think never finished
@@ -23,7 +23,7 @@ if __name__ == "__main__":
 
 from functools import partial
 
-from qtpy.QtCore import (QAbstractTableModel,
+from qtpy.QtCore import ( QAbstractTableModel,
                           QModelIndex,
                           QSortFilterProxyModel,
                           Qt,
@@ -33,12 +33,12 @@ from qtpy.QtWidgets import ( QHBoxLayout,
                              QHeaderView,
                              QPushButton,
                              QTableView,
-                             QVBoxLayout)
+                             QVBoxLayout
+                             )
 
 
 import utils_for_tabs as uft
 import wat_inspector
-
 import tab_base
 
 
@@ -67,10 +67,10 @@ class ATableModel( QAbstractTableModel ):
         what it says read
         why index = None, drop it
         """
-        return len(self._data)
+        return len( self._data )
 
     # ------------------------
-    def columnCount(self, index=None):
+    def columnCount(self, index=None ):
         return len(self._headers)
 
     # ------------------------
@@ -485,7 +485,7 @@ class TableModelTab( tab_base.TabBase  ):
           selection_model.select( row_start, selection_model.Select | selection_model.Rows )
 
     # ------------------------------------------
-    def add_row_at_end(self):
+    def add_row_at_end( self ):
         """
         may work needs to be hooked up
         """
@@ -624,8 +624,10 @@ class TableModelTab( tab_base.TabBase  ):
         self.append_msg( "\nsearch" )
 
         search_for   = "1,"
+
         msg          = f"search {search_for = }"
-        print( msg )
+        self.append_msg( msg )
+
         a_widget    =    self.table_model
 
         # Clear current selection first ??

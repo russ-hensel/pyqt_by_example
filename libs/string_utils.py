@@ -213,6 +213,22 @@ def is_url( a_string,  ):
         return( is_url_bool, "" )
 
 # ------------------------------------------
+def float_or_none( a_obj, ):
+
+    """
+    convert to float if it works else none
+        is it worth the import for this?
+        string_utils.float_or_none( a_obj, ) # import  string_utils
+    """
+    try:
+        ret     = float( a_obj )
+
+    except:
+        ret     = None
+
+    return ret
+
+# ------------------------------------------
 def is_filename( a_string,  ):
 #def is_filename( self, a_string,  ):   is_file    file_exists  ?? not sure
     """
@@ -441,12 +457,22 @@ class ColumnFormater( ):
                              }
         return a_default_spec
 
+    # ----------------------------------------
+    def return_line( self, column_tuple  ):
+        """
+        what it says, read
+        data formatted and returned
+        """
+        for i_col_data,  i_column_spec  in zip( column_tuple, self.column_specs ):
+            str_line  = ( f"{i_col_data}   format with  {i_column_spec}" )
+
+        return str_line
 
     # ----------------------------------------
     def add_line( self, column_tuple  ):
         """
         what it says, read
-
+        data accumulated in object
         """
         pass
         self.column_data.append( column_tuple )
@@ -460,7 +486,6 @@ class ColumnFormater( ):
         """
         self.column_specs.append( column_spec )
 
-
     # ----------------------------------------
     def get_result( self,  ):
         """
@@ -471,7 +496,7 @@ class ColumnFormater( ):
         for i_line in self.column_data:
             str_line   = ""
             for i_col_data,  i_column_spec  in zip( i_line, self.column_specs ):
-                str_line  = ( f"{str_line} {i_col_data}   format with  {i_column_spec}" )
+                str_line  = ( f"{str_line}{i_col_data}   format with  {i_column_spec}" )
 
         a_str   = f"\n{a_str} {str_line}"
 
@@ -575,6 +600,7 @@ def num_to_string( an_int, dp_places = "not implemented yet" ):
 #-------------------------------
 def delta_time_to_string( a_float ):
     """
+    delta_time in seconds
     use a unit that makes sense
         string_utils.delta_time_to_string( a_float )
 
@@ -795,6 +821,7 @@ class TestClass():
     def __str__( self ):
         return obj_to_str( self )
 
+# --------------------
 def test_obj_to_str():
     """
 

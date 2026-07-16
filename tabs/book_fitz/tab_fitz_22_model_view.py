@@ -8,7 +8,7 @@
 KEY_WORDS:      chapter View  formating fitzz rsh
 CLASS_NAME:     Fitz_22_Tab
 WIDGETS:        QAbstractTableModel  QTableView DecorationRole    BackgroundRole QIcon TextAlignmentRole
-STATUS:         runs_correctly_but lots unimplemented
+STATUS:         runs_correctly_but lots unimplemented -- beyond setup does not do much, review against book
 TAB_TITLE:      Fitz Chapt 22 / Table Model
 DESCRIPTION:    Code modeled on FitzBook ...
 HOW_COMPLETE:   13  #  AND A COMMENT -- <10 major probs  <15 runs but <20 fair not finished  <=25 not to shabby
@@ -54,7 +54,8 @@ from qtpy.QtGui import QColor, QImage, QIcon
 # widgets biger
 # widgets -- small
 # layouts
-from qtpy.QtWidgets import (QHBoxLayout,
+from qtpy.QtWidgets import ( QHBoxLayout,
+                             QPushButton,
                              QTableView,
                              QTextEdit,
                              QVBoxLayout)
@@ -181,7 +182,7 @@ class Fitz_22_Tab( tab_base.TabBase ) :
         self.wiki_link          = WIKI_LINK
 
         self.mutate_dict[0]     = self.mutate_0
-        self.mutate_dict[1]     = self.mutate_1
+        #self.mutate_dict[1]     = self.mutate_1
         # self.mutate_dict[2]    = self.mutate_2
         # self.mutate_dict[3]    = self.mutate_3
         # self.mutate_dict[4]    = self.mutate_4
@@ -220,15 +221,20 @@ class Fitz_22_Tab( tab_base.TabBase ) :
         # widget.clicked.connect( self.complete    )
         # row_layout.addWidget( widget,   )
 
+        # ---- add
+        widget = QPushButton("add\n")
+        widget.clicked.connect( self.add    )
+        row_layout.addWidget( widget,   )
+
         # # ---- new row,
         # row_layout = QHBoxLayout(   )
         # layout.addLayout( row_layout,  )
 
-        # ---- Line Edit
-        widget          = QTextEdit( "new items here" )
-        self.msg_edit   = widget
-        #widget.clicked.connect( self.inspect    )
-        row_layout.addWidget( widget,   )
+        # # ---- Line Edit
+        # widget          = QTextEdit( "new items here" )
+        # self.msg_edit   = widget
+        # #widget.clicked.connect( self.inspect    )
+        # row_layout.addWidget( widget,   )
 
         # ---- new row,
         row_layout = QHBoxLayout(   )
@@ -265,8 +271,9 @@ class Fitz_22_Tab( tab_base.TabBase ) :
         # self.append_msg( "button code from other example may reacivate some ")
 
     # -------------------------------
-    def add(self):
+    def add( self ):
         """
+        dead now may be a left over
         Add an item to our todo list, getting the text from the QLineEdit .todoEdit
         and then clearing it.
         """
@@ -277,7 +284,7 @@ class Fitz_22_Tab( tab_base.TabBase ) :
         text = text.strip()
         if text:  # Don't add empty strings.
             # Access the list via the model.
-            self.model.todos.append((False, text))
+            self.model.todos.append(( False, text ))
             # Trigger refresh.
             self.model.layoutChanged.emit()  # <1>
             # Empty the input

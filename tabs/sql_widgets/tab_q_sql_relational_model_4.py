@@ -4,15 +4,15 @@
 
 # ---- tof
 """
-self.help_file_name     =  "qsql_relational_table_model_tab_2.txt"
 
-KEY_WORDS:      table model for relational sql join crud update add insert
-CLASS_NAME:     QSqlRelationalTableModelTab_2
-WIDGETS:         QSqlRelationalTableModel QTableView Broken
-STATUS:         runs_correctly_5_10      demo_complete_2_10   !! review_key_words   !! review_help_0_10
-TAB_TITLE:       QSqlRelationalTableModel / #2 broken
-DESCRIPTION:    A reference for the QSqlRelationalTableModel
-HOW_COMPLETE:   20  #   look at another time and delete
+
+KEY_WORDS:      table model for relational sql join crud update add insert zz cursor
+CLASS_NAME:     QSqlRelationalTableModelTab_4
+WIDGETS:         QSqlRelationalTableModel QTableView workin in dev
+STATUS:         just working on it -- but it works, and needs work
+TAB_TITLE:       QSqlRelationalTableModel / #4 in dev
+DESCRIPTION:    A experiment  for the QSqlRelationalTableModel does update
+HOW_COMPLETE:   0 #   ... retired in favor of QSqlRelationalTableModelUpdate
 
 
 
@@ -26,10 +26,9 @@ tab_q_sql_relational_model_2.QSqlRelationalTableModelTab_2()
 
 """
 # --------------------
-# --------------------
 if __name__ == "__main__":
     #----- run the full app
-    pass
+    import main   # noqa  stops auto removal by pycln
 # --------------------
 
 
@@ -38,26 +37,158 @@ if __name__ == "__main__":
 
 #from app_global import AppGlobal
 from qtpy.QtCore import (Qt)
-# sql
-from qtpy.QtSql import (QSqlRelation,
+
+from qtpy.QtCore import Qt, QModelIndex
+
+
+
+from qtpy.QtSql import (
+                        QSqlRelation,
                          QSqlRelationalTableModel,
-                         QSqlTableModel)
-from qtpy.QtWidgets import (QHBoxLayout,
-                             QPushButton,
-                             QTableView,
-                             QVBoxLayout)
+                         QSqlTableModel,
+                         QSqlDatabase,
+
+                         )
+
+
+
+from qtpy.QtWidgets import (
+                            QHBoxLayout,
+                            QPushButton,
+                            QAbstractItemView,
+                            QTableView,
+                            QVBoxLayout,
+                             )
 
 
 import utils_for_tabs as uft
 import wat_inspector
 import tab_base
+import global_vars
 
 INDENT        = uft.INDENT
 BEGIN_MARK_1  = uft.BEGIN_MARK_2
 BEGIN_MARK_2  = uft.BEGIN_MARK_2
 
+
+
+# ------------------------------------------
+class PersonsPhonesModel( QSqlRelationalTableModel ):
+    """
+    cursor says, russ edits
+    Base table: persons_phones.
+    Shows persons.name via relation on person_id.
+    Editable: persons_phones columns only (not persons.name / person_id).
+  """
+
+    def __init__( self, parent=None, db=None ):
+        super().__init__( parent, db )
+        self._person_id = None
+
+        # you apply changes explicitly in apply_update()
+        self.setEditStrategy( QSqlRelationalTableModel.OnManualSubmit )
+
+    # ------------------------------------------
+    def setup_and_select( self, person_id ):
+        """
+        Load all phone rows for one person.
+
+        person_id : bind value for persons.id / persons_phones.person_id
+        """
+        self.setup()
+
+        ok = self.select_for_id( person_id )
+
+
+        return ok
+
+    # ------------------------------------------
+    def select_for_id( self, person_id ):
+        """
+        Load all phone rows for one person.
+
+        person_id : bind value for persons.id / persons_phones.person_id
+        """
+        self._person_id = int( person_id )
+
+        # filter to this person only (SQLite: literal in filter string)
+        self.setFilter( f"person_id = {self._person_id}" )
+
+        ok = self.select()
+        if not ok:
+            raise RuntimeError(
+                f"persons_phones select failed: {self.lastError().text()}"
+            )
+
+        return ok
+
+    # ------------------------------------------
+    def setup( self,   ):
+        """
+        Load all phone rows for one person.
+
+        person_id : bind value for persons.id / persons_phones.person_id
+        """
+        self.setTable( "persons_phones" )
+
+        # show persons.name instead of raw person_id in the grid
+        person_id_col       = self.fieldIndex( "person_id" )
+        self.person_id_col  = person_id_col
+        self.setRelation(
+            person_id_col,
+            QSqlRelation( "persons", "id", "name" ),
+        )
+
+
+
+    # ------------------------------------------
+    def flags( self, index ):
+        """
+        persons.name is shown through person_id relation -> keep read-only.
+        persons_phones.id is usually read-only too.
+        """
+        f = super().flags( index )
+
+        if not index.isValid():
+            return f
+
+        field = self.record().fieldName( index.column() )
+
+        if field in ( "person_id", "id" ):
+            f &= ~Qt.ItemFlag.ItemIsEditable
+
+        return f
+
+    # ------------------------------------------
+    def apply_update( self ):
+        """
+        Write pending edits to persons_phones only.
+
+        Returns True on success.
+        """
+        if not self.isDirty():
+            return True
+
+        ok = self.submitAll()
+        if not ok:
+            err = self.lastError().text()
+            raise RuntimeError( f"persons_phones update failed: {err}" )
+
+        return True
+
+    # ------------------------------------------
+    def revert_changes( self ):
+        """
+        Discard edits not yet submitted.
+        """
+        self.revertAll()
+
+
+
+
+
 #-----------------------------------------------
-class QSqlRelationalTableModelTab_2( tab_base.TabBase  ):
+class QSqlRelationalTableModelTab_4( tab_base.TabBase  ):
     """
     for widgets joining two tables
     """
@@ -107,11 +238,11 @@ class QSqlRelationalTableModelTab_2( tab_base.TabBase  ):
 
         layout.addLayout( button_layout )
 
-        # ---- PB select_for\n_all
-        widget            = QPushButton( "select_\n_all" )
-        connect_to        = self.select_all
-        widget.clicked.connect( connect_to )
-        button_layout.addWidget( widget )
+        # # ---- PB select_for\n_all
+        # widget            = QPushButton( "select_\n_all" )
+        # connect_to        = self.select_all
+        # widget.clicked.connect( connect_to )
+        # button_layout.addWidget( widget )
 
         # ---- PB select\n_some
         widget            = QPushButton( "select\n_some" )
@@ -130,10 +261,10 @@ class QSqlRelationalTableModelTab_2( tab_base.TabBase  ):
         widget.clicked.connect( self.set_heading_by_number )
         button_layout.addWidget( widget )
 
-        # ---- PB sset_heading_by name
-        widget            = QPushButton( "set_heading\n_by_name" )
-        widget.clicked.connect( self.set_heading_by_name )
-        button_layout.addWidget( widget )
+        # # ---- PB sset_heading_by name
+        # widget            = QPushButton( "set_heading\n_by_name" )
+        # widget.clicked.connect( self.set_heading_by_name )
+        # button_layout.addWidget( widget )
 
         # ---- PB "get_data\n_from_model"
         widget              = QPushButton( "get_data\n_from_model" )
@@ -146,27 +277,27 @@ class QSqlRelationalTableModelTab_2( tab_base.TabBase  ):
         widget.clicked.connect( self.get_selected_rows )
         button_layout.addWidget( widget )
 
-        # ---- PB delete_selected_row
-        widget            = QPushButton("delete_selected\n_row")
-        widget.clicked.connect( self.delete_selected_row )
-        button_layout.addWidget( widget )
+        # # ---- PB delete_selected_row
+        # widget            = QPushButton("delete_selected\n_row")
+        # widget.clicked.connect( self.delete_selected_row )
+        # button_layout.addWidget( widget )
 
 
-        # ---- PB i"insert\n_record"
-        widget            = QPushButton("add\n_record")
-        connect_to        = self.add_record
-        widget.clicked.connect( connect_to )
-        button_layout.addWidget( widget )
+        # # ---- PB i"insert\n_record"
+        # widget            = QPushButton("add\n_record")
+        # connect_to        = self.add_record
+        # widget.clicked.connect( connect_to )
+        # button_layout.addWidget( widget )
 
-        # ---- PB add_test_record
-        widget            = QPushButton("add_test\n_record")
-        widget.clicked.connect( self.add_test_record )
-        button_layout.addWidget( widget )
+        # # ---- PB add_test_record
+        # widget            = QPushButton("add_test\n_record")
+        # widget.clicked.connect( self.add_test_record )
+        # button_layout.addWidget( widget )
 
-        # ---- PB add_test_record
-        widget            = QPushButton("add_via\n_chat")
-        widget.clicked.connect( self.add_via_chat )
-        button_layout.addWidget( widget )
+        # # ---- PB add_test_record
+        # widget            = QPushButton("add_via\n_chat")
+        # widget.clicked.connect( self.add_via_chat )
+        # button_layout.addWidget( widget )
 
 
         # ---- PB i"insert\n_record"
@@ -192,86 +323,29 @@ class QSqlRelationalTableModelTab_2( tab_base.TabBase  ):
     # ------------------------------
     def _build_model( self,   ):
         """
-        build model and views if used here
 
-        for _1
-        sql behind this should be:  old
-            SELECT
-                persons.id,
-                persons.name,
-                persons.age,
-                persons.family_relation,
-                persons_phones.phone_number
-            FROM persons
-            LEFT JOIN persons_phones ON persons.id = persons_phones.person_id
-
-        for _2  -- turn around the primary table  most of fields come from secondary table
-            SELECT
-                persons.id,
-                persons.name,
-                persons.age,
-                persons.family_relation,
-                persons_phones.phone_number
-            FROM persons_phones
-            LEFT JOIN persons ON persons.id = persons_phones.person_id
-
+        will need         self.model and view
         """
-        model           = QSqlRelationalTableModel( self )
+        db = QSqlDatabase.database()   # your existing connection
+
+        model           = PersonsPhonesModel( self,  global_vars.EX_DB )
         self.model      = model
+        model.setup_and_select( person_id = 1002 )
 
-        model.setTable( "persons_phones" )   # fields are  id  person_id  phone_number  zone
-
-        self.relation      = ( "", "", "",  )
-        self.relation      = ( "persons", "id", "name" )
-        self.relation      = ( "persons", "id", "name, age" )
-        self.relation      = ( "persons", "id", "name, age, id" ) # ng
-               # try to add foreigh key now broken
-        self.relation      = ( "persons", "id", "name, age, person_id" ) # this seems to work
-                               # pepple secondary table
-                                           # id column in secondary table to join on see fieldIndex below
-                                               # columns in secondary table to display  id will be surpressed
-
-               # try to add foreigh key now broken
-        #debug_var   = self.model.fieldIndex( "person_id" )   # field name to number
-        model.setJoinMode( QSqlRelationalTableModel.JoinMode.LeftJoin )  # claud thinks this might help
-        model.setRelation(
-            self.model.fieldIndex( "person_id" ),    # column in primary table used for join
-                QSqlRelation( *self.relation )
+        view            = QTableView()
+        self.view       = view
+        view.setModel( model )
+        view.setEditTriggers(
+            QAbstractItemView.DoubleClicked
+            | QAbstractItemView.SelectedClicked
+            | QAbstractItemView.EditKeyPressed
         )
 
-            # column_index = model.fieldIndex( "age" )  # Get the column index for "name"
-            # print( f"{column_index = }")
-            # model.setSort( column_index , Qt.AscendingOrder)  # seems needs to be index no
+        # # user edits phone_number / zone in the grid ...
 
-        if False:
-            model.setRelation(
-                self.model.fieldIndex( "person_id" ),  # column name in first table,
-
-                QSqlRelation( "persons", "id", "name, age" )
-                #             table to join to in second table
-                #                      column to join on  persons_phone.person_id = persons.id
-                #                             # columns from persons phones to fetch.and display display
-                #                                  rest of fetch is rest of columns in primay table
-                #                                        phone number zone
-                #QSqlRelation("persons_phones", "person_id", "phone_number, zone")
-            )
-
-        # self.model.setEditStrategy(QSqlRelationalTableModel.OnFieldChange)
-        model.setEditStrategy( QSqlTableModel.EditStrategy.OnManualSubmit )
-
-        # !?? mayebe not
-        self.select_all()
-
-        # ---- view
-        view        = QTableView()
-        self.view   = view
-        view.setModel( model)
-
-        # --- view options
-        view.resizeColumnsToContents()
-        view.setAlternatingRowColors(True)
-        view.setSortingEnabled(True)    # for click on header
-        view.setSelectionBehavior( QTableView.SelectRows )
+        # model.apply_update()    # UPDATE persons_phones ...
+        # # or on error:
+        # # model.revert_changes()
 
     # ------------------------
     def get_selected_rows_dupe_delete(self, index,   ):
@@ -473,21 +547,24 @@ class QSqlRelationalTableModelTab_2( tab_base.TabBase  ):
         self.append_msg( msg,   )
 
     # -----------------------
-    def update_db(self):
+    def update_db( self ):
         """
         what it says
         """
+
         self.append_function_msg( "update_db" )
 
         model           = self.model
 
-        if model.submitAll():
-            msg      = ("Changes committed no error detected ")
-            self.append_msg( msg,   )
+        model.apply_update()
 
-        else:
-            msg      = ("Error committing changes:", model.lastError().text())
-            self.append_msg( msg,   )
+        # if model.submitAll():
+        #     msg      = ("Changes committed no error detected ")
+        #     self.append_msg( msg,   )
+
+        # else:
+        #     msg      = ("Error committing changes:", model.lastError().text())
+        #     self.append_msg( msg,   )
 
         msg      = ( "you may want to select_all or get_data_from_model next ")
         self.append_msg( msg,   )
@@ -537,7 +614,9 @@ class QSqlRelationalTableModelTab_2( tab_base.TabBase  ):
         """
         select with a sort
         """
-        # self.append_function_msg( "select_all" )
+        self.append_function_msg( "select_all" )
+
+        self.append_function_msg( "set filter to '' and .select" )
 
         model        = self.model
 
@@ -550,15 +629,19 @@ class QSqlRelationalTableModelTab_2( tab_base.TabBase  ):
 
         model.select()
 
+        self.append_function_msg( "select_all done" )
+
     # ------------------------
     def select_some(self):
         """
         select base on some criteria, read the code for details
         """
-        self.append_function_msg( "select_some" )
+        person_id = 1002
+        self.append_function_msg( f"select_some { person_id = }" )
 
-        self.model.setFilter( 'age >  26'   )
-        self.model.select()
+        self.model.select_for_id(  person_id = 1002 )
+        #self.model.setFilter( 'age >  26'   )
+        #self.model.select()
 
     # -----------------------
     def get_data_from_model(self):

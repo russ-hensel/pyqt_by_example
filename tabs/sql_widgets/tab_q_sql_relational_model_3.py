@@ -1,5 +1,27 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+
+# ---- tof
+
+"""
+self.help_file_name     =  "qsql_relational_table_model_tab_2.txt"
+
+KEY_WORDS:      table model for relational sql join crud update add insert
+CLASS_NAME:     QSqlRelationalTableModelTab_3
+WIDGETS:         QSqlRelationalTableModel QTableView Broken
+STATUS:         who knows
+TAB_TITLE:       QSqlRelationalTableModel / #3 broken
+DESCRIPTION:    A reference but not yer for the QSqlRelationalTableModel
+HOW_COMPLETE:   5  #   look at another time and delete
+
+
+
+"""
+WIKI_LINK      =  "https://github.com/russ-hensel/qt5_by_example/wiki/What-We-Know-About-QDateEdit"
+
+
+
+
 """
 
 
@@ -68,11 +90,6 @@ class PersonProxyModel( QSortFilterProxyModel ):
 
 # # Set proxy model to the view
 # view.setModel(proxy_model)
-
-
-
-
-
 
 
 

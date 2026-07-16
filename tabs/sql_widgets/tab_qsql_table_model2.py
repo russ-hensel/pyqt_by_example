@@ -31,32 +31,38 @@ if __name__ == "__main__":
 
 from functools import partial
 
-from qtpy.QtCore import (QDateTime,
-                          Qt)
+from qtpy.QtCore import (
+                            QDateTime,
+                            QItemSelectionModel,
+                            Qt,
+                          )
 
 
-from qtpy.QtWidgets import QTableView, QStyledItemDelegate
+from qtpy.QtWidgets import   QStyledItemDelegate
 from qtpy.QtSql import QSqlTableModel
-from qtpy.QtCore import Qt
+
 
 
 from qtpy.QtGui import QColor, QBrush
 
-from qtpy.QtSql import QSqlTableModel
 
-from qtpy.QtWidgets import (  QDialog, )
-from qtpy.QtWidgets import (  QSpinBox, )
-from qtpy.QtWidgets import ( QHBoxLayout, QFormLayout, )
-from qtpy.QtWidgets import ( QSpinBox, QComboBox, QDialogButtonBox, QMessageBox, )
-from qtpy.QtWidgets import (QComboBox,
-                             QDateTimeEdit,
-                             QHBoxLayout,
-                             QLineEdit,
-                             QMessageBox,
-                             QPushButton,
-                             QTableView,
-                             QTextEdit,
-                             QVBoxLayout)
+
+from qtpy.QtWidgets import (
+                            QSpinBox,
+                            QFormLayout,
+                            QDialog,
+                            QDialogButtonBox,
+                            QStyledItemDelegate,
+                            QComboBox,
+                            QDateTimeEdit,
+                            QHBoxLayout,
+                            QLineEdit,
+                            QMessageBox,
+                            QPushButton,
+                            QTableView,
+                            QTextEdit,
+                            QVBoxLayout
+                             )
 
 import info_about
 import utils_for_tabs as uft
@@ -69,8 +75,14 @@ import tab_base
 INDENT              = uft.INDENT
 # print_func_header   =  uft.print_func_header
 
-class ColoredRowDelegate(QStyledItemDelegate):
+# ------------------------
+class ColoredRowDelegate( QStyledItemDelegate ):
     def __init__(self, colored_rows=None, parent=None):
+        """
+
+
+        """
+
         super().__init__(parent)
         self.colored_rows = colored_rows if colored_rows is not None else set()
 
@@ -105,6 +117,7 @@ class QSqlTableModelTab2( tab_base.TabBase   ):
         self.mutate_dict[2]     = self.mutate_2
         self.mutate_dict[3]     = self.mutate_3
         self.mutate_dict[4]     = self.mutate_4
+        self.mutate_dict[5]     = self.mutate_5
         self._build_gui()
         self.db_select_all()
 
@@ -534,8 +547,8 @@ class QSqlTableModelTab2( tab_base.TabBase   ):
         view.setSelectionMode(QTableView.ExtendedSelection)
         view.setSelectionBehavior(QTableView.SelectRows)
 
-        msg    = "set extended selection "
-        view.selectRow(1)
+        msg    = "Select Row 1 "
+        view.selectRow( 1 )
 
         self.append_msg( tab_base.DONE_MSG )
 
@@ -571,8 +584,8 @@ class QSqlTableModelTab2( tab_base.TabBase   ):
         self.append_msg( msg, )
         # Set up the delegate for custom row coloring
         colored_rows   = {1, 3}  # Rows to color
-        delegate       = ColoredRowDelegate(colored_rows, self)
-        view.setItemDelegate(delegate)
+        delegate       = ColoredRowDelegate( colored_rows, self )
+        view.setItemDelegate( delegate )
 
         self.append_msg( tab_base.DONE_MSG )
 
@@ -630,7 +643,7 @@ class QSqlTableModelTab2( tab_base.TabBase   ):
         self.append_msg( msg, )
 
         view.selectionModel().clearSelection()
-        view.setSelectionMode(QTableView.ExtendedSelection)
+        view.setSelectionMode( QTableView.ExtendedSelection )
         view.setSelectionBehavior(QTableView.SelectRows)
         view.selectAll()
 
@@ -642,7 +655,67 @@ class QSqlTableModelTab2( tab_base.TabBase   ):
         self.append_msg( "detect column header click off" )
         view.horizontalHeader().sectionClicked.disconnect( self.on_header_clicked )
 
+
+        msg    = "un colored rows from russ"
+        self.append_msg( msg, )
+        # Set up the delegate for custom row coloring
+        colored_rows   = {}  # Rows to color
+        delegate       = ColoredRowDelegate( colored_rows, self )
+        view.setItemDelegate(delegate)
+
         self.append_msg( tab_base.DONE_MSG )
+
+    # ------------------------------------
+    def mutate_5( self ):
+        """
+        read it -- mutate the widgets
+        """
+        self.append_function_msg( "mutate_4" )
+
+        # msg    = "beginning implementation"
+        # self.append_msg( msg, clear = False )
+
+        model        = self.model
+        view         = self.view
+
+        # model.setHeaderData(2, Qt.Horizontal, "----Age----" )
+        # view.setColumnHidden( 0, False )
+        # view.setShowGrid( False )
+
+        # view.setEditTriggers(QTableView.NoEditTriggers)
+
+        msg    = "select row 3 ( 0 based ) compare to other mutate "
+        self.append_msg( msg, )
+
+        row             = 3
+        index           = model.index( row, 0 ) # column does not matter
+        selection_model = view.selectionModel()
+        view.selectionModel().clearSelection()
+        view.setSelectionMode( QTableView.ExtendedSelection )
+        view.setSelectionBehavior( QTableView.SelectRows )
+        selection_model = view.selectionModel()
+        selection_model.select(
+                    index,
+                    QItemSelectionModel.Select | QItemSelectionModel.Rows,
+                    )
+
+        # may just be nice to have
+        selection_model.setCurrentIndex(
+                    index,
+                    QItemSelectionModel.Select | QItemSelectionModel.Rows,
+                    )
+        view.scrollTo( index )
+
+        # msg    = "resize to contents "
+        # self.append_msg( msg, )
+        # view.resizeRowsToContents()
+        # view.resizeColumnsToContents()
+
+        # self.append_msg( "detect column header click off" )
+        # view.horizontalHeader().sectionClicked.disconnect( self.on_header_clicked )
+
+        self.append_msg( tab_base.DONE_MSG )
+
 
 
     # ------------------------------------
@@ -657,6 +730,7 @@ class QSqlTableModelTab2( tab_base.TabBase   ):
 
         self.append_msg( tab_base.DONE_MSG )
 
+    # ------------------------------------
     def add_with_dialog_for_stuff(self):
         """
         Open dialog to add a new event and insert it into the model.
@@ -682,7 +756,7 @@ class QSqlTableModelTab2( tab_base.TabBase   ):
 
         self.append_msg( tab_base.DONE_MSG )
 
-
+    # ------------------------------------
     def add_new_person(self):
         """Open dialog to add a new person and insert it into the model."""
 
@@ -761,6 +835,7 @@ class QSqlTableModelTab2( tab_base.TabBase   ):
             model.setData( model.index(row, 3), form_data["family_relation"])
             model.setData( model.index(row, 4), form_data["add_kw"])
 
+    # ------------------------------------
     def delete_selected_person(self):
         """Delete the currently selected person."""
         self.append_function_msg( "delete_selected_person" )
@@ -836,7 +911,7 @@ class QSqlTableModelTab2( tab_base.TabBase   ):
 
         self.append_msg( tab_base.DONE_MSG )
 
-
+# ------------------------
 class PersonDialog(QDialog):
     """
     Dialog for adding or editing a person record.

@@ -17,25 +17,23 @@ WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-K
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
-    pass
+    import main   # noqa  stops auto removal by pycln
 # --------------------
 
 
 
-
-# sql
-from qtpy.QtWidgets import (QHBoxLayout,
+from qtpy.QtWidgets import (
+                             QHBoxLayout,
                              QLabel,
                              QLineEdit,
-                             QVBoxLayout)
-
+                             QVBoxLayout
+                             )
 
 import wat_inspector
 #import custom_widgets
 import tab_base
 
 # ---- end imports
-
 
 
 #  --------
@@ -74,20 +72,27 @@ class QLineEditTab( tab_base.TabBase ) :
 
         # self.lbl_stretch     = lbl_stretch
         # self.widget_stretch  = widget_stretch
-        # ---- new row
+        # ---- new row "QLineEdit_1"
         row_layout       = QHBoxLayout( )
         layout.addLayout( row_layout )
 
         # # ---- edits --------------------------------
         # layout.addWidget( groupbox_edits )
         # g_layout            = QVBoxLayout( groupbox_edits  )
-        widget            = QLabel( "QLineEdit_1")
+        widget            = QLabel( "QLineEdit_1 ")
         row_layout.addWidget( widget,  ) # stretch = lbl_stretch )
 
         widget            = QLineEdit(  self,   )
         widget.setReadOnly( False )
-        self.line_edit_1_widget = widget
-        row_layout.addWidget( widget,  ) # stretch = lbl_stretch )
+
+        # capture some events
+        widget.textChanged.connect(     self.show_text_changed )
+        widget.textEdited.connect(      self.show_text_edited )
+        widget.editingFinished.connect( self.show_text_finished )
+        widget.returnPressed.connect(   self.show_text_return )
+
+        self.line_edit_1_widget = widget  # save reference
+        row_layout.addWidget( widget,  )
 
         # ---- new row
         row_layout        = QHBoxLayout( )
@@ -107,6 +112,47 @@ class QLineEditTab( tab_base.TabBase ) :
         # our ancestor finishes off the tab with some
         # standard buttons
         self.build_gui_last_buttons( row_layout )
+
+    # ------------------------------------
+    def show_text_return( self, ):
+        """
+        read it -- show event and show sender
+        """
+        #sender()
+        event_sender    =  self.sender()
+            # may be better way to get a reference to the wodget
+        msg             = f"show_text_return event_sender = { event_sender } "
+        self.append_msg( msg, clear = False )
+
+        text            = self.line_edit_1_widget.text()
+        msg             = f"show_text_return line_edit_1_widget arg (on) text = { text } "
+        self.append_msg( msg, clear = False )
+
+    # ------------------------------------
+    def show_text_edited( self, text ):
+        """
+        read it -- show event
+        """
+        msg    = f"show_text_edited line_edit_1_widget arg (on) text = { text } "
+        self.append_msg( msg, clear = False )
+
+    # ------------------------------------
+    def show_text_finished( self, ):
+        """
+        read it -- show event
+        """
+        text   = self.line_edit_1_widget.text()
+        msg    = f"show_text_finished line_edit_1_widget arg (on) text = { text } "
+        self.append_msg( msg, clear = False )
+
+    # ------------------------------------
+    def show_text_changed( self, text ):
+        """
+        read it -- show event
+            - **textChanged(str)**
+        """
+        msg    = f"show_text_changed line_edit_1_widget arg (on) text = { text } "
+        self.append_msg( msg, clear = False )
 
     # ------------------------------------
     def mutate_0( self ):
@@ -214,4 +260,6 @@ class QLineEditTab( tab_base.TabBase ) :
         breakpoint()
 
         self.append_msg( tab_base.DONE_MSG )
+
+
 # ---- eof

@@ -9,9 +9,14 @@ WIDGETS:        QSqlTableModel QTableView
 STATUS:         runs_correctly_?_10      demo_complete_2_10   !! review_key_words   !! review_help_0_10
 TAB_TITLE:      QSqlTableModel Reference
 DESCRIPTION:    A reference for the QSqlTableModel and its View QTableView
+HOW_COMPLETE:   20  #  AND A COMMENT -- <10 major probs  <15 runs but <20 fair not finished  <=25 not to shabby
 
 
+
+perhaps replaced by table model 2 == look and delete one of them
 """
+
+WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-About-QPushButtons"
 
 
 # --------------------

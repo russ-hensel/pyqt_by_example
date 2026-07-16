@@ -27,6 +27,7 @@ import sys
 import functools
 import subprocess
 from   functools import partial
+from   pathlib   import Path
 
 #from app_global import AppGlobal
 from qtpy import QtGui
@@ -108,10 +109,19 @@ class PyqtByExample( QMainWindow ):
 
         uft.TEXT_EDITOR     = my_parameters.text_editor
 
-        global DB_FILE
+        global DB_FILE      # this is for sample data not the tabs
         DB_FILE             = my_parameters.db_file_name
 
         app_logging.init()
+
+        if not self.check_dir():
+            #QApplication.instance().closeAllWindows()
+            self.close()
+            sys.exit( 1 )
+            return
+
+
+
 
         # next builds and populates the db, or may depending on refactor
         self.index_search    =  index_and_search.IndexSearch()
@@ -455,7 +465,7 @@ class PyqtByExample( QMainWindow ):
                      "\nSee the book at the repo wiki!"
                      )
 
-        QMessageBox.about(self, "About", msg )
+        QMessageBox.about( self, "About", msg )
 
     # -----------------------
     def show_parameters(self):
@@ -466,6 +476,33 @@ class PyqtByExample( QMainWindow ):
 
         if dialog.exec_() == QDialog.Accepted:
             pass
+
+
+    # -----------------------
+    def check_dir(self):
+        """
+        what it says, make sure there is a place for the db
+        """
+        file_name    =  parameters.PARAMETERS.db_file_name
+
+        if file_name != ":memory:":
+            path = Path( file_name ).parent
+
+            if not path.exists():
+                error_text   = "Directory for DB db_file_name does not exist, check parameters Exit Next "
+                QMessageBox.information( self, "Problem", error_text )
+                return False
+
+        file_name   =  parameters.PARAMETERS.tab_db_file_name
+        if file_name != ":memory:":
+            path        = Path( file_name ).parent
+
+            if not path.exists():
+                error_text   = "Directory for DB tab_db_file_name does not exist, check parameters Exit Next "
+                QMessageBox.information( self, "Problem", error_text )
+                return False
+
+        return True
 
     # ------------------------
     def inspect(self):

@@ -28,9 +28,6 @@ if __name__ == "__main__":
 
 
 
-
-
-
 from qtpy.QtWidgets import (QComboBox,
                              QHBoxLayout,
                              QLabel,

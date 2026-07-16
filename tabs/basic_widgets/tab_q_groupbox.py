@@ -33,7 +33,8 @@ if __name__ == "__main__":
 from qtpy.QtWidgets import (QGroupBox,
                              QHBoxLayout,
                              QPushButton,
-                             QVBoxLayout)
+                             QVBoxLayout
+                             )
 
 # import parameters
 
@@ -45,13 +46,10 @@ import tab_base
 # ---- end imports
 
 
-
 INDENT          = uft.INDENT
 INDENT          = uft.BEGIN_MARK_1
 INDENT          = uft.BEGIN_MARK_2
 #INDENT          = qt_sql_widgets.
-
-
 
 
 #  --------
@@ -136,7 +134,7 @@ class QGroupBoxTab( tab_base.TabBase  ) :
         """
         self.append_function_msg( "mutate_0()" )
 
-        msg    = "so far not implemented "
+        msg    = "so far not implemented -- may or may not be implemented later  "
         self.append_msg( msg, clear = False )
 
         self.append_msg( tab_base.DONE_MSG )
@@ -148,7 +146,7 @@ class QGroupBoxTab( tab_base.TabBase  ) :
         """
         self.append_function_msg( "mutate_1()" )
 
-        msg    = "so far not implemented "
+        msg    = "so far not implemented -- may or may not be implemented later  "
         self.append_msg( msg, clear = False )
 
         self.append_msg( tab_base.DONE_MSG )

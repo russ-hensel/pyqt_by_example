@@ -93,6 +93,8 @@ sys.path.insert( 1, f"./tabs/book_fitz" )
 
 sys.path.insert( 1, f"{src_root}/_examples" )
 
+
+# ---- stuff stuff
 sys.path.insert( 1, f"{src_root}/stuffdb" )
 #sys.path.insert( 1, f"{src_root}/stuffdb/qt_tabs" )
 sys.path.insert( 1, f"{src_root}/stuffdb/qt_tabs_new" )
@@ -103,6 +105,8 @@ sys.path.insert( 1, f"{src_root}/stuffdb/data_dict_src" )
 sys.path.insert( 1, f"{src_root}/stuffdb/sql" )
 #/mnt/WIN_D/Russ/0000/python00/python3/qt5_by_example
 # /mnt/WIN_D/Russ/0000/python00/python3/qt_by_example
+
+# ---- end stuff stuff
 
 sys.path.insert( 1, f"{src_root}/qt5_by_example/info_about_src" )
 sys.path.insert( 1, f"{src_root}/qt5_by_example" )

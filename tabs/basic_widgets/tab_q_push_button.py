@@ -184,7 +184,7 @@ class QPushButtonTab( tab_base.TabBase ):
 
         this is important content for the widgets referenced on this tab
         """
-        self.append_function_msg( "signal_sent()" )
+        self.append_msg( "signal_sent()" )
         # msg   = f"{function_nl}signal_sent"
         # print( msg )
         self.append_msg( f"signal_sent {msg}" )
@@ -199,7 +199,7 @@ class QPushButtonTab( tab_base.TabBase ):
 
         this is important content for the widgets referenced on this tab
         """
-        self.append_function_msg( "return_pressed()" )
+        self.append_msg( "return_pressed()" )
 
         self.append_msg( tab_base.DONE_MSG )
 
@@ -251,12 +251,12 @@ class QPushButtonTab( tab_base.TabBase ):
             # we use this local variable idea in many places
         widget          = self.q_push_button_1
         widget.setText( "text set in mutate_0()" )
-        widget.width     = 300
+        widget.width    = 300
         widget.setToolTip( None )
         widget.setStyleSheet( "" )
 
         # ---- change widget
-        msg    = "for q_push_button_2 no mutations"
+        msg             = "for q_push_button_2 no mutations"
         self.append_msg( msg, )
 
         widget          = self.q_push_button_2
@@ -278,15 +278,15 @@ class QPushButtonTab( tab_base.TabBase ):
         # self.append_msg( msg, clear     = False )
         # for self.q_push_button_1
 
-        msg    = "mess with q_push_button_1"
+        msg         = "mess with q_push_button_1"
         self.append_msg( msg, )
 
-        widget        = self.q_push_button_1
+        widget      = self.q_push_button_1
             # it is often convenient to use a local variable,
             # you will see this a lot in our code, it does not seem to
             # be typical but we think it should be
 
-        msg    = "q_push_button_1 set a tool tip"
+        msg         = "q_push_button_1 set a tool tip"
         self.append_msg( msg, )
 
         widget.setToolTip( "this is a tool tip" )
@@ -299,7 +299,7 @@ class QPushButtonTab( tab_base.TabBase ):
         self.append_msg( msg, clear = False )
 
         # ---- self.q_push_button_2
-        widget        = self.q_push_button_2
+        widget      = self.q_push_button_2
         # msg    = "setChecked(True )"
         # self.append_msg( msg, )
 
