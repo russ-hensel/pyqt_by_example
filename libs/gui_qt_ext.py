@@ -44,43 +44,34 @@ TEST
 
 # ---- imports
 
-from   qtpy  import QtGui
-from   qtpy.QtCore import ( QDateTime,  Qt,    )
+import logging
 
+import string_utils
+from qtpy import QtGui
+from qtpy.QtCore import QDateTime, Qt
+from qtpy.QtGui import (QAction, QBrush, QColor, QCursor, QTextCursor,
+                        QTextDocument)
+from qtpy.QtWidgets import (QApplication, QCheckBox, QFileDialog, QGridLayout,
+                            QGroupBox, QLabel, QLineEdit, QMessageBox,
+                            QPushButton, QStyledItemDelegate, QTextEdit,
+                            QVBoxLayout, QWidget)
 
-from qtpy.QtGui  import ( QCursor,
-                          QTextCursor,
-                          QTextDocument,
-                          QAction, )
+from app_global import AppGlobal
 
-from qtpy.QtGui import QColor, QBrush
 #import PyQt.QtWidgets as qtw    #  qt widgets avoid so much import below
 
 
-from qtpy.QtWidgets import (
-                            QApplication, QMessageBox,
-                            QGridLayout,   QVBoxLayout,       QGroupBox,  QPushButton,
-                            QWidget,      QLabel,     QLineEdit,  QFileDialog,
-                            QCheckBox,
-                            QStyledItemDelegate,
-
-                            QTextEdit,
-
-                             )
 
 
-QCursor  =  QtGui.QCursor
+# QCursor  =  QtGui.QCursor
 
 
 
-import string_utils
 
-from   app_global import AppGlobal
 # for above to work need to have an AppGlobal in the dir
 # where app was started, or provide another in this dir
 # seems to work
 
-import logging
 
 logger          = logging.getLogger( )
 
@@ -341,10 +332,15 @@ class DateFormatDelegate( QStyledItemDelegate ):
     """for table integer to date formats """
 
     # -----------------------------------
-    def displayText(self, value, locale):
+    def displayText( self, value, locale ):
 
         # Assuming the integer is a Unix timestamp in seconds
-        date = QDateTime.fromSecsSinceEpoch(int(value ) )
+        try:
+            date = QDateTime.fromSecsSinceEpoch(int(value ) )
+
+        except ( TypeError, ValueError ):   # null/empty in db
+            return ""
+
         return date.toString("yyyy-MM-dd")  # Customize format as needed
         #return super().displayText(value, locale)
 
@@ -358,7 +354,10 @@ class DateTimeFormatDelegate( QStyledItemDelegate ):
     # -----------------------------------
     def displayText( self, value, locale ):
 
-        date_time = QDateTime.fromSecsSinceEpoch(int( value ) )
+        try:
+            date_time = QDateTime.fromSecsSinceEpoch(int( value ) )
+        except ( TypeError, ValueError ):   # null/empty in db
+            return ""
 
         return date_time.toString( "yyyy-MM-dd hh:mm:ss" )
 

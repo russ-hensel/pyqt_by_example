@@ -11,7 +11,15 @@ dependencies = [
     "unidecode>=1.3.0",
     "wat-inspector",
     "pyqtgraph",
-    "matplotlib"
+    "matplotlib",
     "QScintilla",
+    "python-vlc>=3.0.21203",
+    "pyqtwebengine>=5.15.7",
+]
+
+[dependency-groups]
+dev = [
+    "pip>=26.1.2",
+    "spyder-kernels>=3.1.5",
 ]
 

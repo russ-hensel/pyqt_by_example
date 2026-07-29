@@ -20,6 +20,8 @@ import sys
 import in_spect_env
 
 global PARAMETERS
+
+
 PARAMETERS   = None
 
 # ========================================
@@ -35,7 +37,7 @@ class Parameters( ):
             if you comment all out all modes you get the default mode which should
             run, but perhaps not in the way you want
         """
-        #self.mode_dev_debug()
+        self.mode_dev_debug()
         #self.mode_ram_disk_db()
         #self.mode_russ_on_theprof()
         #self.new_user_mode()
@@ -50,8 +52,19 @@ class Parameters( ):
         # --- add on for testing, use as desired edit mode for your needs
         #self.plus_test_mode()
 
-    # ---- ---->> Methods:  one for each mode
+    # ---- ---->> Methods: one for each mode
     # -------
+    def new_user_mode( self ):
+        """
+        a mode for the new user, pretty much empty,
+        a new user may experiment here.
+        """
+        self.mode               = "mode new_user"
+        self.auto_run           = True
+
+        # ---- min_complete
+        self.min_complete       = 20  # minimum value for HOW_COMPLETE
+
 
     # -------
     def mode_dc_on_linux_mint( self ):
@@ -130,68 +143,8 @@ class Parameters( ):
         self.qt_ypos            = 10
 
         #self.dir_for_tabs.append(  "/mnt/WIN_D/russ/0000/python00/python3/_projects/stuffdb/qt_tabs"  )
-        self.dir_for_tabs.append(  "/mnt/8ball1/first6_root/russ/0000/python00/python3/_projects/stuffdb/pyqt_tabs" )
-
-    # -------
-    def mode_russ_on_theprof_salvame_maybe ( self ):
-        """
-        .
-        """
-        self.mode               = "mode_russ_on_theprof"
-        # but do they use the same units ?QDateEdit
-        self.qt_width           = 1500
-        self.qt_height          = 600    # 700 most of win height
-        self.qt_xpos            = 10
-        self.qt_ypos            = 10
-
-        self.wat_qt_width       = 1500
-        self.wat_qt_height      = 900
-        self.wat_qt_xpos        = 10
-        self.wat_qt_ypos        = 10
-
-        # self.dir_for_tabs       = [
-        #                             "/mnt/WIN_D/russ/0000/python00/python3/_projects/stuffdb",
-        #                             # "/mnt/WIN_D/russ/0000/python00/python3/_projects/rshlib/test",
-        #                             "/mnt/WIN_D/russ/0000/python00/python3/_projects/qt5_by_example/tabs",
-        #                             "/mnt/WIN_D/russ/0000/python00/python3/_projects/stuffdb/qt_tabs",
-        #                             "/mnt/WIN_D/russ/0000/python00/python3/_projects/rshlib/rshlib_qt",
-        #                             ]
-        # self.dir_for_tabs.append( "./tabs/basic_widgets" )
-        # self.dir_for_tabs.append( "./tabs/sql_widgets" )
-
-        # self.dir_for_tabs.append( "./tabs/book_fitz" ) #  book_fitz
-        # self.dir_for_tabs.append( "./tabs/more" )
-
-        # ---- for sample database
-        self.db_file_name        = "/tmp/ramdisk/qt_sql.db"
-        self.db_file_name        = ":memory:"
-
-        # ---- for qt tabs
-        self.tab_db_type         = "QSQLITE"
-
-        # next will blow program if dir does not exist
-        self.tab_db_file_name    = "/tmp/ramdisk/tab.db"
-        self.tab_db_file_name    = ":memory:"    # ok no disk location needed
-
-        # ---- default
-        self.default_search     = "russ"
-        self.do_search_on_init  = True
-
-        self.logging_level      = logging.DEBUG
-        self.logging_level      = logging.INFO
-
-    # -------
-    def new_user_mode( self ):
-        """
-        a mode for the new user, pretty much empty,
-        a new user may experiment here.
-        """
-        self.mode               = "mode new_user"
-        self.auto_run           = True
-
-        # ---- min_complete
-        self.min_complete       = 20  # minimum value for HOW_COMPLETE
-
+        #self.dir_for_tabs.append(  "/mnt/8ball1/first6_root/russ/0000/python00/python3/_projects/stuffdb/pyqt_tabs" )
+        self.dir_for_tabs.append( "./tabs/experiments" )
 
     # -------
     def running_on_tweaks(self,  ):
@@ -309,36 +262,6 @@ class Parameters( ):
             # name your config, it will show in app title
             # may be changed later in parameter init
 
-        # #--------------- automatic settings -----------------
-        # self.running_on   = running_on.RunningOn
-        # self.running_on.gather_data()
-
-        # # some of the next all?? should be moved over to RunningOn
-        # self.running_on.log_me( logger = None, logger_level = 10, print_flag = False )
-
-        # # this is the path to the main.py program
-        # self.py_path                   = self.running_on.py_path
-
-        # self.set_default_path_here     = True
-        #     # to make app location the default path in the app, Think True may always be best.
-        #     # above may be tricky to reset, but we may have the original dir in running on
-        # # no easy way to override this ??
-        # if  self.set_default_path_here:     # Now change the directory to location of this file
-
-        #     py_path    = self.running_on.py_path
-
-        #     print( f"Parameters.py: Directory: (  >>{os.getcwd()}<< switch if not '' to >>{py_path}<<")
-        #     if py_path != "":
-        #         os.chdir( py_path )
-
-        # # so we know our os  could be "linux" or our_os == "linux2"  "darwin"....
-        # self.our_os             = self.running_on.our_os
-        # self.os_win             = self.running_on.os_win          # boolean True if some version of windows
-        # self.computername       = self.running_on.computername    # a name of the computer if we can get it
-        # # directory where app was opened, not where it resides
-        # self.opening_dir        = self.running_on.opening_dir     # the opening dir before anyone changes it
-
-        # self.platform           = self.our_os           #  redundant
 
         # ---- appearance size--
 
@@ -380,25 +303,20 @@ class Parameters( ):
 
         self.auto_run           = True
 
-        # ---- database there are 2 ........
-
+        # ---- database there are 2
         self.db_type            = "QSQLITE"
             # the type of database, so far we only support sqllite
 
-        # ---- for sample database
+        # ---- .... for sample database
         self.db_file_name        = "/tmp/ramdisk/qt_sql.db"
         self.db_file_name        = ":memory:"     #  = "sample.db"   =  ":memory:"
         #self.db_file_name        = "./qt_sql.db"    #  real files are very slow
 
-        # ---- for qt tabs
+        # ---- .... for qt tabs
         self.tab_db_type         = "QSQLITE"
         self.tab_db_file_name    = "/tmp/ramdisk/tab.db"
         self.tab_db_file_name    = "./tab.db"
         self.tab_db_file_name    = ":memory:"
-
-        # this is the name of a program: its executable with path info.
-        # to be used in opening an external editor
-        #self.db_file_name        = "sample2.db"   #  = "sample.db"   =  ":memory:"
 
         # ---- file names -- but not db
         # control button for editing the readme file
@@ -412,7 +330,7 @@ class Parameters( ):
         self.help_path      =  "/mnt/WIN_D/russ/0000/python00/python3/_projects/qt5_by_example/docs/"
             # path leading to all docs and help
 
-        # ---- dir_for_tabs
+        # ---- dir_for_tabs:  the app will look for tabs in these directories
         self.dir_for_tabs       = [ "./",  ]
         self.dir_for_tabs       = [    ]
         #self.dir_for_tabs       = [ "/mnt/WIN_D/russ/0000/python00/python3/_projects/stuffdb/qt_tabs" ]
@@ -430,26 +348,7 @@ class Parameters( ):
         # ---- search and default
         self.default_search     = ""
         self.do_search_on_init  = False
-
-        # probably not used ??
-        # ---- systems for helpdb ??alpha  to sort make all quotes the same
-        self.systems_list      =  [    '',
-                            'Bash',
-                            'CAD/Print',
-                            'Delete',
-                            'Electronics',
-                            'House',
-                            'Linux',
-                            'Powerbuilder',
-                            'Programming',
-                            'Python',
-                            'RasPi',
-                            'RshPy',              # subsystem the project
-                            'Russ',
-                            'StuffDB',
-                            'TBD',
-                            'Tools',
-                        ]
+            # do search right away, typically if default_search != ""
 
     # -------
     def __init__( self, ):
@@ -465,9 +364,11 @@ class Parameters( ):
 
         # next lets you use  parameters.PARAMETERS as a global
         global PARAMETERS
+
         if not PARAMETERS:
             print( "creating global parameters.PARAMETERS")
             PARAMETERS    = self
+
         else:
             print( "__init__ probably an error")
 
@@ -571,19 +472,7 @@ class Parameters( ):
 
         return a_str
 
-# # something like this for creating on import
-# # ---------------
-# def create_if_needed( ):
-#     global PARAMETERS
-#     if not PARAMETERS:
-
-#          print( "creating global parameters.PARAMETERS")
-#          PARAMETERS    = Parameters()
-
-# # --------------------
-# create_if_needed()
-
-
-
 
 # ---- eof
+
+

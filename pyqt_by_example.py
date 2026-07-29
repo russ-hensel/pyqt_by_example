@@ -57,10 +57,10 @@ import utils_for_tabs as uft
 import wat_inspector
 import show_parameters
 import tab_base
-import tab_re_base
+#import tab_re_base
 from   app_global import AppGlobal
 # import app_logging    # /mnt/WIN_D/russ/0000/python00/python3/_projects/rshlib/app_services/app_logging.py
-import app_logging    # /mnt/WIN_D/russ/0000/python00/python3/_projects/rshlib/app_services/app_logging.py
+import app_logging      # /mnt/WIN_D/russ/0000/python00/python3/_projects/rshlib/app_services/app_logging.py
 
 
 #logger   = logging.getLogger()

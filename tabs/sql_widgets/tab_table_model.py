@@ -5,7 +5,7 @@
 tab_table_model.py
 
 
-KEY_WORDS:      programatically populated tabe for data add remove select QTableModel
+KEY_WORDS:      programatically populated tabe for data add remove select QTableModel  AbstractTableModel
 CLASS_NAME:     TableModelTab
 WIDGETS:        QAbstractTableModel QTableView QSortFilterProxyModel
 STATUS:         more or less a mess, think never finished
@@ -14,7 +14,7 @@ DESCRIPTION:    A reference for the QAbstractTableModel widget
 HOW_COMPLETE:   10  #  AND A COMMENT -- <10 major probs  <15 runs but <20 fair not finished  <=25 not to shabby
 
 """
-WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-About-QPushButtons"
+WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-About-Abstract-Table-Models"
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
@@ -123,17 +123,17 @@ class ATableModel( QAbstractTableModel ):
         self.endInsertRows()
 
     # ------------------------
-    def removeRow(self, row_index):
+    def removeRow( self, row_index) :
         """
         what it says, read
         !! emits seem to be messed up fixed ?
         """
         # self.beginRemoveRows(self.index(row_index, 0), row_index, row_index)
-        self.beginRemoveRows(self.createIndex(row_index, 0).parent(), row_index, row_index)
+        self.beginRemoveRows( QModelIndex(), row_index, row_index )
         self._data.pop( row_index )
         self.endRemoveRows()
-        self.layoutChanged.emit()
-        self.dataChanged.emit()
+        # self.layoutChanged.emit()   # unpaired emit corrupts the proxy's bookkeeping, begin/endRemoveRows is the whole protocol
+        # self.dataChanged.emit()   # raises TypeError: needs 2 index args, begin/endRemoveRows is enough
         #return True
 
     # ---------------------------
@@ -255,8 +255,13 @@ class TableModelTab( tab_base.TabBase  ):
         #widget.clicked.connect( lambda: self.widget_clicked( a_widget ) )
         button_layout.addWidget( widget )
 
-        widget        = QPushButton('clear_\nall_rows')
-        widget.clicked.connect(self.clear_all_rows )
+        #-------------
+        widget = QPushButton("remove_rows_\nselected")
+        widget.clicked.connect( self.remove_rows_selected )
+        button_layout.addWidget( widget )
+
+        widget        = QPushButton('remove_\nall_rows')
+        widget.clicked.connect(self.remove_all_rows )
         button_layout.addWidget( widget )
 
         widget        = QPushButton('sort\n')
@@ -385,7 +390,7 @@ class TableModelTab( tab_base.TabBase  ):
 
         selection_model = self.table_view.selectionModel()
 
-        model           = self.table_model
+        model           = self.proxy_model   # view is on the proxy, selection model wants proxy indexes
 
         col_start       = model.index(0, col_index)
         col_end         = model.index( model.rowCount() - 1, col_index)
@@ -474,7 +479,7 @@ class TableModelTab( tab_base.TabBase  ):
           Select a specific row.
           """
           self.append_msg( "\nselect_row" )
-          model           = self.table_model
+          model           = self.proxy_model   # view is on the proxy, selection model wants proxy indexes
           view            = self.table_view
           # Get the selection model from the view
           selection_model = view.selectionModel()
@@ -495,7 +500,7 @@ class TableModelTab( tab_base.TabBase  ):
         self.table_model.insertRow( row_position )
 
     # ------------------------------------------
-    def clear_all_rows(self):
+    def remove_all_rows(self):
         """
         what it says
 
@@ -505,7 +510,7 @@ class TableModelTab( tab_base.TabBase  ):
         model.clear_data()
 
     # ------------------------------------------
-    def remove_row_selected(self):
+    def remove_row_selected( self ):
         """
         what it says
         see also selection in get_selected_rows
@@ -524,7 +529,8 @@ class TableModelTab( tab_base.TabBase  ):
 
             # will get the first selected
             for index in selected_indexes:
-                row = index.row()
+                # index is a proxy index, map it or sorting deletes the wrong row
+                row = self.proxy_model.mapToSource( index ).row()
                 self.append_msg(f"Selected row: {row = }")
                 break   # only get one
 
@@ -533,6 +539,45 @@ class TableModelTab( tab_base.TabBase  ):
             return
 
         model.removeRow( row )
+
+    # ------------------------------------------
+    def remove_rows_selected(self):
+        """
+        remove all visually selected rows
+        works from the end towards the top so the
+        row indexes do not shift under us
+        see also remove_row_selected
+        """
+        self.append_msg( "\nremove_rows_selected" )
+
+        model           = self.table_model
+        view            = self.table_view
+        proxy_model     = self.proxy_model
+
+        selection_model = view.selectionModel()
+
+        if selection_model is None:
+            self.append_msg( "no selection model" )
+            return
+
+        selected_indexes  = selection_model.selectedRows()
+
+        if not selected_indexes:
+            self.append_msg( "no selected rows" )
+            return
+
+        # view is on the proxy, map to source rows or sorting will bite us
+        ix_rows         = [ proxy_model.mapToSource( index ).row()
+                            for index in selected_indexes ]
+
+        # end towards top
+        ix_rows.sort( reverse = True )
+
+        for ix_row in ix_rows:
+            self.append_msg( f"removing row {ix_row = }" )
+            model.removeRow( ix_row )
+
+        self.append_msg( f"removed {len( ix_rows )} rows" )
 
     # ------------------------------
     def set_size(self):
