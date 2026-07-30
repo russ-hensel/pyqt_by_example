@@ -4,10 +4,10 @@
 # ---- tof
 """
 
-KEY_WORDS:      book many misc simple widgets ddl rsh
+KEY_WORDS:      book many misc simple widgets ddl rsh Q
 CLASS_NAME:     FitzWidgetListTab
 WIDGETS:        QCheckBox QComboBox QDateEdit QDateTimeEdit QDial QDoubleSpinBox QFontComboBox QLCDNumber QLineEdit
-STATUS:         file name seems good
+STATUS:         seem good
 TAB_TITLE:      Fitz Chapt  7 / Widgets widgets_list
 DESCRIPTION:    Code motivated by Fitz section 7 Widgets widgets_list.py
 HOW_COMPLETE:   25  #  AND A COMMENT

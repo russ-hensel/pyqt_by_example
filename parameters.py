@@ -37,7 +37,8 @@ class Parameters( ):
             if you comment all out all modes you get the default mode which should
             run, but perhaps not in the way you want
         """
-        self.mode_dev_debug()
+        self.new_user_mode()
+        #self.mode_dev_debug()
         #self.mode_ram_disk_db()
         #self.mode_russ_on_theprof()
         #self.new_user_mode()

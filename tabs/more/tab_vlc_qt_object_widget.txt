@@ -1,0 +1,200 @@
+tab_vlc_qt_object_widget.txt -- help / dev notes for tab_vlc_qt_object_widget.py
+( QWebVlcMediaObjectWidgetTab / VlcVideoFrame )
+
+
+----------------------- Table of Contents -----------------
+
+---- Purpose/Functionality
+---- Development History
+---- Tools Used
+---- Capabilities ( what works )
+---- Limitations ( what does not, and why )
+---- Interaction
+Widgets included:
+---- Discussion -- this file vs tab_vlc_qt_widget.py
+---- Questions
+---- Links ( references used )
+---- Work still to do
+--------------------------------------------------------
+
+
+---- Purpose/Functionality --------------------------------------------------------------------------
+
+Same functionality as tab_vlc_qt_widget.py ( play a local video file via
+python-vlc, embedded in a plain QFrame via winId()/set_xwindow() ), but
+restructured to demonstrate encapsulating the vlc-specific plumbing inside
+a reusable widget class, VlcVideoFrame( QFrame ), instead of building it
+inline in the tab. The tab class becomes a thin consumer of that widget's
+public methods.
+
+
+---- Development History --------------------------------------------------------------------------
+
+    * Started as a straight copy of tab_vlc_qt_widget.py ( see that file's
+      own tab_vlc_qt_widget.txt for the history of getting python-vlc
+      embedding working in the first place -- codec check, X11/Wayland
+      gotcha, the uv --active environment incident, thread-marshaling via
+      Signal, and the position/volume slider work ). This file only
+      covers what changed in the split itself.
+
+    * Pulled everything vlc-specific out of the tab class into a new
+      class, VlcVideoFrame( QFrame ):
+        - the black-background QFrame setup ( still needed -- libvlc
+          paints directly into this frame's native window, bypassing Qt's
+          paint system, same reasoning as before )
+        - vlc.Instance() / media_player_new(), created once in
+          VlcVideoFrame.__init__ instead of in the tab's
+          _build_gui_widgets
+        - the lazy _ensure_embedded() ( winId() -> set_xwindow() ) --
+          moved as-is, same "must happen after the frame is part of a
+          shown hierarchy" reasoning applies whether the frame belongs to
+          a tab or anything else
+        - the libvlc event callbacks and vlc_state_signal -- moved as-is,
+          now emitted by VlcVideoFrame and consumed by whatever connects
+          to it ( the tab, in this case )
+        - added a small public method surface so callers never need to
+          reach into self.vlc_player directly: play(), pause(), stop(),
+          get_time_ms(), get_length_ms(), seek_to_ms(), set_volume(),
+          get_volume()
+
+    * Tab class ( renamed QWebVlcMediaObjectWidgetTab, to avoid colliding
+      with QWebVlcMediaWidgetTab in the app's class-name-keyed tab
+      lookups if both were ever open at once ) now just builds the
+      buttons/sliders/labels and calls self.video_frame.<method>() --
+      _load_and_play(), pause_vid(), stop_vid(), _update_position(),
+      _on_position_slider_released(), on_volume_changed() all changed
+      from talking to self.vlc_player to talking to self.video_frame.
+
+    * Verification: reused the same drive_vlc_tab.py harness built for
+      tab_vlc_qt_widget.py ( boots the real app, opens the tab via
+      window.open_tab_select(), drives buttons/sliders via QTest ),
+      repointed at the new module/class name. One fix needed: the
+      harness itself referenced tab_page.vlc_player directly in a few
+      assertions ( get_length()/get_time()/audio_get_volume() ) -- those
+      had to move to tab_page.video_frame.vlc_player, since that
+      attribute no longer exists on the tab. Once fixed, reran the full
+      sequence ( play, seek to 50%, volume 80->30->80, pause, stop, play
+      vid 2 ) end to end with no exceptions, and re-confirmed via a fresh
+      mss X11 screen capture that video still genuinely renders through
+      the new VlcVideoFrame widget ( identical result to the original
+      file's capture -- same certification-card frame at the same seek
+      point ). mss was reinstalled ( uv add --active mss ) and removed
+      again ( uv remove --active mss ) afterward, same as before -- it's
+      a test-only tool, not a dependency of the app.
+
+
+---- Tools Used --------------------------------------------------------------------------
+
+    * python-vlc / qtpy / PyQt5 -- unchanged from tab_vlc_qt_widget.py
+    * QTest ( qtpy.QtTest ) -- reused the existing harness against the
+      real running app
+    * mss -- reused for a real X11 screen capture, temporarily
+      reinstalled then removed via uv, same as last time
+    * sed -- used to mechanically repoint the existing test harness at
+      the new module/class names before rerunning it
+
+
+---- Capabilities ( what works ) --------------------------------------------------------------------------
+
+    * Identical to tab_vlc_qt_widget.py -- plays local video files in
+      effectively any codec/container libvlc supports, Play Vid 1/2,
+      Pause, Stop, a seek slider with live "mm:ss / mm:ss" label, and a
+      volume slider, all re-verified against the real running app.
+
+    * VlcVideoFrame is usable on its own -- any other tab/window could
+      import this module and drop in a VlcVideoFrame the same way this
+      tab does, without duplicating any vlc-specific code.
+
+
+---- Limitations ( what does not, and why ) --------------------------------------------------------------------------
+
+    * All the same limitations as tab_vlc_qt_widget.py apply here
+      unchanged ( X11-only embedding, no explicit vlc release() on
+      teardown, Pause is a toggle, libvlc's error messages are often
+      empty, not wired into the app's default tab registry ) -- see that
+      file's tab_vlc_qt_widget.txt for the full reasoning on each.
+
+    * VlcVideoFrame's public API is intentionally small ( play/pause/
+      stop/seek/volume/get_time/get_length ) -- it does not expose
+      lower-level libvlc functionality ( e.g. subtitle tracks, playback
+      rate, equalizer ). Would need extending if a future tab wants those.
+
+    * Two nearly-identical tabs ( this one and tab_vlc_qt_widget.py ) now
+      exist side by side. Fine as a before/after pair for reference, but
+      not something to keep duplicating further -- see Questions.
+
+
+---- Interaction --------------------------------------------------------------------------
+
+    Identical to tab_vlc_qt_widget.py -- Play Vid 1 / Play Vid 2 / Pause /
+    Stop buttons, a position slider + time label, a volume slider, plus
+    the usual tab_base scaffolding ( mutate-examine / wat-inspect /
+    breakpoint-debug ).
+
+Widgets included:
+    VlcVideoFrame ( QFrame subclass -- video surface + vlc instance/player ),
+    QLabel ( status, time ), QPushButton x4, QSlider x2 ( position, volume ),
+    QTimer ( polls position )
+
+
+---- Discussion -- this file vs tab_vlc_qt_widget.py --------------------------------------------------------------------------
+
+    tab_vlc_qt_widget.py pros: everything in one file/class, nothing to
+    look up in a second class when reading top to bottom. cons: the vlc
+    plumbing can't be reused without copy/pasting it into another tab.
+
+    tab_vlc_qt_object_widget.py ( this file ) pros: VlcVideoFrame is a
+    genuinely reusable "play a video" widget -- any other tab could embed
+    one without touching vlc.Instance/MediaPlayer/EventType directly.
+    Also a cleaner illustration of "put the vlc stuff in an object" as a
+    Qt/OOP pattern, useful as reference material on its own. cons: one
+    more layer of indirection to read through ( tab -> video_frame ->
+    vlc_player ) for what is still, functionally, the same single-purpose
+    tab.
+
+
+---- Questions --------------------------------------------------------------------------
+
+    * Now that VlcVideoFrame exists as a clean, reusable class, is
+      tab_vlc_qt_widget.py ( the inline version ) still worth keeping
+      around, or would it be clearer going forward to treat this object
+      version as the "real" one and mark the inline one as the
+      superseded/before example?
+
+    * Same three-video-tabs question as tab_vlc_qt_widget.txt ( python-vlc
+      vs QMediaPlayer vs QWebEngineView ) still applies -- does
+      VlcVideoFrame change that answer at all, e.g. by making the
+      python-vlc option cheap enough to reuse that it becomes the
+      default choice?
+
+
+---- Links ( references used ) --------------------------------------------------------------------------
+
+    Same references as tab_vlc_qt_widget.py -- no new external material
+    was needed for this refactor ( it only reorganizes already-verified
+    code ). See tab_vlc_qt_widget.txt's Links section:
+
+    python-vlc on PyPI
+    https://pypi.org/project/python-vlc/
+
+    python-vlc API reference
+    https://python-vlc.readthedocs.io/en/latest/api.html
+
+    python-vlc's own Qt embedding example ( qtvlc.py )
+    https://github.com/oaubert/python-vlc/blob/master/examples/qtvlc.py
+
+
+---- Work still to do --------------------------------------------------------------------------
+
+    * decide the keep-both-vs-supersede question above
+
+    * if VlcVideoFrame becomes the preferred pattern, consider whether it
+      belongs in a shared/importable module rather than living inside a
+      tabs/experiments file
+
+    * everything still open from tab_vlc_qt_widget.txt's Work still to do
+      applies equally here ( release() path, Wayland re-verification,
+      STATUS/HOW_COMPLETE update once settled )
+
+
+----eof --------------------------------------------

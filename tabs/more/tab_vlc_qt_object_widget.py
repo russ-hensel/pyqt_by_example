@@ -3,18 +3,22 @@
 
 # ---- tof
 """
-tab_q_table_widget.py
-self.help_file_name     =  "q_table_widget_tab.txt"
+tab_vlc_qt_object_widget.py
+self.help_file_name     =  "tab_vlc_qt_object_widget.txt"
 
-KEY_WORDS:      vlc widget mp4 video python-vlc libvlc
-CLASS_NAME:     QWebVlcMediaWidgetTab
-WIDGETS:        QFrame ( libvlc renders directly into its native window )
-STATUS:         in dev -- plays local files via libvlc, X11 only ( set_xwindow )
-TAB_TITLE:      VlcMediaTab / No Object - in test
-DESCRIPTION:    play local video files using python-vlc, embedded in a plain QFrame
-MORE:                via winId()/set_xwindow() -- libvlc eats almost any
-                codec so this is the fallback when QtWebEngine/QMediaPlayer
-                choke on a file
+KEY_WORDS:      vlc widget mp4 video python-vlc libvlc QFrame object oop
+CLASS_NAME:     QWebVlcMediaObjectWidgetTab
+WIDGETS:        VlcVideoFrame ( a QFrame subclass that owns the vlc instance/player )
+STATUS:         in dev -- same behavior as tab_vlc_qt_widget.py
+TAB_TITLE:      VlcMediaObjectTab / Object - in test
+DESCRIPTION:    VLC in an Object
+MORE:           same as tab_vlc_qt_widget.py ( play local video via python-vlc,
+                embedded via winId()/set_xwindow() ), restructured so all the
+                vlc-specific code -- instance, player, embedding, event
+                marshaling, play/pause/stop/seek/volume -- lives inside
+                VlcVideoFrame( QFrame ), a self-contained, reusable widget.
+                This tab just builds the surrounding buttons/sliders and
+                calls VlcVideoFrame's public methods.
 HOW_COMPLETE:   20  #  AND A COMMENT -- <10 major probs  <15 runs but <20 fair not finished  <=25 not to shabby
 """
 WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/VLC Mp4 Media Widget"
@@ -31,7 +35,7 @@ import os
 
 import vlc
 
-from qtpy.QtCore import (Qt, QTimer, Signal)
+from qtpy.QtCore import ( Qt, QTimer, Signal )
 from qtpy.QtGui import (QPalette)
 from qtpy.QtWidgets import (
                              QFrame,
@@ -60,15 +64,153 @@ basedir         = os.path.dirname( __file__ )   # vid files live next to this mo
 
 
 #-----------------------------------------------
-class QWebVlcMediaWidgetTab( tab_base.TabBase ):
+class VlcVideoFrame( QFrame ):
     """
-    here build a tab in its own class to hide its variables
+    a QFrame that is both the vlc video surface ( libvlc paints directly
+    into its native/X11 window via set_xwindow() ) and the owner of the
+    vlc instance/player -- all the vlc-specific plumbing from
+    tab_vlc_qt_widget.py lives here instead of in the tab class, so this
+    widget can be dropped into any other tab/window as a self-contained
+    "play a video" widget
     """
 
     # libvlc fires these on its own internal thread, not the Qt main thread --
     # emitting a signal from that thread queues the slot call onto the main
     # thread instead of touching widgets directly from a foreign thread
     vlc_state_signal        = Signal( str )
+
+    def __init__( self, parent = None ):
+        """
+        """
+        super().__init__( parent )
+
+        # libvlc paints directly into this frame's native window, bypassing
+        # Qt's own paint system, so give it a black background rather than
+        # leave the default widget fill showing through before playback starts
+        self.setMinimumHeight( 300 )
+        self.setAutoFillBackground( True )
+        a_palette           = self.palette()
+        a_palette.setColor( QPalette.Window, Qt.black )
+        self.setPalette( a_palette )
+
+        self.vlc_embedded   = False    # set_xwindow() done lazily, see _ensure_embedded
+
+        # ---- libvlc instance/player -- unlike QMediaPlayer these are not
+        # owned/cleaned-up by Qt
+        vlc_instance         = vlc.Instance()
+        vlc_player           = vlc_instance.media_player_new()
+        self.vlc_instance    = vlc_instance
+        self.vlc_player      = vlc_player
+
+        event_manager        = vlc_player.event_manager()
+        event_manager.event_attach( vlc.EventType.MediaPlayerPlaying,          self._vlc_on_playing )
+        event_manager.event_attach( vlc.EventType.MediaPlayerPaused,           self._vlc_on_paused )
+        event_manager.event_attach( vlc.EventType.MediaPlayerStopped,          self._vlc_on_stopped )
+        event_manager.event_attach( vlc.EventType.MediaPlayerEndReached,       self._vlc_on_end_reached )
+        event_manager.event_attach( vlc.EventType.MediaPlayerEncounteredError, self._vlc_on_error )
+
+    # -------------------------------------
+    def _ensure_embedded( self, ):
+        """
+        read it -- hook libvlc's rendering into this frame's native
+        ( X11 ) window. done lazily on first play rather than in __init__
+        since winId() should be called after this frame is part of a
+        shown widget hierarchy, and a widget is normally constructed
+        before its parent window has shown anything
+        """
+        if self.vlc_embedded:
+            return
+
+        win_id              = int( self.winId() )
+        self.vlc_player.set_xwindow( win_id )
+        self.vlc_embedded   = True
+
+    # -------------------------------------
+    def play( self, file_name ):
+        """
+        what it says -- load and play file_name
+        """
+        self._ensure_embedded()
+
+        media               = self.vlc_instance.media_new( file_name )
+        self.vlc_player.set_media( media )
+        self.vlc_player.play()
+
+    # -------------------------------------
+    def pause( self, ):
+        """ what it says -- toggle pause/resume ( libvlc's own pause() behavior ) """
+        self.vlc_player.pause()
+
+    # -------------------------------------
+    def stop( self, ):
+        """ what it says """
+        self.vlc_player.stop()
+
+    # -------------------------------------
+    def get_time_ms( self, ):
+        """ current playback position in ms, -1 if unknown """
+        return self.vlc_player.get_time()
+
+    # -------------------------------------
+    def get_length_ms( self, ):
+        """ media length in ms, -1 if unknown """
+        return self.vlc_player.get_length()
+
+    # -------------------------------------
+    def seek_to_ms( self, ms ):
+        """ what it says """
+        self.vlc_player.set_time( int( ms ) )
+
+    # -------------------------------------
+    def set_volume( self, value ):
+        """ value is 0-100 """
+        self.vlc_player.audio_set_volume( value )
+
+    # -------------------------------------
+    def get_volume( self, ):
+        """ what it says, 0-100 """
+        return self.vlc_player.audio_get_volume()
+
+    # -------------------------------------
+    def _vlc_on_playing( self, event ):
+        """ called on a libvlc thread -- just marshal to Qt via signal """
+        self.vlc_state_signal.emit( "playing" )
+
+    # -------------------------------------
+    def _vlc_on_paused( self, event ):
+        """ called on a libvlc thread -- just marshal to Qt via signal """
+        self.vlc_state_signal.emit( "paused" )
+
+    # -------------------------------------
+    def _vlc_on_stopped( self, event ):
+        """ called on a libvlc thread -- just marshal to Qt via signal """
+        self.vlc_state_signal.emit( "stopped" )
+
+    # -------------------------------------
+    def _vlc_on_end_reached( self, event ):
+        """ called on a libvlc thread -- just marshal to Qt via signal """
+        self.vlc_state_signal.emit( "end reached" )
+
+    # -------------------------------------
+    def _vlc_on_error( self, event ):
+        """ called on a libvlc thread -- just marshal to Qt via signal """
+        err_msg             = vlc.libvlc_errmsg()    # often None, libvlc is inconsistent about setting this
+        err_msg             = err_msg.decode() if err_msg else "unknown libvlc error"
+        self.vlc_state_signal.emit( f"error: {err_msg}" )
+
+
+
+
+#-----------------------------------------------
+class QWebVlcMediaObjectWidgetTab( tab_base.TabBase ):
+    """
+    here build a tab in its own class to hide its variables
+
+    same as QWebVlcMediaWidgetTab ( tab_vlc_qt_widget.py ), but all the vlc
+    plumbing lives in VlcVideoFrame above instead of inline here -- this
+    class only builds the surrounding buttons/sliders/labels and calls
+    self.video_frame's public methods
+    """
 
     def __init__(self, ):
         """
@@ -82,10 +224,6 @@ class QWebVlcMediaWidgetTab( tab_base.TabBase ):
 
         self.mutate_dict[0]     = self.mutate_0
         #self.mutate_dict[1]     = self.mutate_1
-
-        self.vlc_instance       = None
-        self.vlc_player         = None
-        self.vlc_embedded       = False    # set_xwindow() done lazily, see _ensure_embedded
 
         self.position_slider_dragging = False    # True while user drags the seek slider, see _update_position
 
@@ -112,34 +250,11 @@ class QWebVlcMediaWidgetTab( tab_base.TabBase ):
         main_layout.addLayout( layout )
         button_layout        = QHBoxLayout(   )
 
-        # ---- the video surface -- libvlc paints directly into this frame's
-        # native ( X11 ) window, bypassing Qt's own paint system, so give it
-        # a black background rather than leave the default widget fill showing
-        # through before playback starts
-        video_frame          = QFrame(   )
-        video_frame.setMinimumHeight( 300 )
-        video_frame.setAutoFillBackground( True )
-        a_palette            = video_frame.palette()
-        a_palette.setColor( QPalette.Window, Qt.black )
-        video_frame.setPalette( a_palette )
+        # ---- the video surface -- all the vlc plumbing lives inside this widget
+        video_frame          = VlcVideoFrame(   )
+        video_frame.vlc_state_signal.connect( self.on_media_state_changed )
         self.video_frame     = video_frame
         layout.addWidget( video_frame )
-
-        # ---- libvlc instance/player -- unlike QMediaPlayer these are not
-        # owned/cleaned-up by Qt, see notes at top of file
-        vlc_instance         = vlc.Instance()
-        vlc_player           = vlc_instance.media_player_new()
-        self.vlc_instance    = vlc_instance
-        self.vlc_player      = vlc_player
-
-        self.vlc_state_signal.connect( self.on_media_state_changed )
-
-        event_manager        = vlc_player.event_manager()
-        event_manager.event_attach( vlc.EventType.MediaPlayerPlaying,          self._vlc_on_playing )
-        event_manager.event_attach( vlc.EventType.MediaPlayerPaused,           self._vlc_on_paused )
-        event_manager.event_attach( vlc.EventType.MediaPlayerStopped,          self._vlc_on_stopped )
-        event_manager.event_attach( vlc.EventType.MediaPlayerEndReached,       self._vlc_on_end_reached )
-        event_manager.event_attach( vlc.EventType.MediaPlayerEncounteredError, self._vlc_on_error )
 
         # ---- status label
         a_widget             = QLabel( "no video loaded" )
@@ -151,7 +266,7 @@ class QWebVlcMediaWidgetTab( tab_base.TabBase ):
         layout.addLayout( position_layout )
 
         position_slider      = QSlider( Qt.Horizontal )
-        position_slider.setRange( 0, 1000 )    # scaled 0-1000, mapped to get_length()/set_time() in ms
+        position_slider.setRange( 0, 1000 )    # scaled 0-1000, mapped to get_length_ms()/seek_to_ms()
         position_slider.sliderPressed.connect(  self._on_position_slider_pressed )
         position_slider.sliderReleased.connect( self._on_position_slider_released )
         self.position_slider = position_slider
@@ -211,22 +326,6 @@ class QWebVlcMediaWidgetTab( tab_base.TabBase ):
         self.build_gui_last_buttons( button_layout )
 
     # -------------------------------------
-    def _ensure_embedded( self, ):
-        """
-        read it -- hook libvlc's rendering into self.video_frame's native
-        ( X11 ) window. done lazily on first play rather than at gui-build
-        time since winId() should be called after the frame is part of a
-        shown widget hierarchy, and this tab's __init__ runs before the
-        main window has shown anything
-        """
-        if self.vlc_embedded:
-            return
-
-        win_id              = int( self.video_frame.winId() )
-        self.vlc_player.set_xwindow( win_id )
-        self.vlc_embedded   = True
-
-    # -------------------------------------
     def _fmt_ms( self, ms ):
         """
         what it says -- ms ( libvlc's time unit ) to a "mm:ss" string,
@@ -246,8 +345,8 @@ class QWebVlcMediaWidgetTab( tab_base.TabBase ):
         read it -- polled by self.position_timer, keeps the seek slider
         and time label in sync with the actual vlc player position
         """
-        length              = self.vlc_player.get_length()    # ms, -1 if unknown
-        current              = self.vlc_player.get_time()      # ms, -1 if unknown
+        length              = self.video_frame.get_length_ms()    # ms, -1 if unknown
+        current              = self.video_frame.get_time_ms()      # ms, -1 if unknown
 
         if length > 0 and not self.position_slider_dragging:
             slider_value        = int( current * 1000 / length )
@@ -270,12 +369,12 @@ class QWebVlcMediaWidgetTab( tab_base.TabBase ):
         """
         what it says -- seek to wherever the user dropped the slider
         """
-        length              = self.vlc_player.get_length()
+        length              = self.video_frame.get_length_ms()
 
         if length > 0:
             value               = self.position_slider.value()
             new_time            = int( value * length / 1000 )
-            self.vlc_player.set_time( new_time )
+            self.video_frame.seek_to_ms( new_time )
 
         self.position_slider_dragging = False
 
@@ -284,18 +383,14 @@ class QWebVlcMediaWidgetTab( tab_base.TabBase ):
         """
         what it says -- value is 0-100, straight from the volume slider
         """
-        self.vlc_player.audio_set_volume( value )
+        self.video_frame.set_volume( value )
 
     # -------------------------------------
     def _load_and_play( self, file_name ):
         """
         what it says --
         """
-        self._ensure_embedded()
-
-        media               = self.vlc_instance.media_new( file_name )
-        self.vlc_player.set_media( media )
-        self.vlc_player.play()
+        self.video_frame.play( file_name )
 
         msg                 = ( f"playing {file_name = }  " )
         self.append_msg( msg )
@@ -306,39 +401,12 @@ class QWebVlcMediaWidgetTab( tab_base.TabBase ):
     def on_media_state_changed( self, state_text ):
         """
         what it says -- reflect the player state in the status label.
-        runs on the Qt main thread ( see vlc_state_signal ), unlike the
-        _vlc_on_* callbacks below
+        runs on the Qt main thread ( see VlcVideoFrame.vlc_state_signal ),
+        unlike the libvlc event callbacks that feed it
         """
         self.media_status_widget.setText( state_text )
         if state_text.startswith( "error" ):
             self.append_msg( state_text )
-
-    # -------------------------------------
-    def _vlc_on_playing( self, event ):
-        """ called on a libvlc thread -- just marshal to Qt via signal """
-        self.vlc_state_signal.emit( "playing" )
-
-    # -------------------------------------
-    def _vlc_on_paused( self, event ):
-        """ called on a libvlc thread -- just marshal to Qt via signal """
-        self.vlc_state_signal.emit( "paused" )
-
-    # -------------------------------------
-    def _vlc_on_stopped( self, event ):
-        """ called on a libvlc thread -- just marshal to Qt via signal """
-        self.vlc_state_signal.emit( "stopped" )
-
-    # -------------------------------------
-    def _vlc_on_end_reached( self, event ):
-        """ called on a libvlc thread -- just marshal to Qt via signal """
-        self.vlc_state_signal.emit( "end reached" )
-
-    # -------------------------------------
-    def _vlc_on_error( self, event ):
-        """ called on a libvlc thread -- just marshal to Qt via signal """
-        err_msg             = vlc.libvlc_errmsg()    # often None, libvlc is inconsistent about setting this
-        err_msg             = err_msg.decode() if err_msg else "unknown libvlc error"
-        self.vlc_state_signal.emit( f"error: {err_msg}" )
 
     # -------------------------------------
     def play_vid_1( self, ):
@@ -374,7 +442,7 @@ class QWebVlcMediaWidgetTab( tab_base.TabBase ):
         what it says -- toggle pause/resume of the media
         ( status label updates via the MediaPlayerPaused/Playing events )
         """
-        self.vlc_player.pause()
+        self.video_frame.pause()
 
         self.append_function_msg( "pause_vid" )
 
@@ -384,7 +452,7 @@ class QWebVlcMediaWidgetTab( tab_base.TabBase ):
         what it says -- stop the media
         ( status label updates via the MediaPlayerStopped event )
         """
-        self.vlc_player.stop()
+        self.video_frame.stop()
 
         self.append_function_msg( "stop_vid" )
 
@@ -419,11 +487,9 @@ class QWebVlcMediaWidgetTab( tab_base.TabBase ):
         self.append_function_msg( "inspect" )
         # make some locals for inspection
 
-        self_video_frame     = self.video_frame
-        self_vlc_instance    = self.vlc_instance
-        self_vlc_player      = self.vlc_player
-        self_position_slider = self.position_slider
-        self_volume_slider   = self.volume_slider
+        self_video_frame      = self.video_frame
+        self_position_slider  = self.position_slider
+        self_volume_slider    = self.volume_slider
 
         wat_inspector.go(
              msg            = "inspect...",
@@ -444,6 +510,3 @@ class QWebVlcMediaWidgetTab( tab_base.TabBase ):
         self.append_msg(  tab_base.DONE_MSG )
 
 # ---- eof
-
-
-
