@@ -1,0 +1,276 @@
+tab_camera_widget.txt -- help / dev notes for tab_camera_widget.py ( QCameraWidgetTab )
+
+
+----------------------- Table of Contents -----------------
+
+---- Purpose/Functionality
+---- QT6 ONLY -- read this first
+---- Development History
+---- Tools Used
+---- Capabilities ( what works )
+---- Limitations ( what does not, and why )
+---- Interaction
+---- Discussion -- the Qt6 capture session shape
+---- Discussion -- Qt5 vs Qt6, why there is no one module for both
+---- Gotchas found on this machine
+---- Questions
+---- Links ( references used )
+---- Work still to do
+--------------------------------------------------------
+
+
+---- Purpose/Functionality --------------------------------------------------------------------------
+
+A webcam.  Live preview, click to save a still, and video recording as the
+bonus.  Stills were the point of the exercise, video came along for free once
+the capture session was wired up.
+
+There is a stand alone twin of this tab in the project root, camera_widget.py
+( with camera_widget.txt beside it ), which runs without the app -- handy,
+since the app can not load this tab yet, see the next section.  The two are
+the same code with different plumbing: camera_widget.py carries its own msg
+box and its own main(), this one takes both from tab_base.TabBase.  Fix a bug
+in one, fix it in the other.  ?? or delete one of them once the app is on Qt6.
+
+
+---- QT6 ONLY -- read this first --------------------------------------------------------------------------
+
+This tab imports QMediaCaptureSession, QImageCapture and QVideoWidget, none of
+which exist in Qt5.  The app runs on PyQt5 today, so:
+
+    * the tab WILL be listed -- discovery only reads this file's docstring,
+      it does not import the module
+    * clicking it WILL raise ImportError on the qtpy.QtMultimedia import
+
+That is expected, not a bug in the tab.  To actually run it now, use the stand
+alone twin in the project root, from the Qt6 env:
+
+    ~/python_uv_venv/py3_13_qt6/bin/python camera_widget.py
+
+To make the tab itself run, the whole app has to move to Qt6.  As of
+2026-08-15 main.py does start under PyQt6 and gets as far as building the
+databases and one tab, so the move is not hopeless, but the app has never been
+run through: there are ~248 unscoped enum usages across 47 live files (
+Qt.AlignCenter and friends, all AttributeError under PyQt6 ), exec_() in about
+9 live files, three files importing PyQt5 directly, and tab_media_widget.py
+uses QMediaContent which Qt6 dropped.  The Qt6 env is also missing Qsci,
+pyqtgraph, matplotlib, fitz, vlc and unidecode.
+
+
+---- Development History --------------------------------------------------------------------------
+
+    * First written against Qt5 / PyQt5.  It never worked, and not because of
+      the code: the webcam on hand at the time ( Logitech QuickCam 046d:08ad )
+      offers exactly one pixel format, JPEG, and Qt5's QCamera on linux is
+      built on gstreamer's camerabin, which cannot negotiate with an
+      MJPEG-only source.  Proved it was not a Qt problem by running camerabin
+      straight from the shell --
+          gst-launch-1.0 camerabin viewfinder-sink=fakesink
+              -> ERROR: pipeline doesn't want to preroll
+      -- while a plain v4l2src ! jpegdec ! videoconvert pipeline ran fine.
+
+    * Tried the documented escape hatch, QMediaPlayer with a "gst-pipeline:"
+      url rendering into a QVideoWidget.  Failed too: no element "qtvideosink".
+      Qt registers that element only when it builds its own sink, which it
+      never does for a custom pipeline.  Chicken and egg, abandoned.
+
+    * Moved to Qt6.  Qt6 threw the whole Qt5 multimedia stack out; on linux
+      since 6.5 the default backend is FFmpeg, talking to V4L2 directly, no
+      camerabin anywhere.
+
+    * That still did not work with the QuickCam.  Asked the driver directly
+      with raw V4L2 ioctls, no Qt and no gstreamer in the way:
+          VIDIOC_ENUM_FMT            -> JPEG 'JFIF JPEG', that one format only
+          VIDIOC_ENUM_FRAMESIZES     -> 320x240 and 640x480, fine
+          VIDIOC_ENUM_FRAMEINTERVALS -> EINVAL, not implemented by the driver
+      Qt6 asks for frame intervals on every frame size, gets nothing, leaves
+      min/max frame rate at its sentinels ( the tell is "1e+10 0" in the
+      qt.multimedia.ffmpeg.v4l2cameradevices log ), decides the format is
+      invalid, and with no valid formats left drops the camera entirely.
+      QMediaDevices.videoInputs() then returns an empty list.
+
+    * New webcam ( generic UVC, usb id 32e6:9221 ).  Same raw ioctl probe
+      first, before writing a line of code: MJPG at ten resolutions up to
+      1920x1080 plus YUYV at four, and frame intervals enumerate properly (
+      1/30 ).  Qt6 then reported 14 formats and everything worked.
+
+    * Verified end to end: a 1920x1080 still ( 286 kB, a real picture, opened
+      and looked at ) and a 1.5 MB mp4 with proper ftyp/mdat/moov atoms.
+
+
+---- Tools Used --------------------------------------------------------------------------
+
+    * raw V4L2 ioctls from python ( fcntl.ioctl + struct ) to ask the driver
+      what it really supports.  Worth remembering -- it answers in seconds and
+      it is ground truth, no framework in the way.  v4l2-ctl is the normal
+      tool for this but is not installed here.
+    * gst-launch-1.0, to separate "the camera is broken" from "Qt is broken".
+    * QT_LOGGING_RULES="qt.multimedia.*=true", which is how the "1e+10 0"
+      frame rate sentinel and the encoder failures became visible at all.
+      Turn this on first whenever multimedia misbehaves.
+
+
+---- Capabilities ( what works ) --------------------------------------------------------------------------
+
+    * lists every camera QMediaDevices can see, and every format each one
+      offers ( the test webcam: 14 )
+    * live preview in a QVideoWidget
+    * still capture to a timestamped .jpg, with a thumbnail of the last shot
+    * video recording to a timestamped .mp4
+    * a still can be grabbed while recording is running -- Qt6 has no capture
+      *mode*, unlike Qt5, so the two do not fight
+    * hot plug: QMediaDevices.videoInputsChanged rebuilds the device list
+    * changing the format restarts the camera with the new one
+
+
+---- Limitations ( what does not, and why ) --------------------------------------------------------------------------
+
+    * Qt6 only, see above.  This is the big one.
+    * no audio in the recording.  The session has no audio input attached; add
+      a QAudioInput to the capture session if that is ever wanted.
+    * no camera controls -- exposure, white balance, focus, zoom.  QCamera in
+      Qt6 exposes all of them and none are used here.
+    * recorder state is polled, not signalled, see Gotchas.
+    * saves into tabs/more/output/camera, ie beside the module, which is
+      probably not where they belong ?? -- the stand alone twin puts them
+      under the project root instead
+
+
+---- Interaction --------------------------------------------------------------------------
+
+Widgets included:
+
+    Camera combo     -- every device QMediaDevices.videoInputs() reports
+    Format combo     -- resolution / pixel format / frame rate, biggest first
+    Start / Stop     -- the camera, not the app
+    QVideoWidget     -- live preview, the backend paints into it
+    last still       -- QLabel thumbnail of the most recent capture
+    Save to / Change -- output dir
+    Snap Still       -- captureToFile, answers arrive asynchronously
+    Record / Stop    -- video to mp4
+    plus the usual tab_base buttons
+
+
+---- Discussion -- the Qt6 capture session shape --------------------------------------------------------------------------
+
+Qt6 puts a QMediaCaptureSession in the middle and hangs everything off it:
+
+    QCamera ---> QMediaCaptureSession ---> QVideoWidget   ( preview )
+                      |    |
+                      |    +-----------> QImageCapture    ( stills )
+                      +----------------> QMediaRecorder   ( video )
+
+The session, the image capture and the recorder are built once in
+_build_gui_widgets and live for the life of the tab.  Only the QCamera is
+swapped, because a QCamera is bound to one device for its life -- changing
+camera, or changing format, means constructing a new one and calling
+session.setCamera().  Everything else survives untouched.
+
+Still capture is asynchronous and answers twice: imageCaptured arrives first
+with the QImage itself, which is what feeds the thumbnail, and imageSaved
+follows once the file is really on disk, carrying the file name the backend
+actually chose.  No extension is passed in -- the backend picks it.
+
+One ordering detail worth knowing for any tab, not just this one: TabBase
+builds msg_widget in _build_gui_bot, which runs inside _build_gui.  So nothing
+called before or during _build_gui_widgets may use append_msg -- msg_widget is
+still None.  That is why _load_camera_list() is called after self._build_gui()
+in __init__ rather than from inside the gui build.
+
+
+---- Discussion -- Qt5 vs Qt6, why there is no one module for both --------------------------------------------------------------------------
+
+    Qt5                        Qt6
+    QCamera                    QCamera            ( same name, different class )
+    QCameraViewfinder          QVideoWidget
+    QCameraImageCapture        QImageCapture
+    ( capture modes )          QMediaCaptureSession, no modes
+    QCameraInfo                QCameraDevice / QMediaDevices
+
+Nothing qtpy can paper over.  Supporting both means two code paths, and since
+Qt5 could not drive either camera on this machine there is no reason to.
+
+camera/ in this project holds the official Qt6 camera example, already
+converted to qtpy imports.  It could never run under PyQt5 -- it imports
+QMediaCaptureSession -- which is why it has been sitting there inert.  In a
+Qt6 environment it should run, and it is the fuller reference: settings
+dialogs, metadata, .ui files, android branches.  This tab is the cut down
+version.
+
+
+---- Gotchas found on this machine --------------------------------------------------------------------------
+
+1. QMediaRecorder signals will not connect.
+
+       connect() failed between (QMediaRecorder::RecorderState) and unislot()
+
+   Cause: PyQt6 6.11.0 bindings loading PyQt6-Qt6 6.11.1 libraries.
+   QMediaRecorder gained a signal ( autoStopChanged ) in that patch release,
+   which shifts the signal indices, so PyQt's lookups for that one class miss.
+   Narrowly scoped -- recorderStateChanged and errorOccurred on QMediaRecorder
+   fail, while durationChanged and actualLocationChanged on the same object
+   are fine, as are QCamera.errorOccurred and QImageCapture.errorOccurred,
+   both of which carry enums too.
+
+   Worked around by polling recorderState() and error() on a 250 ms QTimer,
+   the same trick tab_vlc_qt_widget.py uses for player position.
+   The real fix is to line the versions up ( there is no PyQt6 6.11.1 ):
+       uv pip install "PyQt6-Qt6==6.11.0" "PyQt6-WebEngine-Qt6==6.11.0" "PyQt6-Charts-Qt6==6.11.0"
+   after which _poll_recorder can be deleted and the two connects restored.
+
+2. Recording produced a 0 byte file.
+
+       Couldn't open video encoder "h264_vaapi" ; result: Function not implemented
+       No valid video codecs found        -> ResourceError
+
+   Qt finds a vaapi device and insists on gpu encoding, but this machine's
+   driver has no working encode entrypoint.  Not a pixel format problem -- it
+   fails on a plain YUYV source just as it does on MJPEG, and the first
+   symptom seen ( a complaint about profile VAProfileHEVCMain444_12 ) was only
+   how it surfaced when Qt defaulted to H265.
+
+   Fixed by disabling hardware encoders before QtMultimedia is imported:
+       os.environ.setdefault( "QT_FFMPEG_ENCODING_HW_DEVICE_TYPES", "" )
+   It must be set before the import, the backend reads it while starting up.
+   ?? in a tab that is a bit late -- if another tab already imported
+   QtMultimedia the backend is up and this does nothing.  main.py may be the
+   honest place for it, next to the GST_PLUGIN_FEATURE_RANK line already there.
+
+3. The ffmpeg Qt ships is LGPL and has no H264 encoder.  Ask for H264 and Qt
+   quietly substitutes MPEG4 part 2, still in an .mp4 container.  The
+   "Recording new media with muxer ..." log line reports what was really used.
+
+
+---- Questions --------------------------------------------------------------------------
+
+?? The format combo lists all 14 formats raw.  Worth filtering the silly ones?
+   1920x1080 YUYV runs at 5 fps and is never what anyone wants.
+
+?? Should the still be saved from the QImage we already have in
+   imageCaptured, rather than letting the backend write the file?  Would give
+   control over the name and the format, at the cost of a re-encode.
+
+?? Is a QAudioInput on the session worth it, so recordings have sound?
+
+?? Two copies of this code, here and camera_widget.py in the root.  Keep both,
+   or drop one once the app is on Qt6?
+
+
+---- Links ( references used ) --------------------------------------------------------------------------
+
+    https://doc.qt.io/qt-6/qmediacapturesession.html
+    https://doc.qt.io/qt-6/qimagecapture.html
+    https://doc.qt.io/qt-6/qmediarecorder.html
+    https://doc.qt.io/qt-6/qcameradevice.html
+    https://doc.qt.io/qt-6/qtmultimedia-camera-example.html   ( the camera/ dir here )
+    https://www.kernel.org/doc/html/latest/userspace-api/media/v4l/vidioc-enum-frameintervals.html
+
+
+---- Work still to do --------------------------------------------------------------------------
+
+    * move the app to Qt6, which is what actually blocks this tab
+    * fix the PyQt6 version mismatch, then drop _poll_recorder
+    * camera controls: exposure, white balance, focus
+    * audio on the recording
+    * a countdown / self timer for stills would be a nice touch
+    * decide where captures should be saved from a tab

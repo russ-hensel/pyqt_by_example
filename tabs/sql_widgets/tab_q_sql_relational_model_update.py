@@ -81,7 +81,7 @@ class PersonsPhonesModel( QSqlRelationalTableModel ):
         self._person_id = None
 
         # you apply changes explicitly in apply_update()
-        self.setEditStrategy( QSqlRelationalTableModel.OnManualSubmit )
+        self.setEditStrategy(QSqlRelationalTableModel.EditStrategy.OnManualSubmit )
 
     # ------------------------------------------
     def setup_and_select( self, person_id ):

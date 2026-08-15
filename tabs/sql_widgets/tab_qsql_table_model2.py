@@ -204,7 +204,7 @@ class QSqlTableModelTab2( tab_base.TabBase   ):
         self.model            = model
         model.setTable( 'persons' )
 
-        model.setEditStrategy( QSqlTableModel.OnManualSubmit )
+        model.setEditStrategy( QSqlTableModel.EditStrategy.OnManualSubmit )
             #  OnFieldChange , OnRowChange , and OnManualSubmit .
         # header title
         model.setHeaderData(2, Qt.Horizontal, "Age*" ) # QtHorizontal
@@ -225,7 +225,7 @@ class QSqlTableModelTab2( tab_base.TabBase   ):
         # self.phone_model       = model
         # model.setTable( 'persons_phones' )
 
-        # model.setEditStrategy( QSqlTableModel.OnManualSubmit )
+        # model.setEditStrategy( QSqlTableModel.EditStrategy.OnManualSubmit )
         #     #  OnFieldChange , OnRowChange , and OnManualSubmit .
         # # model->select();
         # #model->setHeaderData(1, Qt::Horizontal, tr("Salary"));

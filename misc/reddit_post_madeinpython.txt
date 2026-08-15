@@ -1,0 +1,26 @@
+# PyQtByExample — a big pile of runnable, searchable Qt-for-Python example code
+
+I built this with a friend to help Python programmers learn and use Qt (via `qtpy`, so it works with PyQt5/6 and PySide2/6).
+
+**What it is**
+
+A single application containing dozens of small, self-contained Qt examples (buttons, tables, dialogs, threading, SQL, multimedia, etc.), each in its own module/tab, with a built-in search so you can jump straight to the widget or topic you care about.
+
+**Why it's different from "one file per example" demo repos**
+
+- Everything runs inside one app — search for a widget name and jump right to its example.
+- Each example is deliberately small and scoped to one or a few widgets, so you don't have to read much code to get your answer.
+- It's meant to be run from an IDE in debug mode: you step through the code while watching it run, so you *see* how it behaves, not just read about it.
+- Code is commented enough that you usually don't need extra docs, but there's also a repo wiki ("the Book") with more detail.
+
+**Who it's for**
+
+Anyone building Qt GUIs in Python who wants copy-paste-ready working examples instead of digging through scattered single-file demos.
+
+It's gotten pretty large (a few megs of source) and there's a lot of Qt left to cover, so we'd love more eyes on it — as users, issue-filers, or contributors. MIT licensed.
+
+- Repo: https://github.com/russ-hensel/pyqt_by_example
+- Wiki: https://github.com/russ-hensel/pyqt_by_example/wiki
+- Screenshots: https://github.com/russ-hensel/pyqt_by_example/wiki/ScreenShots
+
+Feedback, bug reports, or "hey you're missing an example for X" issues are all welcome.

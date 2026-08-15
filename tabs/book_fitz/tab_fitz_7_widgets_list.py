@@ -163,7 +163,8 @@ class FitzWidgetListTab( tab_base.TabBase ) :
         read it -- mutate the widgets
         """
         self.append_function_msg( "mutate_1()" )
-        msg    = "so far not implemented "
+
+        msg    = "no implementation planned for this tab, because book does not contain that content "
         self.append_msg( msg, clear = False )
 
         self.append_msg( tab_base.DONE_MSG )

@@ -2,30 +2,31 @@
 # -*- coding: utf-8 -*-
 # ---- tof
 """
-# metadata here including WIKI_LINK as Constant ( not comment )
-# this material is used for selection access to the tab module which should
-# be named xxxxTab.py     among other things
+this tab is not functional
+        requires more installs
+        not really py5 compatible
+        used qml, which I do not
+        may put in more time to fix in future, but likely not
 
-KEY_WORDS:      pressed press PushButton click connect color pushbutton setCheckable
-CLASS_NAME:     QPushButtonTab
-WIDGETS:        QPushButton
-STATUS:         June 2025 ok: but more content would be nice
-TAB_TITLE:      QPushButton / Reference
-DESCRIPTION:    A reference for the QPushButton widget
-HOW_COMPLETE:   20  #  AND A COMMENT -- <10 major probs  <15 runs but <20 fair not finished  <=25 not to shabby
+
+
+KEY_WORDS:      qq Data Visualization Tool Tutorial   -- DataVisToolTutorial
+CLASS_NAME:     DataVisToolTutorialTab
+WIDGETS:        tbc
+STATUS:         April 2026 started
+TAB_TITLE:      Data Visualizationn / Example
+DESCRIPTION:    Chapter 6 - Plot the data in the GraphsView
+HOW_COMPLETE:   0  #  AND A COMMENT -- <10 major probs  <15 runs but <20 fair not finished  <=25 not to shabby
 """
-
-WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-About-QPushButtons"
+WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-About-QPushButtonsxxxx"
 
 """
 Some Notes:
 
-Home · russ-hensel/pyqt_by_example Wiki
-https://github.com/russ-hensel/pyqt_by_example/wiki
+Chapter 6 - Plot the data in the GraphsView - Qt for Python
+https://doc.qt.io/qtforpython-6/tutorials/datavisualize/plot_datapoints.html
 
-
-What We Know About QPushButtons · russ-hensel/pyqt_by_example Wiki
-https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-About-QPushButtons
+Data Visualization Tool Tutorial   -- DataVisToolTutorial
 
 
 """
@@ -33,18 +34,59 @@ https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-About-QPushButt
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
-    import main  # noqa  stops auto removal by pycln
+    pass
 # --------------------------------
 
+import time
+from   math import floor, ceil
 
-from qtpy.QtCore import ( Qt )
+import pandas as pd
 
-from qtpy.QtWidgets import ( QHBoxLayout,
+
+from qtpy.QtCore import Qt, QAbstractTableModel, QModelIndex
+from qtpy.QtGui import QColor
+
+from qtpy.QtCore import QDateTime, QTime, QTimeZone
+from qtpy.QtWidgets import (QHeaderView, QHBoxLayout, QTableView,
+                               QSizePolicy)
+from qtpy.QtQuickWidgets import QQuickWidget
+
+
+# # seems to be only in qt6, this might make somewhat compatible -- but fails with qt5
+# try:
+#     from PySide6.QtGraphs import QLineSeries, QDateTimeAxis, QValueAxis, QGraphsTheme
+#     HAS_GRAPHS_THEME    = True
+
+# except ImportError:
+#     from qtpy.QtCharts import QLineSeries, QDateTimeAxis, QValueAxis
+#     QGraphsTheme        = None
+#     HAS_GRAPHS_THEME    = False
+
+
+from qtpy.QtCharts import QLineSeries, QDateTimeAxis, QValueAxis
+QGraphsTheme        = None
+HAS_GRAPHS_THEME    = False
+
+
+#from table_model import CustomTableModel
+
+
+
+from qtpy.QtCore import ( QDateTime,
+                          QModelIndex,
+                          Qt,
+                          QTime)
+
+from qtpy.QtGui import QColor
+
+
+from qtpy.QtWidgets import (QHBoxLayout,
                              QLabel,
                              QMenu,
                              QPushButton,
-                             QVBoxLayout
-                             )
+                             QSizePolicy,
+                             QTableView,
+                             QVBoxLayout)
 
 
 
@@ -56,15 +98,43 @@ import tab_base
 
 print_func_header   = uft.print_func_header
 
+
+
+def transform_date(utc, timezone=None):
+    utc_fmt = "yyyy-MM-ddTHH:mm:ss.zzzZ"
+    new_date = QDateTime().fromString(utc, utc_fmt)
+    if timezone:
+        new_date.setTimeZone(timezone)
+    return new_date
+
+
+def read_data(fname):
+    # Read the CSV content
+    df = pd.read_csv(fname)
+
+    # Remove wrong magnitudes
+    df = df.drop(df[df.mag < 0].index)
+    magnitudes = df["mag"]
+
+    # My local timezone
+    timezone = QTimeZone(b"Europe/Berlin")
+
+    # Get timestamp transformed to our timezone
+    times = df["time"].apply(lambda x: transform_date(x, timezone))
+
+    return times, magnitudes
+
+
+
 #  --------
-class QPushButtonTab( tab_base.TabBase ):
+class DataVisToolTutorialTab( tab_base.TabBase ):
     """
     Reference examples for QPushButton
 
         this is also the place for documentation on the methods normally found
-        in a tab_....py file and should comment these naming and other coding conventions.
-        Other tab_xxx.py files may not be as well commented for the framework type code,
-        you should be familiar with the conventions here and be able to read the code elsewehre.
+        in a tab_.... file and should display its naming and other coding conventions
+        other tab_xxx files may not be as well commented, you should be familiar with
+        the conventions and be able to read the code.
     """
     def __init__(self):
         """
@@ -76,7 +146,7 @@ class QPushButtonTab( tab_base.TabBase ):
         self.module_file        = __file__      # save for help file usage
 
         global WIKI_LINK
-        self.wiki_link          = WIKI_LINK     # helps the link to the wiki
+        self.wiki_link          = WIKI_LINK
 
         # modify to match the number of mutate methods in this module
         self.mutate_dict[0]     = self.mutate_0
@@ -96,7 +166,7 @@ class QPushButtonTab( tab_base.TabBase ):
         this just does a basic build -- the framework will then automatically
         call mutate_0()
 
-        This code is important content for the widgets referenced on this tab
+        this is important content for the widgets referenced on this tab
 
         """
         layout              = QHBoxLayout()
@@ -105,47 +175,51 @@ class QPushButtonTab( tab_base.TabBase ):
         # too clever ??
         main_layout.addLayout( layout := QVBoxLayout() )
 
-        # # ---- new row c -- testing never used
-        # row_layout          = QHBoxLayout(   )
-        # layout.addLayout( row_layout )
+        # ---- new row c
+        row_layout          = QHBoxLayout(   )
+        layout.addLayout( row_layout )
 
         # ---- New Row button_1 and _2 ....
         # make a layout to put the buttons in
         row_layout          = QHBoxLayout(   )
         layout.addLayout( row_layout )
 
+        self.widget_init( layout )
+
+
+
         # a label that points to q_pbutton_1
-        widget          = QLabel( "q_pbutton_1 -> ", alignment=Qt.AlignRight )
+        widget          = QLabel( "q_pbutton_1 -> ", alignment=Qt.AlignRight)
             # no instance variable as we will not use after __init__
 
         # layout ( add to the windows ) the widget
         row_layout.addWidget( widget )
 
-        # we use a local variable, widget, because it reduces the amount of code
-            # and does not run any slower
-            # we use this local variable idea in many places
-            # if we need an instance variable we do an assignment as here
-        widget                  = QPushButton( "q_pbutton_1" )
+        # we use a local variable because it reduces the amount of code
+        # and does not run any slower
+        # we use this local variable idea in many places
+        # because we will refer to the bu
+        widget              = QPushButton( "q_pbutton_1" )
         self.q_push_button_1    = widget
-            # save a reference for later use
 
-        # this function, the "connect_to" will be called when the button is clicked
+            # save a reference for later use
+        # this function will be called when the button is clicked
         # the code is a little indirect, do on one line if you wish
-        connect_to              = self.pb_1_clicked
+        connect_to          = self.pb_1_clicked
         widget.clicked.connect( connect_to )
         row_layout.addWidget( widget )
 
-        widget                  = QLabel( "q_pbutton_2 -> ", alignment=Qt.AlignRight )
+        widget              = QLabel("q_pbutton_2 -> ", alignment=Qt.AlignRight)
         row_layout.addWidget( widget )
 
-        widget                  = QPushButton( "q_pbutton_2" )
+        widget              = QPushButton( "q_pbutton_2" )
         self.q_push_button_2    = widget
-        connect_to              = self.pb_2_clicked
+        connect_to          = self.pb_2_clicked
         widget.clicked.connect( connect_to )
         row_layout.addWidget( widget, )
 
         # ---- new row, for build_gui_last_buttons
-        button_layout           = QHBoxLayout(   )
+        button_layout = QHBoxLayout(   )
         layout.addLayout( button_layout, )
 
         # our ancestor finishes off the tab with some
@@ -176,33 +250,11 @@ class QPushButtonTab( tab_base.TabBase ):
                 background-color: #3e8e41;
             }
         """
-        # i do not know what the default state, perhaps wat_inspector can tell
 
-    # ------------------------------------
-    def signal_sent( self, msg ):
-        """
-        when a signal is sent, use find ???
 
-        this is important content for the widgets referenced on this tab
-        """
-        self.append_msg( "signal_sent()" )
-        # msg   = f"{function_nl}signal_sent"
-        # print( msg )
-        self.append_msg( f"signal_sent {msg}" )
 
-        self.append_msg( tab_base.DONE_MSG )
 
-    # ---- connects signals...   --------
-    # --------------------------
-    def return_pressed( self ):
-        """
-        what is says  -- not connected, delete?
 
-        this is important content for the widgets referenced on this tab
-        """
-        self.append_msg( "return_pressed()" )
-
-        self.append_msg( tab_base.DONE_MSG )
 
     # ------------------------------------
     def pb_1_clicked( self ):
@@ -222,10 +274,10 @@ class QPushButtonTab( tab_base.TabBase ):
         """
         What it says
 
-            this function may be connected to a button: normally
+            this function may be connected to a button normally
             q_push_button_1
 
-        this code is important content for the widgets referenced on this tab
+        this is important content for the widgets referenced on this tab
         """
         self.append_msg( "pb_2_clicked()" )
 
@@ -252,12 +304,12 @@ class QPushButtonTab( tab_base.TabBase ):
             # we use this local variable idea in many places
         widget          = self.q_push_button_1
         widget.setText( "text set in mutate_0()" )
-        widget.width    = 300
+        widget.width     = 300
         widget.setToolTip( None )
         widget.setStyleSheet( "" )
 
         # ---- change widget
-        msg             = "for q_push_button_2 no mutations"
+        msg    = "for q_push_button_2 no mutations"
         self.append_msg( msg, )
 
         widget          = self.q_push_button_2
@@ -279,28 +331,28 @@ class QPushButtonTab( tab_base.TabBase ):
         # self.append_msg( msg, clear     = False )
         # for self.q_push_button_1
 
-        msg         = "mess with q_push_button_1"
+        msg    = "mess with q_push_button_1"
         self.append_msg( msg, )
 
-        widget      = self.q_push_button_1
+        widget        = self.q_push_button_1
             # it is often convenient to use a local variable,
             # you will see this a lot in our code, it does not seem to
             # be typical but we think it should be
 
-        msg         = "q_push_button_1 set a tool tip"
+        msg    = "q_push_button_1 set a tooltip"
         self.append_msg( msg, )
 
         widget.setToolTip( "this is a tool tip" )
         widget.setText( "text set in \nmutate_1()" )
-            # note \n above
+            # note \n
         widget.width     = 200
 
         # ---- change widget
-        msg         = "some changes to q_push_button_2"
+        msg    = "some changes to q_push_button_2"
         self.append_msg( msg, clear = False )
 
         # ---- self.q_push_button_2
-        widget      = self.q_push_button_2
+        widget        = self.q_push_button_2
         # msg    = "setChecked(True )"
         # self.append_msg( msg, )
 
@@ -319,15 +371,16 @@ class QPushButtonTab( tab_base.TabBase ):
         """
         self.append_function_msg( "mutate_2()" )
 
-        msg         = "change some attributes..."
+        msg    = "change some attributes..."
         self.append_msg( msg,  )
 
-        widget      = self.q_push_button_1
+
+        widget     = self.q_push_button_1
         self.q_push_button_1.setText( "one line")
         self.q_push_button_1.width     = 500
         self.q_push_button_1.setVisible( False )
 
-        msg         = "q_push_button_1 mess with checkable enabled..."
+        msg    = "q_push_button_1 mess with checkable enabled..."
         self.append_msg( msg,  )
 
         self.q_push_button_1.setCheckable( True )
@@ -340,10 +393,10 @@ class QPushButtonTab( tab_base.TabBase ):
         self.q_push_button_1.setCheckable( True )
 
         # ---- change widget
-        msg         = "some changes to q_push_button_2"
+        msg    = "some changes to q_push_button_2"
         self.append_msg( msg, clear = False )
 
-        widget      = self.q_push_button_2
+        widget     = self.q_push_button_2
         widget.setCheckable( True )
 
         self.append_msg( tab_base.DONE_MSG )
@@ -373,7 +426,7 @@ class QPushButtonTab( tab_base.TabBase ):
         msg    = "add menu to q_push_button_1"
         self.append_msg( msg, clear = False )
 
-        menu        = QMenu(self)
+        menu                = QMenu(self)
         menu.addAction("Option 1")
         menu.addAction("Option 2")
         widget.setMenu( menu )
@@ -383,12 +436,12 @@ class QPushButtonTab( tab_base.TabBase ):
         msg         = "\nsome changes to q_push_button_2"
         self.append_msg( msg, clear = False )
 
-        msg         = "q_push_button_2 mess with style sheet... hover ... color "
+        msg    = "q_push_button_2 mess with style sheet... hover ... color "
         self.append_msg( msg,  )
 
         widget.setCheckable( False )
         widget.setStyleSheet( self.get_button_style_sheet() )
-        msg         = f"get style sheet from widget \n {widget.styleSheet()}"
+        msg     = f"get style sheet from widget \n {widget.styleSheet()}"
         self.append_msg( msg,  )
 
         self.append_msg( tab_base.DONE_MSG )
@@ -402,7 +455,7 @@ class QPushButtonTab( tab_base.TabBase ):
         """
         self.append_function_msg( "mutate_4()" )
 
-        msg         = "undo many of earlier mutations"
+        msg    = "undo many of earlier mutations"
         self.append_msg( msg, clear = False )
 
         widget      = self.q_push_button_1
@@ -417,9 +470,9 @@ class QPushButtonTab( tab_base.TabBase ):
 
         msg    = "add menu to q_push_button_1"
         self.append_msg( msg, clear = False )
-        menu        = QMenu(self)
-        menu.addAction( "Menu Option 1" )
-        menu.addAction( "Menu Option 2" )
+        menu                = QMenu(self)
+        menu.addAction("Menu Option 1")
+        menu.addAction("Menu Option 2")
         # try to clear the menu
         widget.setMenu( None )
 
@@ -428,7 +481,7 @@ class QPushButtonTab( tab_base.TabBase ):
         msg         = "some changes to q_push_button_2"
         self.append_msg( msg, clear = False )
 
-        widget.setStyleSheet( "" )
+        widget.setStyleSheet("")
             # no style sheet
 
         self.append_msg( tab_base.DONE_MSG )
@@ -471,3 +524,157 @@ class QPushButtonTab( tab_base.TabBase ):
         self.append_msg( tab_base.DONE_MSG )
 
 # ---- eof
+
+
+
+
+
+# class Widget(QWidget):
+    def widget_init(self, layout ):   #data):
+        # super().__init__()
+        data = read_data(  "./all_day.csv" )
+        # Getting the Model
+        self.model = CustomTableModel(data)
+
+        # Creating a QTableView
+        self.table_view = QTableView()
+        self.table_view.setModel(self.model)
+
+        # QTableView Headers
+        resize = QHeaderView.ResizeMode.ResizeToContents
+        self.horizontal_header = self.table_view.horizontalHeader()
+        self.vertical_header = self.table_view.verticalHeader()
+        self.horizontal_header.setSectionResizeMode(resize)
+        self.vertical_header.setSectionResizeMode(resize)
+        self.horizontal_header.setStretchLastSection(True)
+
+        # Create QGraphView via QML
+        self.populate_series()
+        self.quick_widget = QQuickWidget(self)
+        self.quick_widget.setResizeMode(QQuickWidget.ResizeMode.SizeRootObjectToView)
+        self.theme = QGraphsTheme()
+        self.theme.setTheme(QGraphsTheme.Theme.BlueSeries)
+        initial_properties = {"theme": self.theme,
+                              "axisX": self.axis_x,
+                              "axisY": self.axis_y,
+                              "seriesList": self.series}
+        self.quick_widget.setInitialProperties(initial_properties)
+        self.quick_widget.loadFromModule("QtGraphs", "GraphsView")
+
+        # QWidget Layout
+        self.main_layout = QHBoxLayout(self)
+        size = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+
+        # Left layout
+        size.setHorizontalStretch(1)
+        self.table_view.setSizePolicy(size)
+        self.main_layout.addWidget(self.table_view)
+
+        # Right Layout
+        size.setHorizontalStretch(4)
+        self.quick_widget.setSizePolicy(size)
+        layout.addWidget(self.quick_widget)
+
+    def populate_series(self):
+        def seconds(qtime: QTime):
+            return qtime.minute() * 60 + qtime.second()
+
+        self.series = QLineSeries()
+        self.series.setName("Magnitude (Column 1)")
+
+        # Filling QLineSeries
+        time_min = QDateTime(2100, 1, 1, 0, 0, 0)
+        time_max = QDateTime(1970, 1, 1, 0, 0, 0)
+        # time_zone = QTimeZone( QTimeZone.Initialization.UTC )
+        time_zone = QTimeZone(b"UTC")
+
+
+        y_min =  1e37
+        y_max = -1e37
+        date_fmt = "yyyy-MM-dd HH:mm:ss.zzz"
+        for i in range(self.model.rowCount()):
+            t = self.model.index(i, 0).data()
+            time = QDateTime.fromString(t, date_fmt)
+            time.setTimeZone(time_zone)
+            y = float(self.model.index(i, 1).data())
+            if time.isValid() and y > 0:
+                if time > time_max:
+                    time_max = time
+                if time < time_min:
+                    time_min = time
+                if y > y_max:
+                    y_max = y
+                if y < y_min:
+                    y_min = y
+                self.series.append(time.toMSecsSinceEpoch(), y)
+
+        # Setting X-axis
+        self.axis_x = QDateTimeAxis()
+        # self.axis_x.setLabelFormat("dd.MM (h:mm)")
+        self.axis_x.setTitleText("Date")
+        self.axis_x.setMin(time_min.addSecs(-seconds(time_min.time())))
+        self.axis_x.setMax(time_max.addSecs(3600 - seconds(time_max.time())))
+        #self.series.setAxisX(self.axis_x)
+
+        # Setting Y-axis
+        self.axis_y = QValueAxis()
+        #self.axis_y.setLabelFormat("%.2f")
+        self.axis_y.setTitleText("Magnitude")
+        self.axis_y.setMin(floor(y_min))
+        self.axis_y.setMax(ceil(y_max))
+        #self.series.setAxisY(self.axis_y)
+
+        # older version of
+        # self.chart.addAxis(self.axis_x, Qt.AlignBottom)
+        # self.chart.addAxis(self.axis_y, Qt.AlignLeft)
+
+        self.series.attachAxis(self.axis_x)
+        self.series.attachAxis(self.axis_y)
+
+
+
+
+class CustomTableModel( QAbstractTableModel ):
+    def __init__(self, data=None):
+        QAbstractTableModel.__init__(self)
+        self.load_data(data)
+
+    def load_data(self, data):
+        self.input_dates = data[0].values
+        self.input_magnitudes = data[1].values
+
+        self.column_count = 2
+        self.row_count = len(self.input_magnitudes)
+
+    def rowCount(self, parent=QModelIndex()):
+        return self.row_count
+
+    def columnCount(self, parent=QModelIndex()):
+        return self.column_count
+
+    def headerData(self, section, orientation, role):
+        if role != Qt.ItemDataRole.DisplayRole:
+            return None
+        if orientation == Qt.Orientation.Horizontal:
+            return ("Date", "Magnitude")[section]
+        else:
+            return f"{section}"
+
+    def data(self, index, role=Qt.ItemDataRole.DisplayRole):
+        column = index.column()
+        row = index.row()
+
+        if role == Qt.ItemDataRole.DisplayRole:
+            if column == 0:
+                date = self.input_dates[row].toPython()
+                return str(date)[:-3]
+            elif column == 1:
+                magnitude = self.input_magnitudes[row]
+                return f"{magnitude:.2f}"
+        elif role == Qt.ItemDataRole.BackgroundRole:
+            return QColor(Qt.GlobalColor.white)
+        elif role == Qt.ItemDataRole.TextAlignmentRole:
+            return Qt.AlignmentFlag.AlignRight
+
+        return None
+

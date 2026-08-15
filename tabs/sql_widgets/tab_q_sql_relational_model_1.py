@@ -175,7 +175,7 @@ class QSqlRelationalTableModelTab_1( QWidget ):
         model.setHeaderData(4, Qt.Horizontal, "Phone Number")
 
         # self.model.setEditStrategy(QSqlRelationalTableModel.OnFieldChange)
-        model.setEditStrategy( QSqlRelationalTableModel.OnManualSubmit )
+        model.setEditStrategy(QSqlRelationalTableModel.EditStrategy.OnManualSubmit )
         self.select_all()
 
         # ---- view
