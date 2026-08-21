@@ -2,7 +2,7 @@
 # ---- tof
 
 """
-    parameters    for  qt examples
+    parameters    for  pyqt by example
     parameters.PARAMETERS.
 
 """
@@ -38,7 +38,7 @@ class Parameters( ):
             run, but perhaps not in the way you want
         """
         self.new_user_mode()
-        #self.mode_dev_debug()
+        self.mode_dev_debug()
         #self.mode_ram_disk_db()
         #self.mode_russ_on_theprof()
         #self.new_user_mode()
@@ -134,8 +134,12 @@ class Parameters( ):
         self.note_default_text  = "note_default_text"
 
         # ---- search and default
-        self.default_search     = "qq"
+
+        self.default_search     = ""
         self.do_search_on_init  = True
+
+        # self.default_search     = "qq"
+        # self.do_search_on_init  = True
 
         # good for kingholmer
         self.qt_width           = 1500
@@ -146,6 +150,8 @@ class Parameters( ):
         #self.dir_for_tabs.append(  "/mnt/WIN_D/russ/0000/python00/python3/_projects/stuffdb/qt_tabs"  )
         #self.dir_for_tabs.append(  "/mnt/8ball1/first6_root/russ/0000/python00/python3/_projects/stuffdb/pyqt_tabs" )
         self.dir_for_tabs.append( "./tabs/experiments" )
+        self.dir_for_tabs.append( "./tabs/eyllanesc" )
+
 
     # -------
     def running_on_tweaks(self,  ):
@@ -279,17 +285,19 @@ class Parameters( ):
 
 
         self.minimun_useful    =  10
-
+        # ---- .... icon
         self.icon               = r"./images/icon_red.png"    # icon for running app
         self.icon               = r"./icons/icons/binocular.png"
         self.icon               = r"./misc/computer.ico"
 
-
         self.text_editor        = "gedit"
         self.text_editor        = "xed"
 
+        # ---- output
+        self.output_dir         = "./output"   # file name for the python logging
+
         # ---- logging
-        self.pylogging_fn       = "./app.py_log"   # file name for the python logging
+        self.pylogging_fn       = f"{self.output_dir}/app.py_log"   # file name for the python logging
 
         self.log_mode               = "w"    # "a" append "w" truncate and write
         self.delete_log_on_start    = True
@@ -402,12 +410,12 @@ class Parameters( ):
         a_str   = self.to_columns( a_str, ["mode",
                                            f"{self.mode}" ] )
 
-
         a_str   = self.to_columns( a_str, ["our_os",
                                            f"{self.our_os}" ] )
 
         a_str   = self.to_columns( a_str, ["db_type",
                                            f"{self.db_type}" ] )
+
         a_str   = self.to_columns( a_str, ["db_file_name",
                                            f"{self.db_file_name}" ] )
 
@@ -436,17 +444,14 @@ class Parameters( ):
         a_str   = self.to_columns( a_str, [ "log_mode",
                                                   f"{self.log_mode}" ] )
 
-
         a_str   = self.to_columns( a_str, ["minimun_useful",
                                            f"{self.minimun_useful}" ] )
 
         a_str   = self.to_columns( a_str, ["breakpoint_ok",
                                            f"{self.breakpoint_ok}" ] )
 
-
         a_str   = self.to_columns( a_str, ["pylogging_fn",
                                            f"{self.pylogging_fn}" ] )
-
 
         a_str   = self.to_columns( a_str, ["qt_height",
                                            f"{self.qt_height}" ] )

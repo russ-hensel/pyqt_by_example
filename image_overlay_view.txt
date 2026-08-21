@@ -1,0 +1,88 @@
+image_overlay_view.txt -- notes for image_overlay_view.py ( ImageOverlayView )
+
+
+This is the re-usable widget, not a tab.  The tab that hosts it is
+tabs/more/tab_image_overlay.py, and the fuller write-up -- design discussion,
+gotchas, how to actually align two images -- is in
+tabs/more/tab_image_overlay.txt.  This file is just the widget's own summary.
+
+
+---- What it is --------------------------------------------------------------------------
+
+A QGraphicsView subclass holding two QGraphicsPixmapItem: a base image that
+defines the canvas, and an overlay that the user drags, nudges, rotates and
+scales over it.  Transparent parts of the overlay show the base through them.
+
+Derived from QGraphicsView rather than wrapping one in a QWidget -- the thing
+IS a view, and wrapping would only add a layer of forwarding.  Drop it straight
+into a layout.
+
+
+---- Run it on its own --------------------------------------------------------------------------
+
+    python image_overlay_view.py                     demo images, no files needed
+    python image_overlay_view.py base.png over.png
+
+make_demo_pixmaps() builds the two demo images in code: a blue/green base with
+white gridlines, and a red ring with a hole punched through the middle with
+CompositionMode_Clear.  The hole is what you look through, and the gridlines
+make a misalignment obvious.  No files to find, so the module demonstrates
+itself.
+
+
+---- The api --------------------------------------------------------------------------
+
+    set_base_image( source )         source is a file name, QPixmap or QImage
+    set_overlay_image( source )      both return True if the image loaded
+    has_images()
+
+    overlay_offset()   / set_overlay_offset( x, y )      canvas pixels
+    overlay_rotation() / set_overlay_rotation( degrees ) clockwise, about the centre
+    overlay_scale()    / set_overlay_scale( factor )     1.0 is the image's own size
+    set_overlay_opacity( 0.0 - 1.0 )
+    set_composition_mode( mode )     a QPainter.CompositionMode, or None
+    set_overlay_visible( bool ) / is_overlay_visible()   for blinking
+    nudge( dx, dy )
+    reset_overlay()
+
+    fit_to_view()  zoom_in()  zoom_out()  zoom_reset()  zoom_by( f )  view_zoom()
+
+    render_to_image( background = None )          -> QImage, full resolution
+    save_result( file_name, background = None )   -> bool
+
+    overlay_changed  signal ( x, y, rotation, scale )
+
+A host listening to overlay_changed must block its own widgets' signals while
+following it, or the two chase each other round forever.
+
+
+---- Two classes in here --------------------------------------------------------------------------
+
+OverlayPixmapItem   the top image.  Exists because a plain QGraphicsPixmapItem
+                    can not report that it moved, and can not paint with a
+                    composition mode.  Also snaps positions to whole pixels.
+                    Note it is a QGraphicsItem, not a QObject, so it can not
+                    emit a signal -- it takes a plain callable, on_moved, and
+                    the view turns that into the overlay_changed signal.
+
+ImageOverlayView    the view, the api, the interaction, the rendering.
+
+
+---- Things not to undo by accident --------------------------------------------------------------------------
+
+    * the checkerboard is drawn in drawBackground on the VIEW.  Moving it to
+      the scene would put it into every saved file
+    * both items are set to SmoothTransformation.  The default is Fast, which
+      saves ragged
+    * ItemSendsGeometryChanges must stay set or itemChange never fires
+    * the transform origin is re-set to the pixmap centre whenever the overlay
+      pixmap changes, or rotation goes about the corner
+    * view zoom and overlay scale are different things.  render_to_image uses
+      sceneRect and the items' own transforms, never the view's
+
+
+---- Qt5 and Qt6 --------------------------------------------------------------------------
+
+Both, tested on both.  Every enum is spelled the scoped way, which PyQt5
+5.15.14 and PyQt6 6.11 both accept -- checked before writing, all seventeen
+spellings used.  No qtpy shims needed anywhere.

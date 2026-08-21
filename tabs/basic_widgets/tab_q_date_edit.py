@@ -30,7 +30,7 @@ if __name__ == "__main__":
 import time
 
 
-from qtpy.QtCore import (QDate,
+from qtpy.QtCore import ( QDate,
                           QDateTime,
                           Qt,
                           QTime)
@@ -133,13 +133,12 @@ class QDateEditTab( tab_base.TabBase  ):
 
         ix_row        = 0
         ix_col        = 0
-
+        # ---- date widget without popup
         widget  = QLabel( "start_date_widget w/o popup" )
         layout.addWidget( widget, ix_row, ix_col )   # row column alignment
 
         ix_col                  += 1
-        #widget                  = QDateEdit()
-        #widget                  = CustomDateEdit()   # with context menu fro chat
+        #widget                  = CustomDateEdit()   # with context menu fro chat consider adding
         widget                  = QDateEdit()
         self.start_date_widget  = widget
         # widget.userDateChanged.connect( lambda: self.date_changed( ) )
@@ -148,7 +147,7 @@ class QDateEditTab( tab_base.TabBase  ):
         widget.setDate(QDate( 2022, 1, 1 ))
         layout.addWidget( widget, ix_row, ix_col )
 
-        # ----
+        # ---- date widget with popup
         ix_col    += 1
         widget  = QLabel( "end_date_widget -> (see _build_gui) ->" )
         layout.addWidget( widget, ix_row, ix_col )
@@ -198,7 +197,6 @@ class QDateEditTab( tab_base.TabBase  ):
         widget          = QTimeEdit( self )
         self.timeEdit   = widget
 
-
         # Set a default time -- some error here
         #self.timeEdit.setTime( QTime.currentTime() )
 
@@ -213,7 +211,6 @@ class QDateEditTab( tab_base.TabBase  ):
         # Show hours, minutes, and seconds (24-hour format)
         widget.setDisplayFormat("HH:mm:ss")
         widget.setDisplayFormat("hh:mm:ss AP")
-
 
         widget.setMinimumTime(QTime(8, 0, 0))
         widget.setMaximumTime(QTime(18, 0, 0))

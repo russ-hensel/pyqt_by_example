@@ -6,7 +6,7 @@
 """
 
 
-KEY_WORDS:      table model for relational sql join crud update add insert zz cursor
+KEY_WORDS:      table model for relational sql join crud update add insert   cursor
 CLASS_NAME:     QSqlRelationalTableModelUpdateTab
 WIDGETS:         QSqlRelationalTableModel QTableView workin in dev
 STATUS:         just working on it -- but it works, and needs work

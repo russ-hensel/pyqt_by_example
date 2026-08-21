@@ -1,0 +1,244 @@
+tab_image_overlay.txt -- help / dev notes for tab_image_overlay.py ( ImageOverlayTab )
+
+
+----------------------- Table of Contents -----------------
+
+---- Purpose/Functionality
+---- Interaction
+---- The split: tab vs widget
+---- Discussion -- why QGraphicsView and not a paintEvent
+---- Discussion -- transparency is free
+---- Discussion -- the two things called "scale"
+---- Discussion -- saving at full resolution
+---- Gotchas ( the ones that would have cost a day each )
+---- Aligning two images: how to actually use this
+---- Qt5 and Qt6
+---- Questions
+---- Links ( references used )
+---- Work still to do
+--------------------------------------------------------
+
+
+---- Purpose/Functionality --------------------------------------------------------------------------
+
+Show one image over another, see through the transparent parts of the top one,
+and move it into position while watching.  Drag it, nudge it a pixel at a time,
+rotate it, scale it, then save the composite at full resolution.
+
+The image part is a separate re-usable widget --
+image_overlay_view.ImageOverlayView, in the project root.  This tab is only
+controls.
+
+
+---- Interaction --------------------------------------------------------------------------
+
+In the view itself:
+
+    drag the top image     with the mouse
+    arrow keys             nudge it one pixel
+    shift + arrow keys     nudge it ten
+    mouse wheel            zoom the view, about the pointer
+
+Widgets included:
+
+    Load Base... / Load Overlay...  the two images
+    Demo Images                     images made in code, no files needed
+    Save Result...                  the composite, full resolution
+    X, Y                            the offset, shows the drag and drives it
+    Rotation, Scale                 the overlay's own transform
+    Reset                           corner on corner, no rotation, no scale
+    Opacity                         top image 0..100%
+    Blend                           Normal, Difference, Multiply, Screen,
+                                    Overlay, Darken, Lighten
+    Blink                           flick the top image on and off, twice a second
+    View: Fit / 1:1 / - / +         zoom only, never part of the result
+    plus the usual tab_base buttons
+
+
+---- The split: tab vs widget --------------------------------------------------------------------------
+
+    tabs/more/tab_image_overlay.py     controls, layout, file dialogs, messages
+    image_overlay_view.py              images, interaction, rendering, saving
+
+They talk only through the widget's api:
+
+    set_base_image( source )         a file name, QPixmap or QImage
+    set_overlay_image( source )
+    overlay_offset()   / set_overlay_offset( x, y )
+    overlay_rotation() / set_overlay_rotation( degrees )
+    overlay_scale()    / set_overlay_scale( factor )
+    set_overlay_opacity( 0.0 - 1.0 )
+    set_composition_mode( mode )
+    set_overlay_visible( bool ) / is_overlay_visible()
+    nudge( dx, dy )   reset_overlay()
+    fit_to_view()  zoom_in()  zoom_out()  zoom_reset()  view_zoom()
+    render_to_image( background = None )  -> QImage
+    save_result( file_name, background = None ) -> bool
+    overlay_changed  signal ( x, y, rotation, scale )
+
+The point of the split: the view is usable somewhere else unchanged, and
+rearranging this tab's buttons can not break the image handling.  The widget
+also runs on its own for a quick look --
+
+    python image_overlay_view.py                  demo images
+    python image_overlay_view.py base.png over.png
+
+
+---- Discussion -- why QGraphicsView and not a paintEvent --------------------------------------------------------------------------
+
+Both would work.  A QWidget with a paintEvent drawing two pixmaps is about
+sixty lines and teaches what compositing actually is, which has real value in a
+project like this one.  QGraphicsView won here for one reason: rotation.
+
+Hand rolled, a rotatable overlay means managing a QTransform yourself AND hit
+testing against a rotated rectangle so the drag still grabs the image where it
+visually is.  QGraphicsPixmapItem gives setRotation, setScale and correct hit
+testing for nothing.  It also does the view <-> scene coordinate mapping, which
+is where the hand rolled version usually goes wrong -- see the zoom gotcha below.
+
+?? A paintEvent version would still be a good separate tab some day, for the
+   teaching value.  There is no QPainter / paintEvent example in this project
+   at all outside old/ and the vendored camera/ directory.
+
+
+---- Discussion -- transparency is free --------------------------------------------------------------------------
+
+Nothing in this tab arranges the see-through behaviour.  QPainter composites
+with CompositionMode_SourceOver by default, so a png's alpha channel just
+works: draw the bottom image, draw the top one over it, transparent parts show
+what is underneath.
+
+The only trap is an image with no alpha at all -- a jpg, or a png flattened on
+export.  Then nothing shows through and it looks like a bug.  on_load_overlay
+checks hasAlphaChannel() and says so in the msg box, so the puzzle is answered
+before it is asked.  Use opacity or a blend mode for those.
+
+
+---- Discussion -- the two things called "scale" --------------------------------------------------------------------------
+
+There are two and they must never be confused:
+
+    view zoom        how big it looks on screen.  Fit / 1:1 / - / + and the
+                     mouse wheel.  NOT part of the result, never saved
+    overlay scale    part of the transform being aligned.  the Scale spin box.
+                     saved
+
+Both feel like "scale" to a user.  Keeping them apart in the ui and in the save
+path is the single best defence against the classic "why does the saved file
+not match what I saw" bug.  The save path uses only the second.
+
+
+---- Discussion -- saving at full resolution --------------------------------------------------------------------------
+
+save_result renders through QGraphicsScene.render() into a QImage the size of
+sceneRect, in image pixels.  So the view's zoom has nothing to do with the
+result -- zoomed out to 10%, the file still comes out at full size.  It is a
+render, not a screen grab.
+
+The canvas is the base image's rect.  An overlay hanging off the edge is
+cropped by it, which is almost always what is wanted.
+
+background = None keeps the alpha, so a png can come out with transparent
+parts.  Pass a QColor to flatten onto it instead.  Note .jpg can not hold
+alpha, so saving with that extension flattens onto black whatever you ask for.
+
+
+---- Gotchas ( the ones that would have cost a day each ) --------------------------------------------------------------------------
+
+1.  Arrow keys scroll a QGraphicsView.  They never reach keyPressEvent unless
+    you swallow them, and the view needs StrongFocus or it does not get key
+    events at all.  Both done in ImageOverlayView.
+
+2.  Rotation is about the item's top left corner by default, so the image
+    swings away from the pointer and feels broken.  setTransformOriginPoint to
+    the pixmap's centre, and re-set it whenever the pixmap changes.
+
+3.  QGraphicsPixmapItem defaults to FAST transformation.  A rotated or scaled
+    overlay looks ragged on screen and saves that way too.  Both items are set
+    to SmoothTransformation, and the render painter gets the
+    SmoothPixmapTransform hint as well.
+
+4.  itemChange only fires if ItemSendsGeometryChanges is set.  Easy to
+    override itemChange, wonder why nothing happens, and blame the signal.
+
+5.  There is no setCompositionMode on a QGraphicsPixmapItem.  The only way in
+    is to subclass and set it on the painter inside paint() before calling the
+    base class -- see OverlayPixmapItem.
+
+6.  The transparency checkerboard is drawn in the VIEW's drawBackground, not
+    the SCENE's.  QGraphicsScene.render() draws the scene, so a checkerboard
+    put there can never leak into a saved file.  Deliberate, and worth not
+    undoing by accident.
+
+7.  Two way sync between the spin boxes and the mouse will loop forever unless
+    one side shuts up: on_overlay_changed blocks each spin box's signals while
+    filling it in.  Same guard as the camera tab's combo boxes.
+
+8.  Positions are snapped to whole pixels in itemChange.  Pixel alignment is
+    the point, and a fractional offset can not be typed back in or reproduced.
+
+
+---- Aligning two images: how to actually use this --------------------------------------------------------------------------
+
+Rough alignment by dragging, then:
+
+    * set Blend to Difference.  Identical pixels come out black, so what is
+      still lit is what is still misaligned.  This is the sharpest instrument
+      here by a distance
+    * or drop Opacity to about 50 and eyeball the ghost
+    * or turn on Blink -- the eye catches a shift far better than it judges a
+      steady overlay.  Astronomers found this out with the blink comparator a
+      century ago and it is still the best trick going
+    * finish with the arrow keys, one pixel at a time, watching the Difference
+      go dark
+    * write the X / Y / Rotation / Scale numbers down.  They are the whole
+      result of the work, and they are reproducible -- typing them back in
+      puts everything exactly where it was
+
+
+---- Qt5 and Qt6 --------------------------------------------------------------------------
+
+Both, and tested on both.  No multimedia here, just QtGui and QtWidgets, so
+unlike the camera tab this one runs in the app today under PyQt5.
+
+Every enum is spelled the scoped way -- Qt.TransformationMode.SmoothTransformation
+rather than Qt.SmoothTransformation.  All seventeen spellings used were checked
+in both bindings before the code was written: PyQt5 5.15.14 accepts every one
+of them, and so does PyQt6 6.11.  So one code path covers both with no shims,
+and the module is already correct if the app ever moves to Qt6.
+
+
+---- Questions --------------------------------------------------------------------------
+
+?? Should the base image be movable too, or is a fixed canvas right?  Fixed is
+   simpler and matches "align this onto that", but two loose images may suit
+   some jobs.
+
+?? Should the offset numbers be saveable / loadable as a small text or json
+   file?  They are the real result of an alignment session and right now they
+   live only in the spin boxes.
+
+?? Worth a "swap base and overlay" button?  One setZValue call.
+
+?? Flip horizontal / vertical?  A negative scale on one axis, but setScale is
+   uniform, so it would need a QTransform instead.
+
+?? More than two images?  The widget assumes exactly two throughout.
+
+
+---- Links ( references used ) --------------------------------------------------------------------------
+
+    https://doc.qt.io/qt-6/qgraphicsview.html
+    https://doc.qt.io/qt-6/qgraphicsscene.html#render
+    https://doc.qt.io/qt-6/qgraphicspixmapitem.html
+    https://doc.qt.io/qt-6/qgraphicsitem.html#itemChange
+    https://doc.qt.io/qt-6/qpainter.html#CompositionMode-enum
+
+
+---- Work still to do --------------------------------------------------------------------------
+
+    * the questions above, particularly saving the offset numbers
+    * a real wiki page, the WIKI_LINK is a guess at the url
+    * flip, and a swap button
+    * maybe a difference readout -- a number for how well aligned it is,
+      rather than only the eye

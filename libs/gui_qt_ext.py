@@ -775,10 +775,11 @@ class MessageArea( QGroupBox ):
         self.auto_scroll = state
 
     #-------------
-    def get_plain_text(self,  ):
+    def get_plain_text( self, ):
         """
         returns
             text in the text_edit
+            think all the t4ext
         """
         text_edit     = self.text_edit
         selected_text = text_edit.toPlainText()
@@ -786,7 +787,7 @@ class MessageArea( QGroupBox ):
         #print(  f" copy_text -> {selected_text }" )
 
     #-------------
-    def copy_text(self,  ):
+    def copy_text( self,  ):
         """
         returns
             mutates clipboard all text in the text_widget into the clipboard

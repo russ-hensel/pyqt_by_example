@@ -2,6 +2,10 @@
 # -*- coding: utf-8 -*-
 """
 select tab to open by running key word search
+
+not one of the demos or exercisces
+
+
 """
 # ---- tof
 # --------------------
@@ -132,7 +136,7 @@ class Search_Tab( QWidget ) :
         model.setFilter( "id = -99" )  # afte set table to be effiective
 
         model.setEditStrategy( QSqlTableModel.EditStrategy.OnManualSubmit ) # = never QSqlTableModel.EditStrategy.OnManualSubmit
-        model.setEditStrategy( QSqlTableModel.OnManualSubmit)   # probaly wrong
+
 
         # COMMENT  out to default  Set column headers	model.setHorizontalHeaderLabels([...])
 

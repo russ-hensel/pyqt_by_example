@@ -41,7 +41,8 @@ from qtpy.QtWidgets import ( QAction,
                              QMessageBox,
                              QTabWidget,
                              QVBoxLayout,
-                             QWidget)
+                             QWidget
+                             )
 
 #  ---- local imports
 #import adjust_path
@@ -50,17 +51,17 @@ import global_vars
 import index_and_search
 import parameters
 
-import tab_qsql_database
+#import tab_qsql_database
 import tab_select_tab
 
 import utils_for_tabs as uft
 import wat_inspector
 import show_parameters
 import tab_base
-#import tab_re_base
+import tab_re_base
 from   app_global import AppGlobal
 # import app_logging    # /mnt/WIN_D/russ/0000/python00/python3/_projects/rshlib/app_services/app_logging.py
-import app_logging      # /mnt/WIN_D/russ/0000/python00/python3/_projects/rshlib/app_services/app_logging.py
+import app_logging    # /mnt/WIN_D/russ/0000/python00/python3/_projects/rshlib/app_services/app_logging.py
 
 
 #logger   = logging.getLogger()
@@ -119,8 +120,6 @@ class PyqtByExample( QMainWindow ):
             self.close()
             sys.exit( 1 )
             return
-
-
 
 
         # next builds and populates the db, or may depending on refactor
@@ -183,10 +182,10 @@ class PyqtByExample( QMainWindow ):
         self.tab_widget = QTabWidget()   # really the folder for the tabs
                                          # tabs themselves are just Widgets
         # there is another approach using a style sheet acording to chat
-        self.tab_widget.setTabsClosable(True)
+        self.tab_widget.setTabsClosable( True )
         self.tab_widget.tabCloseRequested.connect( self.close_tab )
         # Set custom height for the tabs
-        self.tab_widget.setStyleSheet("QTabBar::tab { height: 60px; }")
+        self.tab_widget.setStyleSheet( "QTabBar::tab { height: 60px; }" )
 
         self.tab_widget.currentChanged.connect( self.on_tab_changed )
         self.tab_widget.tabBarClicked.connect(  self.on_tab_clicked )
@@ -240,7 +239,7 @@ class PyqtByExample( QMainWindow ):
         return tab_index
 
     # ------------------------
-    def open_tab_select( self, module_name, class_name, title, web_link,  widgets  ):
+    def open_tab_select( self, module_name, class_name, title, web_link,  widgets ):
         """
         open_tab_select( self, module_name, class_name, title,  web_link, widgets = widgets  ) ):
         widget          = self.selected_widget
@@ -269,7 +268,9 @@ class PyqtByExample( QMainWindow ):
 
             #tab.set_web_link( web_link )
 
+        # think next is gone
         elif isinstance( tab, tab_re_base.TabReBase ):
+            1/0
             # need to poatpone for ReBase
             msg       = f"Widget of interest >> {widgets}"
             tab.class_widget_text =   msg
@@ -344,6 +345,12 @@ class PyqtByExample( QMainWindow ):
 
         but moving around causes index change
         do not close needed tabs
+
+        removeTab() only detaches the page from the tab bar -- it does NOT
+        destroy the widget, so any tab holding non-Qt-owned resources
+        ( e.g. tab_vlc_qt_object_widget's libvlc player, still playing
+        audio on its own thread ) would otherwise keep running forever.
+        widgets that need cleanup expose a shutdown() method for this
         """
         tab         = self.tab_widget
         widget      = tab.widget(index)
@@ -362,7 +369,12 @@ class PyqtByExample( QMainWindow ):
         #     print(f"Tab {index} cannot be closed.")
         else:
             #rint(f"Tab {index} will be closed.")
+            shutdown    = getattr( widget, "shutdown", None )
+            if shutdown:
+                shutdown()
+
             self.tab_widget.removeTab(index)
+            widget.deleteLater()
 
     #----------------------------
     def not_implemented( self,   ):

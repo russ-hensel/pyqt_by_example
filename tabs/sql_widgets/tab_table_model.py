@@ -52,8 +52,7 @@ class ATableModel( QAbstractTableModel ):
     use a a list of file names from browse
     may be more generally useful
     code derived from chat
-    was in
-    import qt_table_model
+
     """
     def __init__(self,  headers):
         super().__init__()

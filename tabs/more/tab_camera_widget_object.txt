@@ -1,0 +1,261 @@
+tab_camera_widget_object.txt -- help / dev notes for tab_camera_widget_object.py
+                                ( QCameraWidgetObjectTab )
+
+
+----------------------- Table of Contents -----------------
+
+---- Purpose/Functionality
+---- QT6 ONLY -- read this first
+---- The two files, and what each knows
+---- The api of CameraCaptureWidget
+---- Discussion -- what actually moved, and what it bought
+---- Discussion -- why the module is not called camera_widget.py
+---- A bug the split found: relative paths
+---- Gotchas inherited from tab_camera_widget.py
+---- What was verified
+---- Questions
+---- Work still to do
+--------------------------------------------------------
+
+
+---- Purpose/Functionality --------------------------------------------------------------------------
+
+Exactly the same behaviour as tab_camera_widget.py -- a webcam with live
+preview, still capture and video recording -- but built the other way round.
+There, every bit of the camera is inline in the tab.  Here it is all inside a
+re-usable widget and the tab is the thin part.
+
+Same idea as tab_vlc_qt_widget.py vs tab_vlc_qt_object_widget.py: two tabs
+doing one job, so the two ways of arranging it can be read side by side.  That
+comparison is the point of this tab; on its own it is just another webcam.
+
+
+---- QT6 ONLY -- read this first --------------------------------------------------------------------------
+
+camera_capture_widget.py imports QMediaCaptureSession, QImageCapture and
+QVideoWidget, none of which exist in Qt5.  The app runs on PyQt5 today, so:
+
+    * the tab WILL be listed -- discovery only reads this file's docstring,
+      it does not import the module
+    * clicking it WILL raise ImportError
+
+Expected, not a bug.  To run it now, use the Qt6 env.  The full story is in
+tab_camera_widget.txt and in russ_util/camera_widget_summary.txt.
+
+
+---- The two files, and what each knows --------------------------------------------------------------------------
+
+    camera_capture_widget.py        CameraCaptureWidget( QWidget )
+        knows about cameras, and NOTHING about this application.  no
+        parameters, no global_vars, no tab_base.  on screen it is ONE thing,
+        the live preview -- a QVideoWidget and no more.  behind that it owns
+        the device list, the format list, the capture session, the image
+        capture, the recorder and the recorder poll timer.  a host works it
+        through its api and hears back through its signals
+
+    tab_camera_widget_object.py     QCameraWidgetObjectTab( tab_base.TabBase )
+        knows about the application, and almost nothing about cameras.  it
+        builds every control -- the device and format combos, start/stop, the
+        last-still thumbnail, the status line, snap and record -- wires them
+        to the widget's api, and answers the one question the widget
+        deliberately refuses to: where do files go
+
+        it used to be much thinner: the widget brought its own controls and
+        the tab only connected three signals and set the save directory.  the
+        controls moved out here because a host normally wants to lay them out
+        its own way, and one host may not want half of them at all.  the price
+        is a longer tab, and a host that builds nothing gets a bare preview
+
+That division is the whole exercise.  A quick way to check it has not rotted:
+the tab should have no capture_session, no camera, no image_capture and no
+media_recorder attribute of its own.  It does not, and the test harness
+asserts exactly that.
+
+
+---- The api of CameraCaptureWidget --------------------------------------------------------------------------
+
+    start_camera()  stop_camera()
+    snap_still()
+    record_video()  stop_record()   is_recording()
+    set_save_dir( a_dir )  -> the directory actually used, absolute
+    save_dir()
+    camera_count()  current_camera_description()
+    last_file_name()
+
+    -- for the host's combos, added when the controls moved out
+    camera_descriptions()  device_ix()  set_device_ix( ix )
+    format_descriptions()  format_ix()  set_format_ix( ix )
+    is_ready_for_capture()
+
+    status_message_signal( str )    anything worth saying out loud
+    status_text_signal( str )       one line of current state, for a status label
+    image_saved_signal( str )       a still landed, arg is the file name
+    video_saved_signal( str )       a recording landed, arg is the file name
+    still_image_signal( QImage )    the still itself, before the file is written
+    camera_list_signal( list, int ) devices changed, and which one to show
+    format_list_signal( list, int ) formats changed, and which one to show
+    ready_for_capture_signal( bool )  enable / disable a snap button
+    recording_signal( bool )        recording started / stopped
+
+status_message_signal goes straight to TabBase.append_msg -- one connect and
+every message the camera produces appears in the tab's msg box.  The two
+"saved" signals are separate on purpose: they are for the APPLICATION to act
+on, not just to print.  Both handlers are empty stubs here with ?? notes.
+
+Two ordering traps, both worth knowing before wiring a new host:
+
+    * the widget emits its FIRST camera_list_signal from its own __init__,
+      which is before the host has connected anything.  so a host fills its
+      combos once by hand from camera_descriptions() / format_descriptions()
+      and follows the signals after that.  see the end of _build_gui_widgets
+
+    * a host combo must blockSignals() while it is being filled, or
+      setCurrentIndex() runs back into set_device_ix and restarts a camera
+      that was already right.  set_device_ix / set_format_ix also ignore an
+      index they are already on, so it takes both mistakes to loop
+
+
+---- Discussion -- what actually moved, and what it bought --------------------------------------------------------------------------
+
+Nothing about the camera changed.  The capture session, the swap-the-QCamera
+dance, the asynchronous capture, the recorder poll -- all identical, just
+living in a different file.  What changed is who owns what.
+
+What it bought:
+
+    * the widget is usable outside this app entirely.  no tab_base, no
+      global_vars, no parameters, so it will drop into any Qt6 program
+    * the tab is short enough to read in one go, and what is left in it is
+      only the application specific part
+    * where files go is decided in ONE place that knows about the app, and
+      pushed down.  in tab_camera_widget.py that decision is buried in
+      __init__ next to the camera setup, which is how it ended up writing
+      into tabs/more/output/camera, ie inside the source tree
+    * the two "saved" signals give the app a hook that did not exist before
+
+What it cost:
+
+    * two files to open instead of one
+    * a signal hop between "something happened" and "it appears in the msg
+      box".  slightly more indirect to follow the first time
+
+
+---- Discussion -- why the module is not called camera_widget.py --------------------------------------------------------------------------
+
+The obvious name, matching vlc_widget.py, would be camera_widget.py.  It is
+taken: there is already a camera_widget.py in the PROJECT ROOT, the stand alone
+Qt6 version of this same widget.  Two modules of the same name on sys.path is
+a coin toss as to which gets imported, and adjust_path.py puts several
+directories on the path, so the toss would not even be consistent between
+machines.  Hence camera_capture_widget.py.
+
+Worth remembering generally: tab modules are found by a glob and imported by
+bare module name ( app_services.create_instance ), so every module under
+tabs/ shares one flat namespace with the project root.  Names have to be
+unique across all of it.
+
+
+---- A bug the split found: relative paths --------------------------------------------------------------------------
+
+Moving the save directory decision into the tab meant it came from
+parameters.PARAMETERS.output_dir, which is "./output" -- RELATIVE.  Handing
+that straight to the camera fails, even though the directory exists:
+
+    QImageCapture  -> ResourceError "Cannot open device for writing: No such file or directory"
+    QMediaRecorder -> LocationNotWritable "Cannot open the output location for writing"
+
+QUrl.fromLocalFile() on a relative path does not produce a usable file url, and
+captureToFile() is no better.  tab_camera_widget.py never showed this because
+it built its path from basedir, which is absolute.
+
+Fixed in CameraCaptureWidget.set_save_dir, which does os.path.abspath() before
+anything else and returns the absolute directory it settled on.  Normalised
+once, in the widget, so no host has to remember.
+
+!! Anything else in this project that starts using parameters.output_dir with
+a Qt file api will meet the same thing.  Absolute paths at the boundary.
+
+
+---- Gotchas inherited from tab_camera_widget.py --------------------------------------------------------------------------
+
+All still apply, all written up in full in tab_camera_widget.txt:
+
+1.  QMediaRecorder.recorderStateChanged and .errorOccurred can not be
+    connected -- PyQt6 6.11.0 bindings against PyQt6-Qt6 6.11.1 libs.  Worked
+    around by polling on a 250 ms timer.  The fix is to line the versions up:
+        uv pip install "PyQt6-Qt6==6.11.0"
+    then _poll_recorder can go and the two connects come back.
+
+2.  Hardware video encoding does not work on this machine, so
+    QT_FFMPEG_ENCODING_HW_DEVICE_TYPES is set to empty before QtMultimedia is
+    imported.  It has to be before the import.  ?? in a tab module that is
+    still late if another tab imported QtMultimedia first -- main.py remains
+    the honest place for it.
+
+3.  The ffmpeg Qt ships has no H264 encoder, so asking for H264 quietly gets
+    MPEG4 part 2 in an .mp4.
+
+4.  TabBase builds msg_widget in _build_gui_bot, inside _build_gui, so nothing
+    before or during _build_gui_widgets may call append_msg.  That is why
+    _apply_save_dir is called after self._build_gui() in __init__.
+
+
+---- What was verified --------------------------------------------------------------------------
+
+    * the tab constructs outside the app with a stub global_vars.CONTROLLER
+    * the widget really is CameraCaptureWidget from camera_capture_widget
+    * the tab has NO camera plumbing of its own -- checked attribute by
+      attribute
+    * the save directory comes from parameters ( "./output" ) and arrives in
+      the widget as an absolute path
+    * a still ( 203 kB jpg ) and a recording ( 655 kB mp4 ) both saved, with
+      the camera messages appearing in the TAB's msg box, ie the signal
+      wiring works
+    * discovery lists the tab, no tracebacks
+
+  after the controls moved out to the tab, 2026 08 17, py3_13_qt6 / PyQt6 6.11.0:
+
+    * device combo filled ( 1 camera ), format combo filled ( 14 formats ),
+      both from the widget, current index 0 on each
+    * status line follows status_text_signal -- "camera active", then the
+      saved file name, then "recording  1.9 sec"
+    * Snap Still -> jpg on disk and the thumbnail label filled from
+      still_image_signal
+    * Record Video -> Record disabled and Stop Record enabled while it ran,
+      back again after, mp4 on disk
+    * changing the format combo restarted the camera and the widget's
+      format_ix followed the combo.  the "camera error CameraError: Camera is
+      in use" that appears on that restart is NOT new -- the old version does
+      exactly the same, and recovers the same way
+
+
+---- Questions --------------------------------------------------------------------------
+
+?? on_image_saved and on_video_saved are empty.  What should the app do with a
+   new capture -- add it to a gallery, put it in the db, hand a still to the
+   image overlay tab as its base image, hand a recording to the vlc tab to
+   play?  That hook is the main thing the object split makes easy.
+
+?? Should tab_camera_widget.py now be retired in favour of this one, or kept
+   as the "everything inline" example for comparison?  The vlc pair keeps both.
+
+-- answered: the widget no longer has combos at all.  the host builds them and
+   drives the widget with set_device_ix / set_format_ix, reading the lists out
+   of camera_descriptions() / format_descriptions().  a host that wants no
+   device choice simply does not build a combo
+
+?? the same question, now for the rest: is a bare QVideoWidget the right
+   amount of gui for the widget to own, or should it be nothing at all -- ie
+   should the host supply the video surface too?
+
+?? Should CameraCaptureWidget move to the project root next to camera_widget.py,
+   since it is not a tab?  It is in tabs/more only because that is where the
+   vlc precedent put vlc_widget.py.
+
+
+---- Work still to do --------------------------------------------------------------------------
+
+    * fill in the two saved-signal hooks with something useful
+    * the app on Qt6, which is what blocks this tab actually running
+    * camera controls: exposure, white balance, focus
+    * audio on the recording

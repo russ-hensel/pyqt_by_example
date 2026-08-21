@@ -1,8 +1,10 @@
 [project]
-# this is an early draft do not use
+# this is an early draft do not use dependencies really depend on weather you use at5 qt6 or something else
+# you will always need pyqt as it is the compatibility layer
+# a few tabs work only in QT6 or at least not in Qt5 -- see the wiki, or ask russ on help installing
 name = "PyQtByExample"
 version = "0.1.0"
-description = "Example code for Python and Qt ( 5 6 and PySide"
+description = "Example code for Python and Qt ( 5 6 and PySide ) "
 readme = "README.md"
 requires-python = ">=3.13"
 
