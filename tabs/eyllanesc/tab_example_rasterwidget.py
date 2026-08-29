@@ -2,21 +2,19 @@
 # -*- coding: utf-8 -*-
 # ---- tof
 """
-# metadata here including WIKI_LINK as Constant ( not comment )
-# this material is used for selection access to the tab module which should
-# be named xxxxTab.py     among other things
-# this example based on /mnt/8ball1/first6_root/russ/0000/python00/python3/_examples/QtExamples-master/official/network/loopback/main.py
+--- metadata here including WIKI_LINK as Constant ( not comment )
 
-KEY_WORDS:      eyllanesc plot chart graph graphics
-CLASS_NAME:     ExampleBarChartTab
-WIDGETS:        QBarSet  QBarSeries QChart QChartView QPainter
-STATUS:         works at first blush
-TAB_TITLE:      BarChart / Example
-DESCRIPTION:    An example of a bar chart from eyllanesc/QtExamples
+
+KEY_WORDS:      eyllanesc  raster paint
+CLASS_NAME:     ExampleRasterTab
+WIDGETS:        QPaintDevice QBackingStore QPainter
+STATUS:         ??works at first blush
+TAB_TITLE:      Example / Raster Widget
+DESCRIPTION:    An example of painting on a top level window
 HOW_COMPLETE:   10  #  AND A COMMENT -- <10 major probs  <15 runs but <20 fair not finished  <=25 not to shabby
 """
 
-WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-About-QTcpServer"
+WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-About-Example-Clocks"
 
 """
 Some Notes:
@@ -24,8 +22,9 @@ Some Notes:
 eyllanesc/QtExamples: Translations of the official Qt examples into PyQt5 (also PySide2) and more. :octocat:
 https://github.com/eyllanesc/QtExamples
 
-QtExamples/official/charts/barchart/main.py at master · eyllanesc/QtExamples
-https://github.com/eyllanesc/QtExamples/blob/master/official/charts/barchart/main.py
+QtExamples/official/demos/clocks at master · eyllanesc/QtExamples
+https://github.com/eyllanesc/QtExamples/tree/master/official/demos/clocks
+
 
 
 """
@@ -36,23 +35,61 @@ if __name__ == "__main__":
     import main  # noqa  stops auto removal by pycln
 # --------------------------------
 
-import qtpy
 import wat_inspector
+
+
+import qtpy
+from qtpy.QtCore  import QCoreApplication, Qt, QUrl
+from qtpy.QtGui   import QGuiApplication
+from qtpy.QtQuickWidgets import QQuickWidget
+
+from qtpy.QtCore import Qt
+from qtpy.QtCore import QEvent, QRect, QRectF, Qt
+from qtpy.QtGui import (
+    QBackingStore,
+    QExposeEvent,
+    QGradient,
+    QGuiApplication,
+    QPaintDevice,
+    QPainter,
+    QRegion,
+    QResizeEvent,
+    QWindow,
+)
+
 from qtpy.QtCharts import (QBarCategoryAxis,
                            QBarSeries,
                            QBarSet,
                            QChart,
                            QChartView,
+                           QLineSeries,
+                           QSplineSeries,
                            QValueAxis)
-from qtpy.QtCore import QByteArray, Qt, Slot
-from qtpy.QtGui import QGuiApplication, QPainter
-from qtpy.QtNetwork import (QAbstractSocket,
-                            QHostAddress,
-                            QTcpServer,
-                            QTcpSocket)
+
+from qtpy.QtCore import (QByteArray,
+                         QPoint,
+                         QPointF,
+                         QRect,
+                         QRectF,
+                         QSizeF,
+                         Qt,
+                         Slot)
+
+from qtpy.QtGui import (QColor,
+                        QFont,
+                        QFontMetrics,
+                        QGuiApplication,
+                        QPainter,
+                        QPainterPath)
+#from qtpy.QtNetwork import QAbstractSocket, QHostAddress, QTcpServer, QTcpSocket
 from qtpy.QtWidgets import (QApplication,
                             QDialog,
                             QDialogButtonBox,
+                            QGraphicsItem,
+                            QGraphicsScene,
+                            QGraphicsSimpleTextItem,
+                            QGraphicsView,
+                            QMainWindow,
                             QHBoxLayout,
                             QLabel,
                             QMenu,
@@ -64,15 +101,67 @@ from qtpy.QtWidgets import (QApplication,
 
 import tab_base
 import utils_for_tabs as uft
+import global_vars
+
 
 # ---- end imports
 
 print_func_header   = uft.print_func_header
 
-#  --------
-class ExampleBarChartTab( tab_base.TabBase ):
+
+
+
+class RasterWindow( QWindow ):
+    def __init__(self, parent: QWindow = None) -> None:
+        super().__init__( parent )
+        self.m_backingStore = QBackingStore(self)
+        self.setGeometry(100, 100, 300, 200)
+
+    def event(self, event: QEvent) -> bool:
+        if event.type() == QEvent.UpdateRequest:
+            self.renderNow()
+            return True
+        return super().event(event)
+
+    def renderLater(self) -> None:
+        self.requestUpdate()
+
+    def resizeEvent(self, event: QResizeEvent) -> None:
+        self.m_backingStore.resize(event.size())
+
+    def exposeEvent(self, event: QExposeEvent) -> None:
+        if self.isExposed():
+            self.renderNow()
+
+    def renderNow(self) -> None:
+        if not self.isExposed():
+            return
+
+        rect = QRect(0, 0, self.width(), self.height())
+        self.m_backingStore.beginPaint( QRegion(rect) )
+
+        device: QPaintDevice = self.m_backingStore.paintDevice()
+        painter = QPainter(device)
+
+        painter.fillRect(0, 0, self.width(), self.height(), QGradient.NightFade)
+        self.render(painter)
+        painter.end()
+
+        self.m_backingStore.endPaint()
+        self.m_backingStore.flush(QRegion(rect))
+
+    def render(self, painter: QPainter) -> None:
+        painter.drawText(
+            QRectF(0, 0, self.width(), self.height()), Qt.AlignmentFlag.AlignCenter, "QWindow"
+        )
+
+
+
+#
+# -------------------------------
+class ExampleRasterTab( tab_base.TabBase ):
     """
-    Examples for  ....
+    Examples for
 
 
     """
@@ -90,9 +179,10 @@ class ExampleBarChartTab( tab_base.TabBase ):
 
         # modify to match the number of mutate methods in this module
         self.mutate_dict[0]     = self.mutate_0
-        # self.mutate_dict[1]     = self.mutate_1
+        self.mutate_dict[1]     = self.mutate_1
         # self.mutate_dict[2]     = self.mutate_2
-
+        # self.mutate_dict[3]     = self.mutate_3
+        # self.mutate_dict[4]     = self.mutate_4
 
         self._build_gui()
 
@@ -114,75 +204,20 @@ class ExampleBarChartTab( tab_base.TabBase ):
         # too clever ??
         main_layout.addLayout( layout := QVBoxLayout() )
 
-        # # ---- new row c -- testing never used
-        # row_layout          = QHBoxLayout(   )
-        # layout.addLayout( row_layout )
-
-        # ---- New Row button_1 and _2 ....
+        # ---- New Row
         # make a layout to put the buttons in
-        row_layout          = QHBoxLayout(   )
+        row_layout      = QHBoxLayout(   )
         layout.addLayout( row_layout )
 
-        set0 = QBarSet("Jane")
-        set1 = QBarSet("John")
-        set2 = QBarSet("Axel")
-        set3 = QBarSet("Mary")
-        set4 = QBarSet("Samantha")
 
-        set0 << 1 << 2 << 3 << 4 << 5 << 6
-        set1 << 5 << 0 << 0 << 4 << 0 << 7
-        set2 << 3 << 5 << 8 << 13 << 8 << 5
-        set3 << 5 << 6 << 7 << 3 << 4 << 5
-        set4 << 9 << 7 << 5 << 3 << 1 << 2
-
-        series = QBarSeries()
-        series.append(set0)
-        series.append(set1)
-        series.append(set2)
-        series.append(set3)
-        series.append(set4)
-
-        chart = QChart()
-        chart.addSeries(series)
-        chart.setTitle("Simple barchart example")
-
-        # chart.setAnimationOptions(QChart.SeriesAnimations)
-        # # Qt5 (old)
-        # chart.setAnimationOptions(QChart.SeriesAnimations)
-
-        # Qt6 (new)
-        chart.setAnimationOptions( QChart.AnimationOption.SeriesAnimations )
-
-        categories  = ("Jan", "Feb", "Mar", "Apr", "May", "Jun")
-        axisX       = QBarCategoryAxis()
-        axisX.append(categories)
-        #chart.addAxis(axisX, qtpy.AlignBottom)
-        chart.addAxis(axisX, Qt.AlignmentFlag.AlignBottom)
-
-        series.attachAxis(axisX)
-
-        axisY = QValueAxis()
-        axisY.setRange(0, 15)
-        chart.addAxis(axisY, Qt.AlignmentFlag.AlignLeft )
-        series.attachAxis(axisY)
-
-        chart.legend().setVisible( True )
-        chart.legend().setAlignment( Qt.AlignmentFlag.AlignBottom )
-
-        chartView = QChartView( chart )
-        chartView.setRenderHint( QPainter.Antialiasing )
-
-        row_layout.addWidget( chartView )
 
         # ---- new row, for build_gui_last_buttons
-        button_layout           = QHBoxLayout(   )
+        button_layout   = QHBoxLayout(   )
         layout.addLayout( button_layout, )
-
 
         # our ancestor finishes off the tab with some
         # standard buttons
         self.build_gui_last_buttons( button_layout )
-
 
     # ------------------------------------
     def signal_sent( self, msg ):
@@ -197,7 +232,6 @@ class ExampleBarChartTab( tab_base.TabBase ):
         self.append_msg( f"signal_sent {msg}" )
 
         self.append_msg( tab_base.DONE_MSG )
-
 
     # ------------------------------------
     def mutate_0( self ):
@@ -226,6 +260,40 @@ class ExampleBarChartTab( tab_base.TabBase ):
 
         self.append_msg( tab_base.DONE_MSG )
 
+    # ------------------------------------
+    def mutate_1( self ):
+        """
+        read it -- mutate the widgets
+            these mutations will try to mimic a typical default state
+            of a widget for the first push button the
+            second will not be modified by mutate_0
+
+        this is important content for the widgets referenced on this tab
+        read the code for more insight, note messages to app and comments
+        """
+        self.append_function_msg( "mutate_1()" )
+
+        # ---- change widget
+        msg    = "create RasterMainWindow"
+        self.append_msg( msg, clear = False )
+            # we use a local variable because it reduces the amount of code
+            # and does not run any slower
+            # we use this local variable idea in many places
+        # widget          = self.q_push_button_1
+        # widget.setText( "text set in mutate_0()" )
+        # widget.width    = 300
+        # widget.setToolTip( None )
+        # widget.setStyleSheet( "" )
+        # self.a_main_window   =  QMainWindow()
+        self.raster_window   =  RasterWindow(   )
+        # self.a_main_window.show()
+        self.raster_window.show()
+
+
+
+        self.append_msg( tab_base.DONE_MSG )
+
+
     # ------------------------
     def inspect(self):
         """
@@ -239,8 +307,7 @@ class ExampleBarChartTab( tab_base.TabBase ):
         self.append_function_msg( tab_base.INSPECT_MSG )
 
         # we set local variables to make it handy to inspect them
-        # self_q_push_button_1    = self.q_push_button_1
-        # self_q_push_button_2    = self.q_push_button_1
+        self_clock_widget   = self.clock_widget
 
         wat_inspector.go(
              msg            = "for your inspection, some locals and globals",

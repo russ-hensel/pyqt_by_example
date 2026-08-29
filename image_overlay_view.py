@@ -173,6 +173,16 @@ class ImageOverlayView( QGraphicsView ):
         # or the arrow keys go to the scroll bars and never reach keyPressEvent
         self.setFocusPolicy( Qt.FocusPolicy.StrongFocus )
 
+        # and use as an api
+        self.last_overlay_source    = None
+        self.last_base_source       = None
+
+
+
+
+
+
+
     # ---- loading -----------------------------------------------------------
 
     # -------------------------------
@@ -182,6 +192,7 @@ class ImageOverlayView( QGraphicsView ):
         QPixmap, or None if it could not be loaded
 
         source    file name, a QPixmap or a QImage
+        used by
         """
         if isinstance( source, QPixmap ):
             a_pixmap            = source
@@ -189,7 +200,7 @@ class ImageOverlayView( QGraphicsView ):
         elif isinstance( source, QImage ):
             a_pixmap            = QPixmap.fromImage( source )
 
-        else:
+        else: # think this is a file
             a_pixmap            = QPixmap( str( source ) )
 
         if a_pixmap.isNull():
@@ -206,15 +217,18 @@ class ImageOverlayView( QGraphicsView ):
 
         returns True if the image loaded
         """
-        a_pixmap            = self._to_pixmap( source )
+        a_pixmap                = self._to_pixmap( source )
 
         if a_pixmap is None:
             return False
+
+        self.last_base_source   = str( source )
 
         if self.base_item is None:
             self.base_item      = self.a_scene.addPixmap( a_pixmap )
             self.base_item.setZValue( 0 )
             self.base_item.setTransformationMode( Qt.TransformationMode.SmoothTransformation )
+
         else:
             self.base_item.setPixmap( a_pixmap )
 
@@ -247,6 +261,7 @@ class ImageOverlayView( QGraphicsView ):
             a_item.setZValue( 1 )
             self.overlay_item   = a_item
 
+        self.last_overlay_source = str( source )
         self.overlay_item.setPixmap( a_pixmap )
 
         # rotate and scale about the middle, not the top left corner, or the

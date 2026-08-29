@@ -2,21 +2,19 @@
 # -*- coding: utf-8 -*-
 # ---- tof
 """
-# metadata here including WIKI_LINK as Constant ( not comment )
-# this material is used for selection access to the tab module which should
-# be named xxxxTab.py     among other things
-# this example based on /mnt/8ball1/first6_root/russ/0000/python00/python3/_examples/QtExamples-master/official/network/loopback/main.py
+--- metadata here including WIKI_LINK as Constant ( not comment )
 
-KEY_WORDS:      eyllanesc plot chart graph graphics
-CLASS_NAME:     ExampleBarChartTab
-WIDGETS:        QBarSet  QBarSeries QChart QChartView QPainter
-STATUS:         works at first blush
-TAB_TITLE:      BarChart / Example
-DESCRIPTION:    An example of a bar chart from eyllanesc/QtExamples
+
+KEY_WORDS:      eyllanesc plot clock  graphics zz
+CLASS_NAME:     ExampleClockTab
+WIDGETS:        QQuickWidget QUrl
+STATUS:         ??works at first blush
+TAB_TITLE:      Example Clock / Several Clocks
+DESCRIPTION:    An example of a Graphic used to make Clocks
 HOW_COMPLETE:   10  #  AND A COMMENT -- <10 major probs  <15 runs but <20 fair not finished  <=25 not to shabby
 """
 
-WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-About-QTcpServer"
+WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-About-Example-Clocks"
 
 """
 Some Notes:
@@ -24,8 +22,9 @@ Some Notes:
 eyllanesc/QtExamples: Translations of the official Qt examples into PyQt5 (also PySide2) and more. :octocat:
 https://github.com/eyllanesc/QtExamples
 
-QtExamples/official/charts/barchart/main.py at master · eyllanesc/QtExamples
-https://github.com/eyllanesc/QtExamples/blob/master/official/charts/barchart/main.py
+QtExamples/official/demos/clocks at master · eyllanesc/QtExamples
+https://github.com/eyllanesc/QtExamples/tree/master/official/demos/clocks
+
 
 
 """
@@ -36,23 +35,48 @@ if __name__ == "__main__":
     import main  # noqa  stops auto removal by pycln
 # --------------------------------
 
-import qtpy
 import wat_inspector
+
+
+import qtpy
+from qtpy.QtCore  import QCoreApplication, Qt, QUrl
+from qtpy.QtGui   import QGuiApplication
+from qtpy.QtQuickWidgets import QQuickWidget
+
+
+
 from qtpy.QtCharts import (QBarCategoryAxis,
                            QBarSeries,
                            QBarSet,
                            QChart,
                            QChartView,
+                           QLineSeries,
+                           QSplineSeries,
                            QValueAxis)
-from qtpy.QtCore import QByteArray, Qt, Slot
-from qtpy.QtGui import QGuiApplication, QPainter
-from qtpy.QtNetwork import (QAbstractSocket,
-                            QHostAddress,
-                            QTcpServer,
-                            QTcpSocket)
+
+from qtpy.QtCore import (QByteArray,
+                         QPoint,
+                         QPointF,
+                         QRect,
+                         QRectF,
+                         QSizeF,
+                         Qt,
+                         Slot)
+
+from qtpy.QtGui import (QColor,
+                        QFont,
+                        QFontMetrics,
+                        QGuiApplication,
+                        QPainter,
+                        QPainterPath)
+#from qtpy.QtNetwork import QAbstractSocket, QHostAddress, QTcpServer, QTcpSocket
 from qtpy.QtWidgets import (QApplication,
                             QDialog,
                             QDialogButtonBox,
+                            QGraphicsItem,
+                            QGraphicsScene,
+                            QGraphicsSimpleTextItem,
+                            QGraphicsView,
                             QHBoxLayout,
                             QLabel,
                             QMenu,
@@ -69,10 +93,42 @@ import utils_for_tabs as uft
 
 print_func_header   = uft.print_func_header
 
-#  --------
-class ExampleBarChartTab( tab_base.TabBase ):
+
+
+import clocks_rc  # noqa: F401
+
+# -------------------------------
+class ExampleClockWidget( QQuickWidget ):
     """
-    Examples for  ....
+    A QML scene ( the clocks demo ) embedded as an ordinary widget.
+
+    QQuickWidget is a real QWidget, so it drops straight into a layout.
+    QQuickView, used before, is a QWindow: it needs
+    QWidget.createWindowContainer() or it opens as its own window.
+
+    Note: all this is per instance work done in __init__.  It used to be
+    in the class body, which runs once at import time -- so the clocks
+    appeared only on the first open of the tab.
+    """
+
+    def __init__( self, parent = None ):
+
+        super().__init__( parent )
+
+        self.setResizeMode( QQuickWidget.ResizeMode.SizeRootObjectToView )
+
+        a_url       = QUrl( "qrc:/demos/clocks/clocks.qml" )
+        self.setSource( a_url )
+
+        if self.status() == QQuickWidget.Status.Error:
+            for ix, i_error in enumerate( self.errors() ):
+                msg     = ( f"clocks.qml error {ix}: {i_error.toString()}" )
+                print( msg )
+
+# -------------------------------
+class ExampleClockTab( tab_base.TabBase ):
+    """
+    Examples for
 
 
     """
@@ -92,7 +148,8 @@ class ExampleBarChartTab( tab_base.TabBase ):
         self.mutate_dict[0]     = self.mutate_0
         # self.mutate_dict[1]     = self.mutate_1
         # self.mutate_dict[2]     = self.mutate_2
-
+        # self.mutate_dict[3]     = self.mutate_3
+        # self.mutate_dict[4]     = self.mutate_4
 
         self._build_gui()
 
@@ -114,75 +171,22 @@ class ExampleBarChartTab( tab_base.TabBase ):
         # too clever ??
         main_layout.addLayout( layout := QVBoxLayout() )
 
-        # # ---- new row c -- testing never used
-        # row_layout          = QHBoxLayout(   )
-        # layout.addLayout( row_layout )
-
-        # ---- New Row button_1 and _2 ....
+        # ---- New Row
         # make a layout to put the buttons in
-        row_layout          = QHBoxLayout(   )
+        row_layout      = QHBoxLayout(   )
         layout.addLayout( row_layout )
 
-        set0 = QBarSet("Jane")
-        set1 = QBarSet("John")
-        set2 = QBarSet("Axel")
-        set3 = QBarSet("Mary")
-        set4 = QBarSet("Samantha")
-
-        set0 << 1 << 2 << 3 << 4 << 5 << 6
-        set1 << 5 << 0 << 0 << 4 << 0 << 7
-        set2 << 3 << 5 << 8 << 13 << 8 << 5
-        set3 << 5 << 6 << 7 << 3 << 4 << 5
-        set4 << 9 << 7 << 5 << 3 << 1 << 2
-
-        series = QBarSeries()
-        series.append(set0)
-        series.append(set1)
-        series.append(set2)
-        series.append(set3)
-        series.append(set4)
-
-        chart = QChart()
-        chart.addSeries(series)
-        chart.setTitle("Simple barchart example")
-
-        # chart.setAnimationOptions(QChart.SeriesAnimations)
-        # # Qt5 (old)
-        # chart.setAnimationOptions(QChart.SeriesAnimations)
-
-        # Qt6 (new)
-        chart.setAnimationOptions( QChart.AnimationOption.SeriesAnimations )
-
-        categories  = ("Jan", "Feb", "Mar", "Apr", "May", "Jun")
-        axisX       = QBarCategoryAxis()
-        axisX.append(categories)
-        #chart.addAxis(axisX, qtpy.AlignBottom)
-        chart.addAxis(axisX, Qt.AlignmentFlag.AlignBottom)
-
-        series.attachAxis(axisX)
-
-        axisY = QValueAxis()
-        axisY.setRange(0, 15)
-        chart.addAxis(axisY, Qt.AlignmentFlag.AlignLeft )
-        series.attachAxis(axisY)
-
-        chart.legend().setVisible( True )
-        chart.legend().setAlignment( Qt.AlignmentFlag.AlignBottom )
-
-        chartView = QChartView( chart )
-        chartView.setRenderHint( QPainter.Antialiasing )
-
-        row_layout.addWidget( chartView )
+        widget              = ExampleClockWidget()
+        self.clock_widget   = widget
+        row_layout.addWidget( widget )
 
         # ---- new row, for build_gui_last_buttons
-        button_layout           = QHBoxLayout(   )
+        button_layout   = QHBoxLayout(   )
         layout.addLayout( button_layout, )
-
 
         # our ancestor finishes off the tab with some
         # standard buttons
         self.build_gui_last_buttons( button_layout )
-
 
     # ------------------------------------
     def signal_sent( self, msg ):
@@ -197,7 +201,6 @@ class ExampleBarChartTab( tab_base.TabBase ):
         self.append_msg( f"signal_sent {msg}" )
 
         self.append_msg( tab_base.DONE_MSG )
-
 
     # ------------------------------------
     def mutate_0( self ):
@@ -239,8 +242,7 @@ class ExampleBarChartTab( tab_base.TabBase ):
         self.append_function_msg( tab_base.INSPECT_MSG )
 
         # we set local variables to make it handy to inspect them
-        # self_q_push_button_1    = self.q_push_button_1
-        # self_q_push_button_2    = self.q_push_button_1
+        self_clock_widget   = self.clock_widget
 
         wat_inspector.go(
              msg            = "for your inspection, some locals and globals",

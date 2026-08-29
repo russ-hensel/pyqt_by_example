@@ -9,7 +9,7 @@
 
 KEY_WORDS:      eyllanesc tcp network loopback eyllanesc
 CLASS_NAME:     QTcpServerTab
-WIDGETS:        QAbstractSocket   QTcpServer  QTcpSocket
+WIDGETS:        QAbstractSocket   QTcpServer  QTcpSocket QProgressBar
 STATUS:         works at first blush
 TAB_TITLE:      QTcp / Example
 DESCRIPTION:    An example of TcpServer... from eyllanesc examples
@@ -39,35 +39,27 @@ if __name__ == "__main__":
 # --------------------------------
 
 
-from qtpy.QtCore import ( Qt )
-
-from qtpy.QtWidgets import ( QHBoxLayout,
-                             QLabel,
-                             QMenu,
-                             QPushButton,
-                             QVBoxLayout
-                             )
-
-
-
+import wat_inspector
 from qtpy.QtCore import QByteArray, Qt, Slot
 from qtpy.QtGui import QGuiApplication
-from qtpy.QtNetwork import QAbstractSocket, QHostAddress, QTcpServer, QTcpSocket
-from qtpy.QtWidgets import (
-    QApplication,
-    QDialog,
-    QDialogButtonBox,
-    QLabel,
-    QMessageBox,
-    QProgressBar,
-    QPushButton,
-    QVBoxLayout,
-    QWidget,
-)
+from qtpy.QtNetwork import (QAbstractSocket,
+                            QHostAddress,
+                            QTcpServer,
+                            QTcpSocket)
+from qtpy.QtWidgets import (QApplication,
+                            QDialog,
+                            QDialogButtonBox,
+                            QHBoxLayout,
+                            QLabel,
+                            QMenu,
+                            QMessageBox,
+                            QProgressBar,
+                            QPushButton,
+                            QVBoxLayout,
+                            QWidget)
 
-import utils_for_tabs as uft
-import wat_inspector
 import tab_base
+import utils_for_tabs as uft
 
 # ---- end imports
 
@@ -85,8 +77,8 @@ class TcpWidget( QWidget ):
     def __init__(self, parent: QWidget = None) -> None:
         super().__init__(parent)
 
-        self.tcpServer = QTcpServer()
-        self.tcpClient = QTcpSocket()
+        self.tcpServer          = QTcpServer()
+        self.tcpClient          = QTcpSocket()
         self.tcpServerConnection: QTcpSocket = None
 
         self.bytesToWrite       = 0

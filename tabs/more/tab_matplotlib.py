@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # ---- tof
 """
-KEY_WORDS:      Example of a matplotlib  matplot mathplot mathplotlib math  mat plot lib graph
+KEY_WORDS:      matplotlib  matplot mathplot mathplotlib math  mat plot lib graph graphic chart
 CLASS_NAME:     QMatplotlibTab
 WIDGETS:        QWidget imports from matplotlib
 STATUS:         ok add to mutations
@@ -23,8 +23,6 @@ if __name__ == "__main__":
 # --------------------
 
 
-
-# sql
 
 from qtpy.QtWidgets import (QApplication,
                              QHBoxLayout,
@@ -110,8 +108,6 @@ class QMatplotlibTab( tab_base.TabBase ) :
     def __init__(self):
         """
         the usual
-
-
 
         """
         super().__init__()

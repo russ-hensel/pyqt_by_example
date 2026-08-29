@@ -51,7 +51,7 @@ import global_vars
 import index_and_search
 import parameters
 
-#import tab_qsql_database
+import tab_qsql_database
 import tab_select_tab
 
 import utils_for_tabs as uft
@@ -80,7 +80,7 @@ __VERSION__  = "ver_002 - 2026 03 31.01"
 
 # ---- main window ===================================================================
 class PyqtByExample( QMainWindow ):
-    def __init__(self):
+    def __init__( self ):
         """
         the usual
         """
@@ -555,6 +555,7 @@ def main():
     yes this is the main app
     """
     app                 = QApplication( [] )
+    AppGlobal.app       = app
     #dialog          = wat_inspector.DisplayWat( app )  # Create an instance of your custom QDialog
     a_wat_inspector     = wat_inspector.WatInspector( app )
     window              = PyqtByExample()

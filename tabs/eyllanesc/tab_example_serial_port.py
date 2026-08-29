@@ -2,21 +2,19 @@
 # -*- coding: utf-8 -*-
 # ---- tof
 """
-# metadata here including WIKI_LINK as Constant ( not comment )
-# this material is used for selection access to the tab module which should
-# be named xxxxTab.py     among other things
-# this example based on /mnt/8ball1/first6_root/russ/0000/python00/python3/_examples/QtExamples-master/official/network/loopback/main.py
+--- metadata here including WIKI_LINK as Constant ( not comment )
 
-KEY_WORDS:      eyllanesc plot chart graph graphics
-CLASS_NAME:     ExampleBarChartTab
-WIDGETS:        QBarSet  QBarSeries QChart QChartView QPainter
-STATUS:         works at first blush
-TAB_TITLE:      BarChart / Example
-DESCRIPTION:    An example of a bar chart from eyllanesc/QtExamples
+
+KEY_WORDS:      eyllanesc
+CLASS_NAME:     ExampleSerialPortTab
+WIDGETS:        QSerialPortInfo QScrollArea
+STATUS:         ??works at first blush
+TAB_TITLE:      Example Serial Port / Enumerator
+DESCRIPTION:    An example of serial port enumeration
 HOW_COMPLETE:   10  #  AND A COMMENT -- <10 major probs  <15 runs but <20 fair not finished  <=25 not to shabby
 """
 
-WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-About-QTcpServer"
+WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-About-Example-Serial-Ports"
 
 """
 Some Notes:
@@ -24,8 +22,9 @@ Some Notes:
 eyllanesc/QtExamples: Translations of the official Qt examples into PyQt5 (also PySide2) and more. :octocat:
 https://github.com/eyllanesc/QtExamples
 
-QtExamples/official/charts/barchart/main.py at master · eyllanesc/QtExamples
-https://github.com/eyllanesc/QtExamples/blob/master/official/charts/barchart/main.py
+QtExamples/official/serialport/enumerator at master · eyllanesc/QtExamples
+https://github.com/eyllanesc/QtExamples/tree/master/official/serialport/enumerator
+
 
 
 """
@@ -36,24 +35,59 @@ if __name__ == "__main__":
     import main  # noqa  stops auto removal by pycln
 # --------------------------------
 
-import qtpy
 import wat_inspector
-from qtpy.QtCharts import (QBarCategoryAxis,
-                           QBarSeries,
-                           QBarSet,
-                           QChart,
-                           QChartView,
-                           QValueAxis)
-from qtpy.QtCore import QByteArray, Qt, Slot
-from qtpy.QtGui import QGuiApplication, QPainter
-from qtpy.QtNetwork import (QAbstractSocket,
-                            QHostAddress,
-                            QTcpServer,
-                            QTcpSocket)
+
+
+import qtpy
+
+from qtpy.QtSerialPort import QSerialPortInfo
+
+from qtpy.QtCore  import QCoreApplication, Qt, QUrl
+
+from qtpy.QtGui   import QGuiApplication
+
+from qtpy.QtQuickWidgets import QQuickWidget
+
+
+
+# from qtpy.QtCharts import (QBarCategoryAxis,
+#                            QBarSeries,
+#                            QBarSet,
+#                            QChart,
+#                            QChartView,
+#                            QLineSeries,
+#                            QSplineSeries,
+#                            QValueAxis)
+
+from qtpy.QtCore import (QByteArray,
+                         QPoint,
+                         QPointF,
+                         QRect,
+                         QRectF,
+                         QSizeF,
+                         Qt,
+                         Slot)
+
+from qtpy.QtGui import (QColor,
+                        QFont,
+                        QFontMetrics,
+                        QGuiApplication,
+                        QPainter,
+                        QPainterPath)
+#from qtpy.QtNetwork import QAbstractSocket, QHostAddress, QTcpServer, QTcpSocket
+
 from qtpy.QtWidgets import (QApplication,
                             QDialog,
                             QDialogButtonBox,
+                            QGraphicsItem,
+                            QGraphicsScene,
+                            QGraphicsSimpleTextItem,
+                            QGraphicsView,
                             QHBoxLayout,
+                            QApplication,
+                            QLabel,
+                            QScrollArea,
+                            QVBoxLayout,
                             QLabel,
                             QMenu,
                             QMessageBox,
@@ -69,10 +103,71 @@ import utils_for_tabs as uft
 
 print_func_header   = uft.print_func_header
 
-#  --------
-class ExampleBarChartTab( tab_base.TabBase ):
+
+# -------------------------------
+class SerialPortWidget( QScrollArea ):
     """
-    Examples for  ....
+    A scrolling list of what QSerialPortInfo knows about each port.
+
+    We subclass QScrollArea rather than QWidget.  The original example
+    made a plain widget for the labels and then put it in a scroll area
+    that was the top level window.  Here there is no top level window to
+    be had, and the obvious looking
+
+        workPage = self
+        area     = QScrollArea()
+        area.setWidget( workPage )
+
+    is a trap: setWidget() takes ownership, so the local area owns self,
+    then area is garbage collected at the end of __init__ and takes self
+    down with it.  The next touch of the widget raises
+
+        RuntimeError: wrapped C/C++ object of type SerialPortWidget
+        has been deleted
+
+    So: be the scroll area, and give it an inner widget of its own.
+    """
+    def __init__( self, parent = None ):
+        """
+        """
+
+        super().__init__( parent )
+
+        layout      = QVBoxLayout()
+
+        infos       = QSerialPortInfo.availablePorts()
+        for info in infos:
+            s = (
+                f"Port: {info.portName()}",
+                f"Location: {info.systemLocation()}",
+                f"Description: {info.description()}",
+                f"Manufacturer: {info.manufacturer()}",
+                f"Serial number: {info.serialNumber()}",
+                "Vendor Identifier: " + f"{info.vendorIdentifier():x}"
+                if info.hasVendorIdentifier()
+                else "",
+                "Product Identifier: " + f"{info.productIdentifier():x}"
+                if info.hasProductIdentifier()
+                else "",
+            )
+            label = QLabel("\n".join( s ))
+            layout.addWidget( label )
+
+        work_page   = QWidget()         # a real inner widget, NOT self
+        work_page.setLayout( layout )
+
+        self.setWidget( work_page )
+        self.setWidgetResizable( True )
+            # without this the inner widget keeps its size hint and does
+            # not follow the width of the scroll area
+
+        # setWindowTitle is gone, it did nothing once the scroll area
+        # stopped being a top level window
+
+# -------------------------------
+class ExampleSerialPortTab( tab_base.TabBase ):
+    """
+    Example for QSerialPortInfo
 
 
     """
@@ -92,7 +187,8 @@ class ExampleBarChartTab( tab_base.TabBase ):
         self.mutate_dict[0]     = self.mutate_0
         # self.mutate_dict[1]     = self.mutate_1
         # self.mutate_dict[2]     = self.mutate_2
-
+        # self.mutate_dict[3]     = self.mutate_3
+        # self.mutate_dict[4]     = self.mutate_4
 
         self._build_gui()
 
@@ -114,75 +210,22 @@ class ExampleBarChartTab( tab_base.TabBase ):
         # too clever ??
         main_layout.addLayout( layout := QVBoxLayout() )
 
-        # # ---- new row c -- testing never used
-        # row_layout          = QHBoxLayout(   )
-        # layout.addLayout( row_layout )
-
-        # ---- New Row button_1 and _2 ....
+        # ---- New Row
         # make a layout to put the buttons in
-        row_layout          = QHBoxLayout(   )
+        row_layout      = QHBoxLayout(   )
         layout.addLayout( row_layout )
 
-        set0 = QBarSet("Jane")
-        set1 = QBarSet("John")
-        set2 = QBarSet("Axel")
-        set3 = QBarSet("Mary")
-        set4 = QBarSet("Samantha")
-
-        set0 << 1 << 2 << 3 << 4 << 5 << 6
-        set1 << 5 << 0 << 0 << 4 << 0 << 7
-        set2 << 3 << 5 << 8 << 13 << 8 << 5
-        set3 << 5 << 6 << 7 << 3 << 4 << 5
-        set4 << 9 << 7 << 5 << 3 << 1 << 2
-
-        series = QBarSeries()
-        series.append(set0)
-        series.append(set1)
-        series.append(set2)
-        series.append(set3)
-        series.append(set4)
-
-        chart = QChart()
-        chart.addSeries(series)
-        chart.setTitle("Simple barchart example")
-
-        # chart.setAnimationOptions(QChart.SeriesAnimations)
-        # # Qt5 (old)
-        # chart.setAnimationOptions(QChart.SeriesAnimations)
-
-        # Qt6 (new)
-        chart.setAnimationOptions( QChart.AnimationOption.SeriesAnimations )
-
-        categories  = ("Jan", "Feb", "Mar", "Apr", "May", "Jun")
-        axisX       = QBarCategoryAxis()
-        axisX.append(categories)
-        #chart.addAxis(axisX, qtpy.AlignBottom)
-        chart.addAxis(axisX, Qt.AlignmentFlag.AlignBottom)
-
-        series.attachAxis(axisX)
-
-        axisY = QValueAxis()
-        axisY.setRange(0, 15)
-        chart.addAxis(axisY, Qt.AlignmentFlag.AlignLeft )
-        series.attachAxis(axisY)
-
-        chart.legend().setVisible( True )
-        chart.legend().setAlignment( Qt.AlignmentFlag.AlignBottom )
-
-        chartView = QChartView( chart )
-        chartView.setRenderHint( QPainter.Antialiasing )
-
-        row_layout.addWidget( chartView )
+        widget              = SerialPortWidget()
+        self.serial_port_widget   = widget
+        row_layout.addWidget( widget )
 
         # ---- new row, for build_gui_last_buttons
-        button_layout           = QHBoxLayout(   )
+        button_layout   = QHBoxLayout(   )
         layout.addLayout( button_layout, )
-
 
         # our ancestor finishes off the tab with some
         # standard buttons
         self.build_gui_last_buttons( button_layout )
-
 
     # ------------------------------------
     def signal_sent( self, msg ):
@@ -197,7 +240,6 @@ class ExampleBarChartTab( tab_base.TabBase ):
         self.append_msg( f"signal_sent {msg}" )
 
         self.append_msg( tab_base.DONE_MSG )
-
 
     # ------------------------------------
     def mutate_0( self ):
@@ -239,8 +281,8 @@ class ExampleBarChartTab( tab_base.TabBase ):
         self.append_function_msg( tab_base.INSPECT_MSG )
 
         # we set local variables to make it handy to inspect them
-        # self_q_push_button_1    = self.q_push_button_1
-        # self_q_push_button_2    = self.q_push_button_1
+        self_serial_port_widget   = self.serial_port_widget         # noqa
+        self_port_infos           = QSerialPortInfo.availablePorts()  # noqa
 
         wat_inspector.go(
              msg            = "for your inspection, some locals and globals",
