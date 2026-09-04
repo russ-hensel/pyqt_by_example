@@ -7,7 +7,8 @@ Find the Wiki at the link above or:
 * Installation:
     * Installing QT for Python · russ-hensel/pyqt_by_example Wiki
     https://github.com/russ-hensel/pyqt_by_example/wiki/Installing-QT-for-Python
-
+* News:
+    * https://github.com/russ-hensel/pyqt_by_example/wiki/Project-News
 * Status:
     * works in my machine
     * https://github.com/russ-hensel/pyqt_by_example/wiki/Application-Status
