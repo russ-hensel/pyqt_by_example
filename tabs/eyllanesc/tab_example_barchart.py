@@ -36,7 +36,6 @@ if __name__ == "__main__":
     import main  # noqa  stops auto removal by pycln
 # --------------------------------
 
-import qtpy
 import wat_inspector
 from qtpy.QtCharts import (QBarCategoryAxis,
                            QBarSeries,
@@ -44,23 +43,10 @@ from qtpy.QtCharts import (QBarCategoryAxis,
                            QChart,
                            QChartView,
                            QValueAxis)
-from qtpy.QtCore import QByteArray, Qt, Slot
-from qtpy.QtGui import QGuiApplication, QPainter
-from qtpy.QtNetwork import (QAbstractSocket,
-                            QHostAddress,
-                            QTcpServer,
-                            QTcpSocket)
-from qtpy.QtWidgets import (QApplication,
-                            QDialog,
-                            QDialogButtonBox,
-                            QHBoxLayout,
-                            QLabel,
-                            QMenu,
-                            QMessageBox,
-                            QProgressBar,
-                            QPushButton,
-                            QVBoxLayout,
-                            QWidget)
+from qtpy.QtCore import Qt
+from qtpy.QtGui import QPainter
+from qtpy.QtWidgets import (QHBoxLayout,
+                            QVBoxLayout)
 
 import tab_base
 import utils_for_tabs as uft

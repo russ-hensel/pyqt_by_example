@@ -28,7 +28,7 @@ if __name__ == "__main__":
 
 
 
-from qtpy.QtWidgets import (QComboBox,
+from qtpy.QtWidgets import ( QComboBox,
                              QHBoxLayout,
                              QLabel,
                              QPushButton,
@@ -227,13 +227,12 @@ class QComboBoxTab( tab_base.TabBase  ) :
         self.append_msg( "\n" )
 
     # -----------------------
-    def conbo_currentIndexChanged(self, arg ):
+    def conbo_currentIndexChanged( self, arg ):
         """
         what it says
+            think arg is new index
         """
-
-
-        self.append_msg( "conbo_currentIndexChanged -- and get text" )
+        self.append_msg( f"conbo_currentIndexChanged {arg = } -- and get text" )
 
         self.append_msg( f"{self.combo_1.currentText( ) = }" )
         self.append_msg( "\n" )
@@ -271,21 +270,43 @@ class QComboBoxTab( tab_base.TabBase  ) :
         widget.addItems( values )
         self.append_msg( f"combo_reload done")
 
-    # --------------------------
-    def inspect_oldxxx( self, arg  ):
+    #---------------------------
+    def find_index( self, text ):
         """
-        count : const int
-        currentData : const QVariant
-        currentIndex : int
-        currentText : QString
-        duplicatesEnabled : bool
-        editable : bool
+        what it says
+        given some text find the index in  self.combo_1
+            if it does not exist return -1
         """
-        self.append_function_msg( "inspect_old()" )
-        self.append_msg( f"combo_info { '' }  --------", flush = True )
+        widget      = self.combo_1
 
+        # findText() already does the whole job and already returns
+        # -1 for no match.  The default flags are
+        #     Qt.MatchExactly | Qt.MatchCaseSensitive
+        # so "two" does NOT find "Two".  For a case blind search
+        #     widget.findText( text, Qt.MatchFixedString )
+        # which would want   from qtpy.QtCore import Qt
+        index       = widget.findText( text )
 
-        self.append_msg( f"combo_info end { '' } --------", flush = True )
+        return index
+
+    #---------------------------
+    def find_index_by_loop( self, text ):
+        """
+        what it says
+            the same as find_index() but done by hand, here because
+            this tab is a reference and the loop shows what findText()
+            is doing for you
+
+        count() is how many rows, itemText( ix ) is the text of one
+        """
+        widget      = self.combo_1
+
+        for ix in range( widget.count() ):
+            if widget.itemText( ix ) == text:
+                return ix
+
+        return -1
+
 
     #---------------------------
     def mutate_old(self,   ):

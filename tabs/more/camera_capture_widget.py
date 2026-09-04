@@ -89,7 +89,9 @@ from qtpy.QtMultimedia import ( QCamera,
                                 QMediaFormat,
                                 QMediaRecorder,
                                 )
+
 from qtpy.QtMultimediaWidgets import QVideoWidget
+
 from qtpy.QtWidgets import ( QVBoxLayout,
                              QWidget,
                              )
@@ -148,6 +150,7 @@ class CameraCaptureWidget( QWidget ):
     ready_for_capture_signal = Signal( bool )
     recording_signal        = Signal( bool )
 
+    #----------------------------
     def __init__( self, parent = None ):
         """
         """
@@ -222,7 +225,7 @@ class CameraCaptureWidget( QWidget ):
         # ---- QVideoWidget
         # the backend paints into this one, it is not an ordinary qt painted
         # surface, so there is no point styling it
-        a_widget            = QVideoWidget(   )
+        a_widget            = QVideoWidget( )
         a_widget.setMinimumSize( 480, 360 )
         self.video_widget   = a_widget
         layout.addWidget( a_widget, 1 )
@@ -234,17 +237,17 @@ class CameraCaptureWidget( QWidget ):
         class doc string.  built once, the QCamera is what gets swapped later,
         see start_camera
         """
-        capture_session     = QMediaCaptureSession( self )
+        capture_session         = QMediaCaptureSession( self )
         capture_session.setVideoOutput( self.video_widget )
-        self.capture_session = capture_session
+        self.capture_session    = capture_session
 
-        image_capture       = QImageCapture( self )
+        image_capture           = QImageCapture( self )
         image_capture.imageCaptured.connect( self.on_image_captured )
         image_capture.imageSaved.connect( self.on_image_saved )
         image_capture.errorOccurred.connect( self.on_capture_error )
         image_capture.readyForCaptureChanged.connect( self.on_ready_for_capture_changed )
         capture_session.setImageCapture( image_capture )
-        self.image_capture  = image_capture
+        self.image_capture      = image_capture
 
         # !! QMediaRecorder.recorderStateChanged and .errorOccurred can NOT be
         # connected in this env -- PyQt6 6.11.0 bindings against PyQt6-Qt6
@@ -256,17 +259,17 @@ class CameraCaptureWidget( QWidget ):
         # so recorder state and error are polled instead, see _poll_recorder.
         # fix the env and the two connects can replace the timer:
         #     uv pip install "PyQt6-Qt6==6.11.0"
-        media_recorder      = QMediaRecorder( self )
+        media_recorder          = QMediaRecorder( self )
         media_recorder.durationChanged.connect( self.on_duration_changed )
         media_recorder.actualLocationChanged.connect( self.on_actual_location_changed )
         capture_session.setRecorder( media_recorder )
-        self.media_recorder = media_recorder
+        self.media_recorder     = media_recorder
 
         # only runs while recording, see record_video
-        recorder_timer      = QTimer( self )
+        recorder_timer          = QTimer( self )
         recorder_timer.setInterval( 250 )
         recorder_timer.timeout.connect( self._poll_recorder )
-        self.recorder_timer = recorder_timer
+        self.recorder_timer     = recorder_timer
 
     # ---- where files go ----------------------------------------------------
 
@@ -384,8 +387,10 @@ class CameraCaptureWidget( QWidget ):
         """
         what it says -- one string per camera, in a_device_ix order, ready for
         a host combo box
+        no sort here, in same order as self.camera_devices
         """
         return [ i_device.description() for i_device in self.camera_devices ]
+
 
     # -------------------------------
     def format_descriptions( self, ):
@@ -415,9 +420,54 @@ class CameraCaptureWidget( QWidget ):
         return self.a_format_ix
 
     # -------------------------------
+    def set_format_by_description( self, description ):
+        """
+        returns ix of format set or -1 if device desc not found
+            may need to emit signal for gui
+        """
+        # 1/0
+        # self.camera_formats     = []
+        #     list format but not descriptions which are not sotred so
+
+        camera_format_descriptions   = self.format_descriptions( )
+
+        for ix, i__description in enumerate( camera_format_descriptions ):
+            if i__description == description:
+                break
+
+        else:
+            ix  = -1
+
+        if ix >= 0:
+            self.set_format_ix( ix )
+
+        return ix
+
+    # -------------------------------
+    def set_device_by_description( self, description ):
+        """
+        returns ix of device set or -1 if device desc not found
+            may need to emit signal for gui
+        """
+        for ix, i__description in enumerate( self.camera_descriptions() ):
+            if i__description == description:
+                break
+        else:
+            ix  = -1
+
+        if ix >= 0:
+            self.set_device_ix( ix )
+
+        return ix
+
+    # -------------------------------
     def set_device_ix( self, ix ):
         """
-        read it -- the host's camera combo lands here.  a new device means a
+        read it --
+        set the camera by the ix in list of self.camera_devices
+
+
+        the host's camera combo lands here.  a new device means a
         new format list too, and a restart, so it is the expensive one.
 
         the no-op guard matters: a host that re-fills its combo will fire
@@ -474,7 +524,9 @@ class CameraCaptureWidget( QWidget ):
 
     # -------------------------------
     def camera_count( self, ):
-        """ what it says """
+        """
+        what it says
+        """
         return len( self.camera_devices )
 
     # -------------------------------
@@ -559,7 +611,9 @@ class CameraCaptureWidget( QWidget ):
 
     # -------------------------------
     def on_camera_active_changed( self, is_active ):
-        """ what it says """
+        """
+        what it says
+        """
         self._status( "camera active" if is_active else "camera inactive" )
 
     # -------------------------------
@@ -741,7 +795,7 @@ class CameraCaptureWidget( QWidget ):
         _poll_recorder, not from a signal, see the !! note in
         _build_capture_session
         """
-        msg                 = ( f"recorder: {enum_name( state )}" )
+        msg                 = ( f"on_recorder_state_changed recorder: {enum_name( state )}" )
         self._say( msg )
         self._status( msg )
 

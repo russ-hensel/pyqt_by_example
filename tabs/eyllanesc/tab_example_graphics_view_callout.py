@@ -37,44 +37,28 @@ if __name__ == "__main__":
 
 import qtpy
 import wat_inspector
-from qtpy.QtCharts import (QBarCategoryAxis,
-                           QBarSeries,
-                           QBarSet,
+from qtpy.QtCharts import (QBarSet,
                            QChart,
-                           QChartView,
                            QLineSeries,
-                           QSplineSeries,
-                           QValueAxis)
-from qtpy.QtCore import (QByteArray,
-                         QPoint,
+                           QSplineSeries)
+from qtpy.QtCore import (QPoint,
                          QPointF,
                          QRect,
                          QRectF,
                          QSizeF,
-                         Qt,
-                         Slot)
+                         Qt)
 from qtpy.QtGui import (QColor,
                         QFont,
                         QFontMetrics,
-                        QGuiApplication,
                         QPainter,
                         QPainterPath)
 #from qtpy.QtNetwork import QAbstractSocket, QHostAddress, QTcpServer, QTcpSocket
-from qtpy.QtWidgets import (QApplication,
-                            QDialog,
-                            QDialogButtonBox,
-                            QGraphicsItem,
+from qtpy.QtWidgets import (QGraphicsItem,
                             QGraphicsScene,
                             QGraphicsSimpleTextItem,
                             QGraphicsView,
                             QHBoxLayout,
-                            QLabel,
-                            QMenu,
-                            QMessageBox,
-                            QProgressBar,
-                            QPushButton,
-                            QVBoxLayout,
-                            QWidget)
+                            QVBoxLayout)
 
 import tab_base
 import utils_for_tabs as uft

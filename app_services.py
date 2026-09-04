@@ -6,7 +6,7 @@ Created on Wed Dec 11 08:52:44 2024
 @author: russ
 """
 # ---- tof
-
+import show_path
 import importlib
 import sys
 
@@ -40,7 +40,11 @@ def create_instance( module_name, class_name ):
 
     if not is_imported( module_name, ):
         print( f"create_instance import_module {module_name}")
-        module = importlib.import_module( module_name )
+        try:
+            module = importlib.import_module( module_name )
+        except:
+            show_path.show_path()
+            raise
     else:
         pass
         # which will ppretty quicky result in an error !!

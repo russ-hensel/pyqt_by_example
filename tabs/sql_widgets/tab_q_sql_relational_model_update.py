@@ -33,14 +33,13 @@ if __name__ == "__main__":
 #from app_global import AppGlobal
 from qtpy.QtCore import (Qt)
 
-from qtpy.QtCore import Qt, QModelIndex
+from qtpy.QtCore import Qt
 
 
 
 from qtpy.QtSql import (
                         QSqlRelation,
                          QSqlRelationalTableModel,
-                         QSqlTableModel,
                          QSqlDatabase,
 
                          )

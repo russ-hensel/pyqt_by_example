@@ -22,15 +22,15 @@ WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-K
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
-    pass
-# --------------------VERBOSE
+    import main   # noqa  stops auto removal by pycln
+# --------------------
 
 
 # sql
 # widgets biger
 # widgets -- small
 # layouts
-from qtpy.QtWidgets import (QGroupBox,
+from qtpy.QtWidgets import ( QGroupBox,
                              QHBoxLayout,
                              QPushButton,
                              QVBoxLayout

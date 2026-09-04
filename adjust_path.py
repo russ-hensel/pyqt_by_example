@@ -76,7 +76,7 @@ sys.path.insert( 1, f"{src_root}/rshlib" )
 
 
 
-sys.path.insert( 1,  "./libs" )                # libs for github repo
+
 
 sys.path.insert( 1, f"{src_root}/rshlib/test/"  )
 sys.path.insert( 1, f"{src_root}/rshlib/rshlib_qt/" )
@@ -86,15 +86,16 @@ sys.path.insert( 1, f"{src_root}/rshlib/app_services/" )
 sys.path.insert( 1, f"{src_root}/rshlib/in_spect" )
 sys.path.insert( 1, f"{src_root}/rshlib/utils" )
 
-sys.path.insert( 1, f"./tabs/basic_widgets" )
-sys.path.insert( 1, f"./tabs/book_fitz" )
+sys.path.insert( 1,  "./libs" )                # libs for github repo
+sys.path.insert( 1, "./tabs/basic_widgets" )
+sys.path.insert( 1, "./tabs/more" )
+sys.path.insert( 1, "./tabs/book_fitz" )
+#                     ./tabs/book_fitz
 
 #sys.path.insert( 1, f"{src_root}/rshlib/app_services" )
 
 sys.path.insert( 1, f"{src_root}/_examples" )
 
-
-# ---- stuff stuff
 sys.path.insert( 1, f"{src_root}/stuffdb" )
 #sys.path.insert( 1, f"{src_root}/stuffdb/qt_tabs" )
 sys.path.insert( 1, f"{src_root}/stuffdb/qt_tabs_new" )
@@ -105,8 +106,6 @@ sys.path.insert( 1, f"{src_root}/stuffdb/data_dict_src" )
 sys.path.insert( 1, f"{src_root}/stuffdb/sql" )
 #/mnt/WIN_D/Russ/0000/python00/python3/qt5_by_example
 # /mnt/WIN_D/Russ/0000/python00/python3/qt_by_example
-
-# ---- end stuff stuff
 
 sys.path.insert( 1, f"{src_root}/qt5_by_example/info_about_src" )
 sys.path.insert( 1, f"{src_root}/qt5_by_example" )

@@ -16,7 +16,7 @@ WIKI_LINK = "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-Ab
 # ---- tof
 if __name__ == "__main__":
     # ----- run the full app
-    pass
+    import main  # noqa  stops auto removal by pycln
 # --------------------
 
 from qtpy.QtCore import QAbstractListModel, QModelIndex, Qt
@@ -353,8 +353,9 @@ class QComboBoxModelTab_2( tab_base.TabBase ):
 
         # we set local variables to make it handy to inspect them
 
-        self_combo_model = self.combo_model
-        self_combo_model_2 = self.combo_model_2
+        self_combo_box          = self.combo_box
+        self_combo_model_2      = self.combo_model_2
+        self_key_value_model    = self.key_value_model
 
         wat_inspector.go(
              msg            = "for your inspection, some locals and globals",

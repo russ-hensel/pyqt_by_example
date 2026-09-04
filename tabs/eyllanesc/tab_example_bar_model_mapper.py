@@ -7,7 +7,7 @@
 # be named xxxxTab.py     among other things
 # this example based on /mnt/8ball1/first6_root/russ/0000/python00/python3/_examples/QtExamples-master/official/network/loopback/main.py
 
-KEY_WORDS:      eyllanesc plot graph plot chart graph graphics zz
+KEY_WORDS:      eyllanesc plot graph plot chart graph graphics
 CLASS_NAME:     ExampleBarModelMapperTab
 WIDGETS:        QAbstractTableModel QTableView QChartView QChart.AnimationOption.AllAnimations
 STATUS:         works at first blush
@@ -16,7 +16,7 @@ DESCRIPTION:    An example of a BarModelMapper from eyllanesc/QtExamples
 HOW_COMPLETE:   10  #  AND A COMMENT -- <10 major probs  <15 runs but <20 fair not finished  <=25 not to shabby
 """
 
-WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-About-QTcpServer"
+WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/Example Bar_Model Mapper"
 
 """
 Some Notes:
@@ -42,34 +42,20 @@ if __name__ == "__main__":
 
 import random
 from collections import defaultdict
+
 import wat_inspector
 
 from qtpy.QtCharts import (QBarCategoryAxis,
                            QBarSeries,
                            QChart,
                            QChartView,
-
                            QValueAxis,
-                           QVBarModelMapper )
-
-from qtpy.QtCore import (QAbstractTableModel,
-                         QModelIndex,
-                         QRect,
-                         Qt,
-                         )
-
-from qtpy.QtGui import (QColor,
-                        QPainter,
-                        )
-
-
-from qtpy.QtWidgets import (
-
-
-                            QGridLayout,
+                           QVBarModelMapper)
+from qtpy.QtCore import QAbstractTableModel, QModelIndex, QRect, Qt
+from qtpy.QtGui import QColor, QPainter
+from qtpy.QtWidgets import (QGridLayout,
                             QHBoxLayout,
                             QHeaderView,
-
                             QTableView,
                             QVBoxLayout,
                             QWidget)
@@ -77,14 +63,11 @@ from qtpy.QtWidgets import (
 import tab_base
 import utils_for_tabs as uft
 
-
-
-
 # ---- end imports
 
 print_func_header   = uft.print_func_header
 
-
+#---------------------------------
 class CustomTableModel( QAbstractTableModel ):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -142,7 +125,7 @@ class CustomTableModel( QAbstractTableModel ):
         self.m_mapping[color] = area
 
 
-
+#---------------------------------
 class TableWidget(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)

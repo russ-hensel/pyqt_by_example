@@ -62,12 +62,9 @@ if __name__ == "__main__":
 # --------------------------------
 
 import wat_inspector
-
-from qtpy.QtCore          import QUrl
-from qtpy.QtQuickWidgets  import QQuickWidget
-
-from qtpy.QtWidgets import (QHBoxLayout,
-                            QVBoxLayout)
+from qtpy.QtCore import QUrl
+from qtpy.QtQuickWidgets import QQuickWidget
+from qtpy.QtWidgets import QHBoxLayout, QVBoxLayout
 
 import tab_base
 import utils_for_tabs as uft
@@ -78,6 +75,7 @@ print_func_header   = uft.print_func_header
 
 
 import calqlatr_rc  # noqa: F401
+
 
 # -------------------------------
 class ExampleCalqlatrWidget( QQuickWidget ):

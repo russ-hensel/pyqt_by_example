@@ -19,7 +19,7 @@ WIKI_LINK = "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-Ab
 # ---- tof
 if __name__ == "__main__":
     # ----- run the full app
-    pass
+    import main  # noqa  stops auto removal by pycln
 # --------------------
 
 from qtpy.QtCore import QAbstractListModel, QModelIndex, Qt

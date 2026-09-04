@@ -98,7 +98,8 @@ class QCameraWidgetObjectTab( tab_base.TabBase ):
         self.wiki_link          = WIKI_LINK
 
         self.mutate_dict[0]     = self.mutate_0
-        #self.mutate_dict[1]     = self.mutate_1
+        self.mutate_dict[1]     = self.mutate_1
+        self.mutate_dict[2]     = self.mutate_2
 
         self.camera_widget      = None      # CameraCaptureWidget, made in _build_gui_widgets
 
@@ -128,7 +129,11 @@ class QCameraWidgetObjectTab( tab_base.TabBase ):
         # preview -- everything that works it is built by this tab and talks
         # to the widget through its api and its signals
         a_widget            = CameraCaptureWidget(   )
+        self.camera_widget  = a_widget
+
+        # ---- a bunch of connects
         a_widget.status_message_signal.connect( self.append_msg )
+             # this gets messages from the widget
         a_widget.status_text_signal.connect( self.on_status_text )
         a_widget.image_saved_signal.connect( self.on_image_saved )
         a_widget.video_saved_signal.connect( self.on_video_saved )
@@ -137,7 +142,7 @@ class QCameraWidgetObjectTab( tab_base.TabBase ):
         a_widget.format_list_signal.connect( self.on_format_list )
         a_widget.ready_for_capture_signal.connect( self.on_ready_for_capture )
         a_widget.recording_signal.connect( self.on_recording_changed )
-        self.camera_widget  = a_widget
+
         view_layout.addWidget( a_widget, 1 )
 
         self._build_thumb_column( view_layout )
@@ -317,9 +322,13 @@ class QCameraWidgetObjectTab( tab_base.TabBase ):
     # -------------------------------------
     def on_camera_list( self, a_list, ix ):
         """
-        read it -- the cameras changed, or this is the first fill.  signals are
+        read it --
+
+        the cameras changed, or this is the first fill.  signals are
         blocked while the combo is loaded or setCurrentIndex would run back
         into the widget and restart a camera that is already right
+
+        rebuild the camera list and set to first camera
         """
         self.device_combo.blockSignals( True )
         self.device_combo.clear()
@@ -329,7 +338,10 @@ class QCameraWidgetObjectTab( tab_base.TabBase ):
 
     # -------------------------------------
     def on_format_list( self, a_list, ix ):
-        """ what it says -- as on_camera_list, for the format combo """
+        """
+        what it says -- as on_camera_list, for the format combo
+        rebuild the format combox box and set ix to passed ix
+        """
         self.format_combo.blockSignals( True )
         self.format_combo.clear()
         self.format_combo.addItems( a_list )
@@ -439,7 +451,7 @@ class QCameraWidgetObjectTab( tab_base.TabBase ):
     # ------------------------------------
     def mutate_0( self ):
         """
-        read it -- mutate the widgets
+        read it -- mutate/inspect the widgets
         """
         self.append_function_msg( "mutate_0" )
 
@@ -447,8 +459,106 @@ class QCameraWidgetObjectTab( tab_base.TabBase ):
 
         self.append_msg( tab_base.DONE_MSG )
 
+    # ------------------------------------
+    def mutate_1( self ):
+        """
+        read it -- mutate/inspect the widgets
+        """
+        self.append_function_msg( "mutate_1" )
+
+        msg     = f"{self.camera_widget.camera_devices = }"
+        self.append_msg( msg )
+
+        msg     = f"Available camera_descriptions:"
+        self.append_msg( msg )
+
+        msg     = f"    {self.camera_widget.camera_descriptions() = }"
+        self.append_msg( msg )
+
+
+        #-----------------------
+        msg     = f"camera_formats"
+        self.append_msg( msg )
+
+        # format_desc     = self.camera_widget.camera_formats()
+        # msg             = f"    {self.camera_widget.format_descriptions() = }"
+        # self.append_msg( msg )
+
+        a_list          = self.camera_widget.camera_formats
+        display_list    = ""
+
+        for item in a_list:
+            display_list  = display_list + "\n    " + str( item )
+
+        msg             = display_list
+        self.append_msg( msg )
+
+
+        #--------------------
+        msg     = f"format_descriptions"
+        self.append_msg( msg )
+
+        format_desc     = self.camera_widget.format_descriptions()
+        msg             = f"    {self.camera_widget.format_descriptions() = }"
+        self.append_msg( msg )
+
+        format_desc     = self.camera_widget.format_descriptions()
+        display_list    = ""
+
+        for item in format_desc:
+            display_list  = display_list + "\n    " + item
+
+        msg             = display_list
+        self.append_msg( msg )
+
+
+        self.append_msg( tab_base.DONE_MSG )
+
+    # ------------------------------------
+    def mutate_2( self ):
+        """
+        read it -- mutate/inspect the widgets
+        """
+        self.append_function_msg( "mutate_2" )
+
+        #--------------------
+        msg     = f"test_set_device_by_description ix >= 0 for success:"
+        self.append_msg( msg )
+
+        ix      = self.test_set_device_by_description( )
+        msg             = f"    test_set_device_by_description returns   {ix = }"
+        self.append_msg( msg )
+
+        ix      = self.test_set_format_by_description( )
+        msg             = f"    test_set_format_by_description returns   {ix = }"
+        self.append_msg( msg )
+
+        self.append_msg( tab_base.DONE_MSG )
+
     # ------------------------
-    def inspect(self):
+    def test_set_device_by_description( self ):
+        """
+
+        """
+        desc_list       = self.camera_widget.camera_descriptions()
+        desc            = desc_list[ len(desc_list) - 1 ]
+        ix              = self.camera_widget.set_device_by_description( desc )
+
+        return ix
+
+    # ------------------------
+    def test_set_format_by_description( self ):
+        """
+
+        """
+        desc_list       = self.camera_widget.format_descriptions( )
+        desc            = desc_list[ len(desc_list) - 1 ]
+        ix              = self.camera_widget.set_format_by_description( desc )
+
+        return ix
+
+    # ------------------------
+    def inspect( self ):
         """
         the usual
         """

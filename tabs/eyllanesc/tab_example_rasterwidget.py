@@ -36,73 +36,24 @@ if __name__ == "__main__":
 # --------------------------------
 
 import wat_inspector
-
-
-import qtpy
-from qtpy.QtCore  import QCoreApplication, Qt, QUrl
-from qtpy.QtGui   import QGuiApplication
-from qtpy.QtQuickWidgets import QQuickWidget
-
-from qtpy.QtCore import Qt
-from qtpy.QtCore import QEvent, QRect, QRectF, Qt
-from qtpy.QtGui import (
-    QBackingStore,
-    QExposeEvent,
-    QGradient,
-    QGuiApplication,
-    QPaintDevice,
-    QPainter,
-    QRegion,
-    QResizeEvent,
-    QWindow,
-)
-
-from qtpy.QtCharts import (QBarCategoryAxis,
-                           QBarSeries,
-                           QBarSet,
-                           QChart,
-                           QChartView,
-                           QLineSeries,
-                           QSplineSeries,
-                           QValueAxis)
-
-from qtpy.QtCore import (QByteArray,
-                         QPoint,
-                         QPointF,
+from qtpy.QtCore import (QEvent,
                          QRect,
                          QRectF,
-                         QSizeF,
-                         Qt,
-                         Slot)
-
-from qtpy.QtGui import (QColor,
-                        QFont,
-                        QFontMetrics,
-                        QGuiApplication,
+                         Qt)
+from qtpy.QtGui import (QBackingStore,
+                        QExposeEvent,
+                        QGradient,
+                        QPaintDevice,
                         QPainter,
-                        QPainterPath)
+                        QRegion,
+                        QResizeEvent,
+                        QWindow)
 #from qtpy.QtNetwork import QAbstractSocket, QHostAddress, QTcpServer, QTcpSocket
-from qtpy.QtWidgets import (QApplication,
-                            QDialog,
-                            QDialogButtonBox,
-                            QGraphicsItem,
-                            QGraphicsScene,
-                            QGraphicsSimpleTextItem,
-                            QGraphicsView,
-                            QMainWindow,
-                            QHBoxLayout,
-                            QLabel,
-                            QMenu,
-                            QMessageBox,
-                            QProgressBar,
-                            QPushButton,
-                            QVBoxLayout,
-                            QWidget)
+from qtpy.QtWidgets import (QHBoxLayout,
+                            QVBoxLayout)
 
 import tab_base
 import utils_for_tabs as uft
-import global_vars
-
 
 # ---- end imports
 

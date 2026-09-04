@@ -36,19 +36,15 @@ if __name__ == "__main__":
 # --------------------------------
 
 import wat_inspector
-
-
-import qtpy
-
 from qtpy.QtSerialPort import QSerialPortInfo
+from qtpy.QtWidgets import (QHBoxLayout,
+                            QLabel,
+                            QScrollArea,
+                            QVBoxLayout,
+                            QWidget)
 
-from qtpy.QtCore  import QCoreApplication, Qt, QUrl
-
-from qtpy.QtGui   import QGuiApplication
-
-from qtpy.QtQuickWidgets import QQuickWidget
-
-
+import tab_base
+import utils_for_tabs as uft
 
 # from qtpy.QtCharts import (QBarCategoryAxis,
 #                            QBarSeries,
@@ -59,45 +55,10 @@ from qtpy.QtQuickWidgets import QQuickWidget
 #                            QSplineSeries,
 #                            QValueAxis)
 
-from qtpy.QtCore import (QByteArray,
-                         QPoint,
-                         QPointF,
-                         QRect,
-                         QRectF,
-                         QSizeF,
-                         Qt,
-                         Slot)
 
-from qtpy.QtGui import (QColor,
-                        QFont,
-                        QFontMetrics,
-                        QGuiApplication,
-                        QPainter,
-                        QPainterPath)
 #from qtpy.QtNetwork import QAbstractSocket, QHostAddress, QTcpServer, QTcpSocket
 
-from qtpy.QtWidgets import (QApplication,
-                            QDialog,
-                            QDialogButtonBox,
-                            QGraphicsItem,
-                            QGraphicsScene,
-                            QGraphicsSimpleTextItem,
-                            QGraphicsView,
-                            QHBoxLayout,
-                            QApplication,
-                            QLabel,
-                            QScrollArea,
-                            QVBoxLayout,
-                            QLabel,
-                            QMenu,
-                            QMessageBox,
-                            QProgressBar,
-                            QPushButton,
-                            QVBoxLayout,
-                            QWidget)
 
-import tab_base
-import utils_for_tabs as uft
 
 # ---- end imports
 

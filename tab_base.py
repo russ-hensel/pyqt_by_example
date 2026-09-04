@@ -252,15 +252,28 @@ class TabBase( QWidget ):
         print( msg )
 
     #----------------------------
-    def append_msg( self, msg, clear = False ):
+    def append_msg( self, msg, clear = False, flush = False ):
         """
         read it --
             and print to console
+
+        flush True  paint the message now instead of when we next
+                    get back to the event loop, for a method that
+                    wants you to see the order things happen in
+                    ( combo_reload() in tab_q_combo_box.py )
+
+                    processEvents() lets the gui run for a moment,
+                    so a button pressed during a long method can be
+                    acted on before that method is done -- fine for
+                    these demos, think twice elsewhere
         """
         if clear:
             self.clear_msg()
         self.msg_widget.append( msg )
         print( msg )
+
+        if flush:
+            QApplication.processEvents()
 
     #----------------------------
     def set_web_link( self, web_link ):

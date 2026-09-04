@@ -57,7 +57,6 @@ from qtpy.QtGui import QColor, QImage, QIcon
 from qtpy.QtWidgets import ( QHBoxLayout,
                              QPushButton,
                              QTableView,
-                             QTextEdit,
                              QVBoxLayout)
 
 import wat_inspector

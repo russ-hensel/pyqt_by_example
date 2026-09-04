@@ -755,9 +755,9 @@ class MessageArea( QGroupBox ):
 #             AppGlobal.gui.root.update()
 #             print( "!! self.root not valid here ")
 
-    #  --------
-    def print_message(self, text):
-        print("Button clicked:", text)
+    # #  --------
+    # def print_message( self, text ):
+    #     print("Button clicked:", text)
 
     #--------
     def clear_text( self ):

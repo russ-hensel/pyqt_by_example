@@ -10,7 +10,7 @@ tab_groupbox.py
 
 self.help_file_name     =  "misc_widget_tab.txt"
 
-KEY_WORDS:      lots multiple misc widgets many return pressed push button
+KEY_WORDS:      lots multiple misc widgets many return pressed push button radio
 CLASS_NAME:     MiscWidgetTab
 WIDGETS:        QHBoxLayout QVBoxLayout QLabel QPushButton QCheckBox QLineEdit QLineEdit QRadioButton
 STATUS:         works
@@ -29,13 +29,8 @@ if __name__ == "__main__":
 # --------------------------------
 
 
-
-
 from qtpy.QtCore import (Qt)
-# sql
-# widgets biger
-# widgets -- small
-# layouts
+#
 from qtpy.QtWidgets import (QApplication,
                              QCheckBox,
                              QHBoxLayout,
@@ -193,8 +188,8 @@ class MiscWidgetTab(  tab_base.TabBase  ):
         widget.editingFinished.connect(self.on_editing_finished) # done leaves control
         widget.returnPressed.connect( self.return_pressed )
 
-        widget.setReadOnly(True)
-        widget.setReadOnly(False)
+        widget.setReadOnly( True )
+        widget.setReadOnly( False )
         row_layout.addWidget( widget )
 
         # ---- QLineEdit 2

@@ -64,7 +64,49 @@ class Parameters( ):
         self.auto_run           = True
 
         # ---- min_complete
-        self.min_complete       = 20  # minimum value for HOW_COMPLETE
+        self.min_complete       = 20
+            # minimum value for HOW_COMPLETE
+            # new users should see best examples
+
+    # -------
+    def mode_dev_debug( self ):
+        """
+        for dev and debug, mostly for rsh
+        """
+        self.mode               = "mode_dev_debug"
+        # expose tabs that are not ready
+        self.min_complete       = 0  # minimum value for HOW_COMPLETE
+
+        self.note_default_text  = "note_default_text"
+
+        # ---- search and default
+
+        self.default_search     = ""
+        self.do_search_on_init  = True
+
+        self.default_search     = "zz"
+        self.default_search     = "pythonguis"
+        self.do_search_on_init  = True
+
+        # good for kingholmer
+        self.qt_width           = 1500
+        self.qt_height          = 900
+        self.qt_xpos            = 10
+        self.qt_ypos            = 10
+
+        self.wat_qt_width       = 1200
+        self.wat_qt_height      = 800
+        self.wat_qt_xpos        = 300
+        self.wat_qt_ypos        = 300
+
+
+        #self.dir_for_tabs.append(  "/mnt/WIN_D/russ/0000/python00/python3/_projects/stuffdb/qt_tabs"  )
+        self.dir_for_tabs.append( "/mnt/8ball1/first6_root/russ/0000/python00/python3/_projects/stuffdb/pyqt_tabs" )
+        self.dir_for_tabs.append( "./tabs/experiments" )
+        self.dir_for_tabs.append( "./tabs/eyllanesc" )
+        self.dir_for_tabs.append( "./tabs/pythonguis" )
+
+
 
 
     # -------
@@ -122,39 +164,9 @@ class Parameters( ):
         self.tab_db_type         = "QSQLITE"
         self.tab_db_file_name    = "./misc/tab.db"
 
-    # -------
-    def mode_dev_debug( self ):
-        """
-        for dev and debug, mostly for rsh
-        """
-        self.mode               = "mode_dev_debug"
-        # expose tabs that are not ready
-        self.min_complete    = 0  # minimum value for HOW_COMPLETE
-
-        self.note_default_text  = "note_default_text"
-
-        # ---- search and default
-
-        self.default_search     = ""
-        self.do_search_on_init  = True
-
-        # self.default_search     = "qq"
-        # self.do_search_on_init  = True
-
-        # good for kingholmer
-        self.qt_width           = 1500
-        self.qt_height          = 600    # 700 most of win height
-        self.qt_xpos            = 10
-        self.qt_ypos            = 10
-
-        #self.dir_for_tabs.append(  "/mnt/WIN_D/russ/0000/python00/python3/_projects/stuffdb/qt_tabs"  )
-        #self.dir_for_tabs.append(  "/mnt/8ball1/first6_root/russ/0000/python00/python3/_projects/stuffdb/pyqt_tabs" )
-        self.dir_for_tabs.append( "./tabs/experiments" )
-        self.dir_for_tabs.append( "./tabs/eyllanesc" )
-
 
     # -------
-    def running_on_tweaks(self,  ):
+    def running_on_tweaks( self, ):
         """
         this is only for things other than the os typically for
         the computer name or hardware info

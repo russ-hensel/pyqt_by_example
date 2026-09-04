@@ -3,7 +3,7 @@
 """
 
 an app that demonstrates the uses
-of qt5 in python
+of qt5/6 using qtpy in python
 see the wiki at
 
 Home · russ-hensel/pyqt_by_example Wiki
@@ -60,11 +60,10 @@ import show_parameters
 import tab_base
 import tab_re_base
 from   app_global import AppGlobal
-# import app_logging    # /mnt/WIN_D/russ/0000/python00/python3/_projects/rshlib/app_services/app_logging.py
-import app_logging    # /mnt/WIN_D/russ/0000/python00/python3/_projects/rshlib/app_services/app_logging.py
+
+import app_logging      # /mnt/WIN_D/russ/0000/python00/python3/_projects/rshlib/app_services/app_logging.py
 
 
-#logger   = logging.getLogger()
 
 # ---- end imports
 
@@ -76,7 +75,7 @@ print_func_header  = uft.print_func_header
 
 __VERSION__  = "ver_001 - 2026 02 04.01"
 __VERSION__  = "ver_002 - 2026 03 31.01"
-
+__VERSION__  = "ver_003 - 2026 09 04.01"
 
 # ---- main window ===================================================================
 class PyqtByExample( QMainWindow ):
@@ -120,7 +119,6 @@ class PyqtByExample( QMainWindow ):
             self.close()
             sys.exit( 1 )
             return
-
 
         # next builds and populates the db, or may depending on refactor
         self.index_search    =  index_and_search.IndexSearch()
@@ -198,15 +196,14 @@ class PyqtByExample( QMainWindow ):
 
         layout.addWidget( self.tab_widget   )
 
-        title                   = "Select\nTab"
+        title                   = "Select\nExample Tabs"
         tab                     = tab_select_tab.Search_Tab()
         self.search_tab         = tab
         self.tab_widget.addTab( tab, title  )
         self.tab_help_dict[ title ] = "select_tab.txt"
 
-        #self.open_tab_select( "tab_base", "TabBase", "TabBase the base tab", widgets = "" )
         self.open_tab_select( "tab_qsql_database", "QSqlDatabaseTab", "QSqlDatabase / QSqlQuery", "web_link", widgets = ""  )
-        #open_tab_select( self, module_name, class_name, title  ):
+            #open_tab_select( self, module_name, class_name, title  ):
 
         button_layout = QHBoxLayout(   )
         central_widget_layout.addLayout( button_layout )
@@ -220,7 +217,7 @@ class PyqtByExample( QMainWindow ):
         tab_dict will not work as index is not stable
         """
         tab_index   = -1
-        #print( f"looking for {class_name} = " )
+        #rint( f"looking for {class_name} = " )
         tab            =  self.tab_widget
 
         for ix_tab in range( tab.count() ):
@@ -249,7 +246,7 @@ class PyqtByExample( QMainWindow ):
         """
         tab             = app_services.create_instance( module_name, class_name, )
 
-        tab_index       = self.tab_widget.indexOf( tab  )
+        tab_index       = self.tab_widget.indexOf( tab )
 
         title           = title.replace( r" / ", "\n" )
 
@@ -403,10 +400,6 @@ class PyqtByExample( QMainWindow ):
         self.current_tab_index   = index
         self.tab_page_info()
 
-    # #----------------------------
-    # def on_tab_close_requested( self, index):
-    #     self.tab_widget.removeTab(index)
-
     #----------------------------
     def on_tab_clicked(self, index):
         """ """
@@ -489,7 +482,6 @@ class PyqtByExample( QMainWindow ):
         if dialog.exec_() == QDialog.Accepted:
             pass
 
-
     # -----------------------
     def check_dir(self):
         """
@@ -506,6 +498,7 @@ class PyqtByExample( QMainWindow ):
                 return False
 
         file_name   =  parameters.PARAMETERS.tab_db_file_name
+
         if file_name != ":memory:":
             path        = Path( file_name ).parent
 
@@ -525,16 +518,15 @@ class PyqtByExample( QMainWindow ):
 
         # make some locals for inspection
 
-        self_parameters    = self.parameters
-        self_menubar       = self.menubar
+        self_parameters     = self.parameters
+        self_menubar        = self.menubar
 
-        self_tab_dict      = self.tab_dict
+        self_tab_dict       = self.tab_dict
 
         self_tab_widget     = self.tab_widget
 
         wat_inspector.go(
              msg            = "inspect !! more locals would be nice ",
-             # inspect_me     = self.people_model,
              a_locals       = locals(),
              a_globals      = globals(), )
 
@@ -564,7 +556,6 @@ def main():
     app.exec()
 
     #sys.exit( 0 )
-
 
 # ---- eof
 

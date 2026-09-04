@@ -31,7 +31,7 @@ from qtpy.QtCore import (QTimer)
 # widgets biger
 # widgets -- small
 # layouts
-from qtpy.QtWidgets import (QHBoxLayout,
+from qtpy.QtWidgets import ( QHBoxLayout,
                              QPushButton,
                              QVBoxLayout)
 

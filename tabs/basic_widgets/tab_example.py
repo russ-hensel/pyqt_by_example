@@ -534,7 +534,7 @@ class DataVisToolTutorialTab( tab_base.TabBase ):
 
 
 # class Widget(QWidget):
-    def widget_init(self, layout ):   #data):
+    def widget_init( self, layout ):   #data):
         # super().__init__()
         data = read_data(  "./all_day.csv" )
         # Getting the Model
