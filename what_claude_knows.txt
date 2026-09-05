@@ -1,0 +1,215 @@
+# What We Know About Misc Dialogs
+
+*Page name taken from the `WIKI_LINK` constant in the module, which points at
+`What-We-Know-About-Misc-Dialogs` — that is where the tab's **github-wiki** button goes.*
+
+## Introduction
+
+A dialog is a second window that opens on top of the application, asks the user something,
+and closes. What makes it a dialog rather than just another window is that it usually:
+
+* is **modal** — the rest of the app is frozen until the user deals with it
+* **blocks** the calling code at `exec()`, so the next line does not run until it closes
+* **returns a value** saying what the user did, which the caller then acts on
+
+That last point is the whole game. A dialog you cannot get an answer out of is just a
+window. Qt gives you `QMessageBox` for the trivial cases and `QDialog` for everything else,
+and the interesting question is how much you build yourself.
+
+This tab shows three answers to that question, cheapest first:
+
+| Button | Class used | Who wrote the buttons | What comes back |
+|---|---|---|---|
+| `open_message_box` | `QMessageBox` | Qt | an int button code, `QMessageBox.Ok` = **1024** |
+| `open_ex_qdialog` | `ExQDialog( QDialog )` | you, but wired to Qt's `accept` / `reject` | `QDialog.Accepted` = **1** or `Rejected` = **0** |
+| `open_claude_custom_dialog` | `ClaudeCustomDialog( QDialog )` | you, with your own return codes | `RESULT_OK` / `RESULT_CANCEL` / `RESULT_SKIP` **plus a dict of values** |
+
+The reference implementation is at `tabs/basic_widgets/tab_q_ex_dialogs.py`. As always the
+file is the documentation — read the code and the inline comments, this page is the summary.
+
+## The Three Examples
+
+### QMessageBox — the one you should use first
+
+```python
+msg_box  = QMessageBox()
+msg_box.setIcon( QMessageBox.Information )
+msg_box.setText( "this is a message" )
+msg_box.setWindowTitle( "Sorry that is a No Go " )
+msg_box.setStandardButtons( QMessageBox.Ok )
+
+ret      = msg_box.exec_()
+print( f"{ret = }" )        # 1024
+```
+
+Six lines and you are done. `setStandardButtons()` takes an OR of the ones you want —
+`QMessageBox.Yes | QMessageBox.No` — and `exec_()` returns which was pressed. The codes are
+not 0 and 1, they are flag bits: **Ok is 1024**, Yes is 16384, No is 65536. Compare against
+the constants, never against a literal.
+
+If a message box will do, use it. It is themed, it handles Esc, and there is no layout code.
+
+### ExQDialog — a plain QDialog
+
+```python
+ok_button.clicked.connect( self.accept )        # sets the result to Accepted
+cancel_button.clicked.connect( self.reject )    # sets the result to Rejected
+```
+
+The minimum custom dialog: a `QDialog` subclass, some widgets in a `QVBoxLayout`, two
+buttons wired to Qt's own `accept()` and `reject()` slots, and a `get_name()` to read the
+field afterwards. The caller checks the result and then asks for the value:
+
+```python
+dialog = ExQDialog()
+if dialog.exec_() == QDialog.Accepted:
+    name = dialog.get_name()
+```
+
+Note the shape — **the result and the values are two separate questions**. `exec_()` tells
+you which button; the dialog object is still alive afterwards, so you read the fields off it
+at your leisure. This is why `get_name()` works after the dialog has closed.
+
+`setupUI()` also shows the sizing calls, which are easy to forget:
+
+```python
+self.resize( 400, 250 )
+self.setMinimumSize( 300, 200 )
+self.setMaximumSize( 600, 400 )
+```
+
+### ClaudeCustomDialog — your own buttons and your own return
+
+When two outcomes are not enough. Three module-level codes:
+
+```python
+RESULT_CANCEL   = 0
+RESULT_OK       = 1
+RESULT_SKIP     = 2
+```
+
+0 and 1 are deliberately the same integers Qt already uses for reject and accept, so **Esc
+and the window X land on `RESULT_CANCEL` for free**. Add your own starting at 2.
+
+Each button gets its own method, and they all end at `finish()`:
+
+```python
+def finish( self, result_code ):
+    self.result_code    = result_code
+    self.done( result_code )        # done() is what ends exec()
+```
+
+`done( n )` is the general form of `accept()` / `reject()` — it closes the dialog and makes
+`exec()` return `n`. That one call is all you need to return a code of your own invention.
+
+Two things this buys you over `ExQDialog`:
+
+**Validation that can refuse to close.** `on_ok()` asks `validate()` first, and a complaint
+keeps the dialog open with the message shown in red:
+
+```python
+def on_ok( self ):
+    complaint   = self.validate()
+    if complaint != "":
+        self.msg_widget.setText( complaint )
+        return                      # note: no finish(), so the dialog stays up
+    self.finish( RESULT_OK )
+```
+
+**Everything back in one call.** `ask_user()` builds, execs and reads in one go:
+
+```python
+result_code, values = ask_user( a_name = "start value", a_note = "edit me" )
+```
+
+`values` is a dict from `get_values()`, and it is readable **whatever button was pressed** —
+useful for the skip case, where you want to know what the user had typed before giving up.
+
+## Return Values — the summary table
+
+| What | Value | Comes from |
+|---|---|---|
+| `QDialog.Rejected` | 0 | `reject()`, Esc, the window X |
+| `QDialog.Accepted` | 1 | `accept()` |
+| `QMessageBox.Ok` | 1024 | a standard button on a message box |
+| `RESULT_CANCEL` / `OK` / `SKIP` | 0 / 1 / 2 | `done( n )` in this module |
+
+*All four verified by running the code, PyQt5 5.15.14.*
+
+**The `reject()` override is the subtle one.** Esc and the window X do not go through any of
+your buttons — Qt calls `reject()` directly. If you keep your answer in an attribute, that
+attribute goes stale unless you catch it:
+
+```python
+def reject( self ):
+    self.result_code    = RESULT_CANCEL
+    super().reject()
+```
+
+Leave this out and a user who presses Esc gets whatever `result_code` was left over.
+
+## Interactions
+
+Press each of the three buttons and watch **both** the tab's message pane and the console:
+
+* **open_message_box** — nothing appears in the message pane. The return goes to the console
+  as `ret = 1024` via `print()`. The method's own docstring says `add some returns`, so this
+  is known and not finished.
+* **open_ex_qdialog** — type a name, press OK, and the pane shows `Name entered: Russ`.
+  Press Cancel and it shows `Dialog cancelled`. Esc and the X give the same as Cancel.
+* **open_claude_custom_dialog** — the pane shows the result code and the values dict.
+  Try three things: OK as it stands; clear the name and press OK, which refuses to close and
+  complains `name cannot be empty`; then press skip, which closes anyway and still hands
+  back the values, with `name` now empty.
+
+**The mutate/examine button does nothing on this tab.** Both `mutate_0()` and `mutate_1()`
+have their bodies commented out, so pressing it prints only the header and `<<-- done`.
+On the QPushButton tab the mutations are the main content; here they are placeholders.
+The content of this tab is in the three dialog methods instead.
+
+Use the wat-inspect tool or the official documentation for more.
+
+## Gotchas
+
+* **`exec_()` vs `exec()`.** This module uses both — `exec_()` in `open_ex_qdialog` and
+  `open_message_box`, `exec()` in `ask_user`. They do the same thing in PyQt5, but
+  **`exec_()` does not exist in PyQt6**. New code should use `exec()`, which works in both.
+* **`ask_user()` is called with no parent**, so the dialog is not centred on the app window
+  and does not necessarily stay above it. Pass `self` from the tab to fix that.
+* **A message box needs its result used, not just printed.** `ret` is computed and printed
+  to the console, which is invisible to anyone using the GUI.
+* **`get_values()` after a cancel returns real text, not nothing.** The values dict is always
+  populated. It is the *result code* that tells you whether to trust it.
+
+## Code to Revisit
+
+* `open_directory_dialog()` — `??` an empty method, no body, no button. Its docstring says
+  `add some returns !!` and *"code written as if we could return multiples, but we cannot"*.
+* `self.current_default_dir` — set twice in `__init__`, once to `"~"` with the comment
+  `seems not to work` and then to `"../"`. Nothing reads it; it belongs to the directory
+  dialog that was never written.
+* `_build_gui_widgets()` — `??` two layouts are created, added to a parent and then
+  immediately replaced by another, leaving two empty layouts in the tree. The
+  `main_layout.addLayout( layout := QVBoxLayout() )` walrus carries its own `# too clever ??`.
+* Imports — `QPushButton` and `QVBoxLayout` are imported three times between lines 28, 35
+  and 48, and there is a second import block sitting below the module constants. `isort`
+  would collapse the duplicates.
+* `signal_sentxxx()` — `xxx` suffix, on its way out per our convention.
+
+## AASI
+
+Asking an AI for dialog help works better when you say what you want *back*, not just what
+you want shown. This prompt does well:
+
+> As an experienced Python Qt developer, write me a modal QDialog subclass using qtpy that
+> asks the user for [describe the fields]. I want my own buttons rather than a
+> QDialogButtonBox, and my own return codes rather than just accept/reject. Show how the
+> caller reads both the code and the entered values, handle Esc and the window X, and use
+> `exec()` not `exec_()` so it works on PyQt6.
+
+`ClaudeCustomDialog` in this module is close to what that prompt returns, with light editing.
+
+## Screenshot
+
+See [ScreenShots](/russ-hensel/pyqt_by_example/wiki/ScreenShots) wiki page for visual
+references.

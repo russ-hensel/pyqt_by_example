@@ -127,25 +127,25 @@ class ClaudeCustomDialog( QDialog ):
         the fields, replace these with your own
         """
         # ---- name
-        row_layout  = QHBoxLayout()
+        row_layout      = QHBoxLayout()
         layout.addLayout( row_layout )
 
-        widget      = QLabel( "name  " )
+        widget          = QLabel( "name  " )
         row_layout.addWidget( widget )
 
-        widget      = QLineEdit( self.start_name )
+        widget          = QLineEdit( self.start_name )
         self.name_edit  = widget
         widget.setMinimumWidth( 250 )
         row_layout.addWidget( widget )
 
         # ---- note
-        row_layout  = QHBoxLayout()
+        row_layout      = QHBoxLayout()
         layout.addLayout( row_layout )
 
-        widget      = QLabel( "note  " )
+        widget          = QLabel( "note  " )
         row_layout.addWidget( widget )
 
-        widget      = QLineEdit( self.start_note )
+        widget          = QLineEdit( self.start_note )
         self.note_edit  = widget
         widget.setMinimumWidth( 250 )
         row_layout.addWidget( widget )
@@ -154,7 +154,7 @@ class ClaudeCustomDialog( QDialog ):
         row_layout  = QHBoxLayout()
         layout.addLayout( row_layout )
 
-        widget      = QCheckBox( "wants email" )
+        widget          = QCheckBox( "wants email" )
         self.email_check    = widget
         widget.setChecked( self.start_email )
         row_layout.addWidget( widget )
@@ -164,7 +164,7 @@ class ClaudeCustomDialog( QDialog ):
         """
         the line validate() writes its complaint on, empty most of the time
         """
-        widget      = QLabel( "" )
+        widget          = QLabel( "" )
         self.msg_widget = widget
         widget.setWordWrap( True )
         widget.setStyleSheet( "color: red;" )
@@ -180,7 +180,7 @@ class ClaudeCustomDialog( QDialog ):
 
         row_layout.addStretch( 1 )      # push the buttons to the right
 
-        widget      = QPushButton( "ok" )
+        widget          = QPushButton( "ok" )
         self.ok_button  = widget
         widget.setDefault( True )       # the return key presses this one
         widget.clicked.connect( self.on_ok )
@@ -266,7 +266,6 @@ class ClaudeCustomDialog( QDialog ):
         self.result_code    = RESULT_CANCEL
         super().reject()
 
-
 #-----------------------------
 class ExQDialog( QDialog ):
     """
@@ -310,6 +309,7 @@ class ExQDialog( QDialog ):
 
         # Set the layout
         self.setLayout(layout)
+
     #-----------------------------
     def get_name(self):
         """Return the entered name"""
@@ -320,8 +320,6 @@ class ExQDialog( QDialog ):
 class QDialogsTab( tab_base.TabBase ):
     """
     Reference examples for QFileDialogTab and
-
-
     """
     def __init__(self):
         """
@@ -330,16 +328,16 @@ class QDialogsTab( tab_base.TabBase ):
         this is pretty much boiler plate for a tab
         """
         super().__init__()
-        self.module_file        = __file__      # save for help file usage
+        self.module_file            = __file__      # save for help file usage
 
         global WIKI_LINK
         self.wiki_link              = WIKI_LINK
 
         # modify to match the number of mutate methods in this module
         self.mutate_dict[0]         = self.mutate_0
-        self.mutate_dict[1]         = self.mutate_1
-        self.current_default_dir    = "~"  # change as dilog used -- seems not to work
-        self.current_default_dir    = "../"   # seems to work "
+        #self.mutate_dict[1]         = self.mutate_1
+        self.current_default_dir    = "~"       # change as dilog used -- seems not to work
+        self.current_default_dir    = "../"     # seems to work "
 
         self._build_gui()
 
@@ -361,7 +359,7 @@ class QDialogsTab( tab_base.TabBase ):
         # too clever ??
         main_layout.addLayout( layout := QVBoxLayout() )
 
-        # ---- new row c
+        # ---- new row
         row_layout          = QHBoxLayout(   )
         layout.addLayout( row_layout )
 
@@ -398,28 +396,13 @@ class QDialogsTab( tab_base.TabBase ):
         self.build_gui_last_buttons( button_layout )
 
     # ------------------------------------
-    def signal_sentxxx( self, msg ):
-        """
-        when a signal is sent, use find ???
-
-        this is important content for the widgets referenced on this tab
-        """
-        self.append_function_msg( "signal_sent()" )
-        # msg   = f"{function_nl}signal_sent"
-        # print( msg )
-        self.append_msg( f"signal_sent {msg}" )
-
-        self.append_msg( tab_base.DONE_MSG )
-
-
-    # ------------------------------------
     def open_ex_qdialog( self ):
         """
         What it says
 
         """
-
         dialog = ExQDialog()
+
         if dialog.exec_() == QDialog.Accepted:
             name = dialog.get_name()
             msg     = (f"Name entered: {name}")
@@ -445,37 +428,22 @@ class QDialogsTab( tab_base.TabBase ):
         msg     = ( f"{values      = }" )
         self.append_msg( msg )
 
-
-
     # ------------------------------------
     def open_message_box( self ):
         """
         What it says
             add some returns
         """
-
-        from qtpy.QtWidgets import (  QMessageBox, )
-
-
-        msg_box_msg    = "this is a message"
-        msg_box             = QMessageBox()
+        msg_box_msg     = "this is a message"
+        msg_box         = QMessageBox()
         msg_box.setIcon( QMessageBox.Information )
         msg_box.setText(  msg_box_msg  )
         msg_box.setWindowTitle( "Sorry that is a No Go " )
         msg_box.setStandardButtons( QMessageBox.Ok )
 
-        ret    = msg_box.exec_()
-        print( f"{ret = }" )
-
-
-    # ------------------------------------
-    def open_directory_dialog( self ):
-        """
-        What it says
-            add some returns !!
-            code written as if we could return multiples, but we cannot
-        """
-
+        ret             = msg_box.exec_()
+        msg             =( f"{ret = }" )
+        self.append_msg( msg )
 
     # ------------------------------------
     def mutate_0( self ):
@@ -490,73 +458,10 @@ class QDialogsTab( tab_base.TabBase ):
         """
         self.append_function_msg( "mutate_0()" )
 
-        # # ---- change widget
-        # msg    = "for q_push_button_1 we more or less reset it"
-        # self.append_msg( msg, clear = False )
-        #     # we use a local variable because it reduces the amount of code
-        #     # and does not run any slower
-        #     # we use this local variable idea in many places
-        # widget          = self.q_push_button_1
-        # widget.setText( "text set in mutate_0()" )
-        # widget.width     = 300
-        # widget.setToolTip( None )
-        # widget.setStyleSheet( "" )
-
-        # # ---- change widget
-        # msg    = "for q_push_button_2 no mutations"
-        # self.append_msg( msg, )
-
-        # widget          = self.q_push_button_2
-        # # self.q_push_button_1.setDisabled( True )
-        # # self.q_push_button_2.setDisabled( False )
+        msg    = ( "mutates not a feature of this tab")
+        self.append_msg( msg )
 
         self.append_msg( tab_base.DONE_MSG )
-
-    # ------------------------------------
-    def mutate_1( self ):
-        """
-        read it -- mutate the widgets
-
-        this is important content for the widgets referenced on this tab
-        read the code for more insight, note messages to app and comments
-        """
-        self.append_function_msg( "mutate_1()" )
-        # msg    = "begin implementation"
-        # self.append_msg( msg, clear     = False )
-        # for self.q_push_button_1
-
-        # msg    = "mess with q_push_button_1"
-        # self.append_msg( msg, )
-
-        # widget        = self.q_push_button_1
-        #     # it is often convenient to use a local variable,
-        #     # you will see this a lot in our code, it does not seem to
-        #     # be typical but we think it should be
-
-        # msg    = "q_push_button_1 set a tooltip"
-        # self.append_msg( msg, )
-
-        # widget.setToolTip( "this is a tool tip" )
-        # widget.setText( "text set in \nmutate_1()" )
-        #     # note \n
-        # widget.width     = 200
-
-        # # ---- change widget
-        # msg    = "some changes to q_push_button_2"
-        # self.append_msg( msg, clear = False )
-
-        # # ---- self.q_push_button_2
-        # widget        = self.q_push_button_2
-        # # msg    = "setChecked(True )"
-        # self.append_msg( msg, )
-
-
-        # msg        = f"{self.q_push_button_1.isChecked() = } "
-        # self.append_msg( msg, )
-
-
-        self.append_msg( tab_base.DONE_MSG )
-
 
     # ------------------------------------
     def inspect(self):
