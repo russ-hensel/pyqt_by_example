@@ -6,12 +6,12 @@
 # this material is used for selection access to the tab module which must
 # be named tab_....py     among other things
 
-KEY_WORDS:      dialog questionBox  Message Box
+KEY_WORDS:      dialog questionBox  Message Box custom
 CLASS_NAME:     QDialogsTab
 WIDGETS:        QMessageBox QDialog
 STATUS:         2025 dec draft
-TAB_TITLE:      QDialogsTab / various
-DESCRIPTION:    A few examples of dialogs
+TAB_TITLE:      QDialogsTab / Various
+DESCRIPTION:    A few examples of dialogs simple to custom
 HOW_COMPLETE:   20  #  AND A COMMENT -- <10 major probs  <15 runs but <20 fair not finished  <=25 not to shabby
 """
 WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-About-Misc-Dialogs"
@@ -20,21 +20,19 @@ WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-K
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
-    pass
+    import main  # noqa  stops auto removal by pycln
 # --------------------------------
 
-# ---- import
-
-
-# sql
+# ---- imports
 
 from qtpy.QtWidgets import QPushButton, QVBoxLayout
-from qtpy.QtWidgets import (QHBoxLayout,
+from qtpy.QtWidgets import ( QHBoxLayout,
+                             QCheckBox,
                              QLabel,
                              QLineEdit,
                              QMessageBox,
                              QPushButton,
-                             QVBoxLayout)
+                             QVBoxLayout )
 
 #import parameters
 
@@ -46,17 +44,230 @@ import tab_base
 
 print_func_header   = uft.print_func_header
 
-# class FileDialogMemoryMixin:
-#     """
-#     Mixin class that remembers the last directory used in file dialogs.
-#     Can be used with any QWidget-based class.
-
-#     code deleted ask a chatbot if you want
-#     """
-
 
 from qtpy.QtWidgets import QDialog, QVBoxLayout, QLabel, QPushButton, QLineEdit
 
+# ---- return codes
+# 0 and 1 are what QDialog itself uses for reject and accept, so keeping
+# them here means Esc and the window X land on RESULT_CANCEL for free.
+# Add your own starting at 2.
+
+RESULT_CANCEL   = 0
+RESULT_OK       = 1
+RESULT_SKIP     = 2
+
+
+# ------------------------------------
+def ask_user( parent = None, title = "Custom Dialog",
+              a_name = "", a_note = "", wants_email = False ):
+    """
+    build, show and read the dialog in one call
+    returns ( result_code, values dict )
+    """
+    dialog      = ClaudeCustomDialog( parent,
+                                title       = title,
+                                a_name      = a_name,
+                                a_note      = a_note,
+                                wants_email = wants_email )
+
+    dialog.exec()       # blocks here until a button closes it
+                        # exec() not exec_(), exec_ is gone in PyQt6
+
+    result_code = dialog.result_code
+    values      = dialog.get_values()
+
+    return ( result_code, values )
+
+
+
+#  --------
+class ClaudeCustomDialog( QDialog ):
+    """
+    vibe coded with light editing
+    this is how claude responds
+    a modal dialog that returns one of the RESULT_* codes above
+    """
+
+    # -----------------------
+    def __init__( self, parent = None, title = "Custom Dialog",
+                  a_name = "", a_note = "", wants_email = False ):
+        """
+        build the dialog, the a_* arguments are the starting values
+        shown in the fields
+        """
+        super().__init__( parent )
+
+        self.setWindowTitle( title )
+        self.setModal( True )
+
+        self.start_name     = a_name
+        self.start_note     = a_note
+        self.start_email    = wants_email
+
+        self.result_code    = RESULT_CANCEL   # until a button says otherwise
+
+        self._build_gui()
+
+    # -----------------------
+    def _build_gui( self ):
+        """
+        the whole layout, in the same shape as a tab: widgets then buttons
+        """
+        layout      = QVBoxLayout( self )
+
+        self._build_gui_widgets( layout )
+        self._build_gui_msg(     layout )
+        self._build_gui_buttons( layout )
+
+        self.setMinimumWidth( 400 )
+
+    # -----------------------
+    def _build_gui_widgets( self, layout ):
+        """
+        the fields, replace these with your own
+        """
+        # ---- name
+        row_layout  = QHBoxLayout()
+        layout.addLayout( row_layout )
+
+        widget      = QLabel( "name  " )
+        row_layout.addWidget( widget )
+
+        widget      = QLineEdit( self.start_name )
+        self.name_edit  = widget
+        widget.setMinimumWidth( 250 )
+        row_layout.addWidget( widget )
+
+        # ---- note
+        row_layout  = QHBoxLayout()
+        layout.addLayout( row_layout )
+
+        widget      = QLabel( "note  " )
+        row_layout.addWidget( widget )
+
+        widget      = QLineEdit( self.start_note )
+        self.note_edit  = widget
+        widget.setMinimumWidth( 250 )
+        row_layout.addWidget( widget )
+
+        # ---- check box
+        row_layout  = QHBoxLayout()
+        layout.addLayout( row_layout )
+
+        widget      = QCheckBox( "wants email" )
+        self.email_check    = widget
+        widget.setChecked( self.start_email )
+        row_layout.addWidget( widget )
+
+    # -----------------------
+    def _build_gui_msg( self, layout ):
+        """
+        the line validate() writes its complaint on, empty most of the time
+        """
+        widget      = QLabel( "" )
+        self.msg_widget = widget
+        widget.setWordWrap( True )
+        widget.setStyleSheet( "color: red;" )
+        layout.addWidget( widget )
+
+    # -----------------------
+    def _build_gui_buttons( self, layout ):
+        """
+        plain push buttons, one method each, add your own here
+        """
+        row_layout  = QHBoxLayout()
+        layout.addLayout( row_layout )
+
+        row_layout.addStretch( 1 )      # push the buttons to the right
+
+        widget      = QPushButton( "ok" )
+        self.ok_button  = widget
+        widget.setDefault( True )       # the return key presses this one
+        widget.clicked.connect( self.on_ok )
+        row_layout.addWidget( widget )
+
+        widget      = QPushButton( "skip" )
+        widget.clicked.connect( self.on_skip )
+        row_layout.addWidget( widget )
+
+        widget      = QPushButton( "cancel" )
+        widget.clicked.connect( self.on_cancel )
+        row_layout.addWidget( widget )
+
+    # ---- what the buttons do
+
+    # -----------------------
+    def on_ok( self ):
+        """
+        validate first, a complaint keeps the dialog open
+        """
+        complaint   = self.validate()
+
+        if complaint != "":
+            self.msg_widget.setText( complaint )
+            return
+
+        self.finish( RESULT_OK )
+
+    # -----------------------
+    def on_skip( self ):
+        """
+        close with the skip code, no validation
+        """
+        self.finish( RESULT_SKIP )
+
+    # -----------------------
+    def on_cancel( self ):
+        """
+        close with the cancel code, no validation
+        """
+        self.finish( RESULT_CANCEL )
+
+    # -----------------------
+    def finish( self, result_code ):
+        """
+        remember the code and close, done() is what ends exec()
+        """
+        self.result_code    = result_code
+        self.done( result_code )
+
+    # -----------------------
+    def validate( self ):
+        """
+        what counts as a good answer, return "" for good or the
+        complaint to show the user
+        """
+        a_name      = self.name_edit.text().strip()
+
+        if a_name == "":
+            return ( "name cannot be empty" )
+
+        return ( "" )
+
+    # ---- reading the answer
+
+    # -----------------------
+    def get_values( self ):
+        """
+        the fields as a dict, valid whatever button was pressed
+        """
+        values      = { "name"          : self.name_edit.text().strip(),
+                        "note"          : self.note_edit.text().strip(),
+                        "wants_email"   : self.email_check.isChecked(), }
+
+        return values
+
+    # -----------------------
+    def reject( self ):
+        """
+        Esc and the window X come here, not through a button, so make
+        them mean cancel rather than leaving result_code stale
+        """
+        self.result_code    = RESULT_CANCEL
+        super().reject()
+
+
+#-----------------------------
 class ExQDialog( QDialog ):
     """
     An example dialog from chat then edited """
@@ -64,6 +275,7 @@ class ExQDialog( QDialog ):
         super().__init__(parent)
         self.setupUI()
 
+    #-----------------------------
     def setupUI(self):
         # Set the dialog title
         self.setWindowTitle("My Custom Dialog")
@@ -79,12 +291,12 @@ class ExQDialog( QDialog ):
         layout = QVBoxLayout()
 
         # Add some widgets
-        label = QLabel("Enter your name:")
-        self.name_input = QLineEdit()
+        label               = QLabel("Enter your name:")
+        self.name_input     = QLineEdit()
 
         # Add buttons
-        ok_button = QPushButton("OK")
-        cancel_button = QPushButton("Cancel")
+        ok_button           = QPushButton("OK")
+        cancel_button       = QPushButton("Cancel")
 
         # Connect buttons
         ok_button.clicked.connect(self.accept)
@@ -98,13 +310,13 @@ class ExQDialog( QDialog ):
 
         # Set the layout
         self.setLayout(layout)
-
+    #-----------------------------
     def get_name(self):
         """Return the entered name"""
         return self.name_input.text()
 
 
-#  --------
+#-----------------------------
 class QDialogsTab( tab_base.TabBase ):
     """
     Reference examples for QFileDialogTab and
@@ -153,7 +365,7 @@ class QDialogsTab( tab_base.TabBase ):
         row_layout          = QHBoxLayout(   )
         layout.addLayout( row_layout )
 
-        # ---- New Row button_1 and _2 ....
+        # ---- New Row buttons
         # make a layout to put the buttons in
         row_layout          = QHBoxLayout(   )
         layout.addLayout( row_layout )
@@ -163,20 +375,22 @@ class QDialogsTab( tab_base.TabBase ):
         # we use this local variable idea in many places
         # because we will refer to the bu
         widget              = QPushButton( "open_message_box" )
-        self.q_push_button_1    = widget
-
         connect_to          = self.open_message_box
         widget.clicked.connect( connect_to )
         row_layout.addWidget( widget )
 
         widget              = QPushButton( "open_ex_qdialog" )
-        self.q_push_button_2    = widget
         connect_to          = self.open_ex_qdialog
         widget.clicked.connect( connect_to    )
         row_layout.addWidget( widget,  )
 
+        widget              = QPushButton( "open_claude_custom_dialog" )
+        connect_to          = self.open_claude_custom_dialog
+        widget.clicked.connect( connect_to )
+        row_layout.addWidget( widget,  )
+
         # ---- new row, for build_gui_last_buttons
-        button_layout = QHBoxLayout(   )
+        button_layout = QHBoxLayout( )
         layout.addLayout( button_layout, )
 
         # our ancestor finishes off the tab with some
@@ -208,9 +422,28 @@ class QDialogsTab( tab_base.TabBase ):
         dialog = ExQDialog()
         if dialog.exec_() == QDialog.Accepted:
             name = dialog.get_name()
-            print(f"Name entered: {name}")
+            msg     = (f"Name entered: {name}")
+            self.append_msg( msg )
+
         else:
-            print("Dialog cancelled")
+            msg     = ("Dialog cancelled")
+            self.append_msg( msg )
+
+
+    # ------------------------------------
+    def open_claude_custom_dialog( self ):
+        """
+        What it says
+
+        """
+        result_code, values = ask_user( a_name  = "start value",
+                                        a_note  = "edit me" )
+
+        msg     = ( f"{result_code = }" )
+        self.append_msg( msg )
+
+        msg     = ( f"{values      = }" )
+        self.append_msg( msg )
 
 
 
