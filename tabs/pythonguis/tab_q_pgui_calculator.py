@@ -297,7 +297,7 @@ class ExamplePguiCalculatorTab( tab_base.TabBase ):
         self.append_function_msg( tab_base.INSPECT_MSG )
 
         # we set local variables to make it handy to inspect them
-        self_clock_widget   = self.clock_widget
+        # self_clock_widget   = self.clock_widget
 
         wat_inspector.go(
              msg            = "for your inspection, some locals and globals",

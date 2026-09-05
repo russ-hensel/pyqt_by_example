@@ -64,18 +64,19 @@ from   app_global import AppGlobal
 import app_logging      # /mnt/WIN_D/russ/0000/python00/python3/_projects/rshlib/app_services/app_logging.py
 
 
-
 # ---- end imports
+
+
+__VERSION__     = "ver_001 - 2026 02 04.01"
+__VERSION__     = "ver_002 - 2026 03 31.01"
+__VERSION__     = "ver_003 - 2026 09 05.01"
+
 
 INDENT          = uft.INDENT
 BEGIN_MARK_1    = uft.BEGIN_MARK_2
 BEGIN_MARK_2    = uft.BEGIN_MARK_2
 
 print_func_header  = uft.print_func_header
-
-__VERSION__  = "ver_001 - 2026 02 04.01"
-__VERSION__  = "ver_002 - 2026 03 31.01"
-__VERSION__  = "ver_003 - 2026 09 04.01"
 
 # ---- main window ===================================================================
 class PyqtByExample( QMainWindow ):
@@ -90,7 +91,6 @@ class PyqtByExample( QMainWindow ):
         my_parameters       = parameters.Parameters()
         self.parameters     = my_parameters
         uft.parameters      = my_parameters
-        #my_parameters.PARAMETERS = my_parameters
         AppGlobal.parameters  = my_parameters
 
         # kluge until better fix
@@ -351,9 +351,9 @@ class PyqtByExample( QMainWindow ):
         """
         tab         = self.tab_widget
         widget      = tab.widget(index)
-        text        = tab.tabText(index)
-        tooltip     = tab.tabToolTip(index)
-        icon        = tab.tabIcon(index)
+        # text        = tab.tabText(index)
+        # tooltip     = tab.tabToolTip(index)
+        # icon        = tab.tabIcon(index)
 
         if ( isinstance( widget,  tab_select_tab.Search_Tab ) or
              isinstance( widget,  tab_qsql_database.QSqlDatabaseTab )

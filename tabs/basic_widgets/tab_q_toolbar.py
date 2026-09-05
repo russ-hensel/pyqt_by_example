@@ -17,7 +17,7 @@ WIDGETS:        QToolbar QIcon
 STATUS:         June 2025 ok: but more content would be nice
 TAB_TITLE:      QToolbar / Reference
 DESCRIPTION:    A reference for the QToolBar widget -- when more work is complete
-HOW_COMPLETE:   5  #  AND A COMMENT -- <10 major probs  <15 runs but <20 fair not finished  <=25 not to shabby
+HOW_COMPLETE:   10  #  AND A COMMENT -- <10 major probs  <15 runs but <20 fair not finished  <=25 not to shabby
 """
 WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-About-QToolbar"
 
@@ -32,7 +32,7 @@ Home · russ-hensel/qt5_by_example Wiki
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
-    pass
+    import main  # noqa  stops auto removal by pycln
 # --------------------------------
 
 from   functools import partial
@@ -206,8 +206,8 @@ class QToolbarTab( tab_base.TabBase ):
         self.append_function_msg( tab_base.INSPECT_MSG )
 
         # we set local variables to make it handy to inspect them
-        self_q_push_button_1    = self.q_push_button_1
-        self_q_push_button_2    = self.q_push_button_1
+        # self_q_push_button_1    = self.q_push_button_1
+        # self_q_push_button_2    = self.q_push_button_1
 
         wat_inspector.go(
              msg            = "for your inspection, some locals and globals",

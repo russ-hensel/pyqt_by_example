@@ -2,17 +2,15 @@
 # -*- coding: utf-8 -*-
 # ---- tof
 """
-# metadata here including WIKI_LINK as Constant ( not comment )
-# this material is used for selection access to the tab module which should
-# be named xxxxTab.py     among other things
+
 
 KEY_WORDS:      signals
 CLASS_NAME:     QSignalsTab
 WIDGETS:        QWidget
-STATUS:         in dev
+STATUS:         in dev am mess from pushbutton
 TAB_TITLE:      Signals / Reference
-DESCRIPTION:    A reference for the QPushButton widget
-HOW_COMPLETE:   20  #  AND A COMMENT -- <10 major probs  <15 runs but <20 fair not finished  <=25 not to shabby
+DESCRIPTION:    A reference Signals, need work for the QPushButton widget
+HOW_COMPLETE:   15 #  AND A COMMENT -- =<10 major probs  =<15 runs but =<20 fair not finished <=25 not to shabby
 """
 
 WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-About-QPushButtons"

@@ -3,15 +3,14 @@
 # ---- tof
 """
 
-tab_label.py
 
-KEY_WORDS:      pressed press push button click connect dc
+KEY_WORDS:      review
 CLASS_NAME:     QLabelTab
 WIDGETS:        QLabel
-STATUS:
-TAB_TITLE:      QLabel Reference
-DESCRIPTION:    QLabel Reference material demo
-
+STATUS:         needs work, it this the reference copy
+TAB_TITLE:      QLabel / Reference
+DESCRIPTION:    QLabel Reference material and demo needs work
+HOW_COMPLETE:   15  #  seem quite incomplete
 
 """
 
@@ -22,10 +21,8 @@ FIXME: merge from tab_label_dc_salvage.py if there's anything useful.
 if __name__ == "__main__":
     #----- run the full app
     pass
-    #main.main()
+    import main  # noqa  stops auto removal by pycln
 # --------------------------------
-
-
 
 
 # sql
@@ -63,11 +60,13 @@ class QLabelTab( tab_base.TabBase ):
         self.module_file       = __file__      # save for help file usage
         self.mutate_dict[0]    = self.mutate_0
         self.mutate_dict[1]    = self.mutate_1
-        self.mutate_dict[2]    = self.mutate_2
-        self.mutate_dict[3]    = self.mutate_3
+        # self.mutate_dict[2]    = self.mutate_2
+        # self.mutate_dict[3]    = self.mutate_3
         # self.mutate_dict[4]    = self.mutate_4
+
         self._build_gui()
 
+    #-------------------------------
     def _build_gui_widgets( self, main_layout ):
         """
         the usual, build the gui with the widgets of interest
@@ -92,18 +91,17 @@ class QLabelTab( tab_base.TabBase ):
         row_layout          = QHBoxLayout(   )
         layout.addLayout( row_layout )
 
-        widget          = QLabel( "qlabel_1" )
+        widget          = QLabel( "i am qlabel_1" )
         self.qlabel_1   = widget
         row_layout.addWidget( widget )
 
-        widget              = QLabel("qlabel_2 -> ")
+        widget          = QLabel( "i_am qlabel_2" )
         self.qlabel_2   = widget
         row_layout.addWidget( widget )
 
         # ---- new row, standard buttons
         button_layout = QHBoxLayout(   )
         layout.addLayout( button_layout,  )
-
 
         self.build_gui_last_buttons( button_layout )
 
@@ -159,7 +157,7 @@ class QLabelTab( tab_base.TabBase ):
         self.append_msg( "<<-- done" )
 
     # ------------------------------------
-    def clear_values( self ):
+    def clear_valuesxxxx( self ):
         """
         There is much more info to show
         """
@@ -173,7 +171,7 @@ class QLabelTab( tab_base.TabBase ):
         self.append_msg( "<<-- done" )
 
     # ------------------------------------
-    def set_values( self ):
+    def set_valuesxxx( self ):
         """
         What it says
         """
@@ -184,8 +182,9 @@ class QLabelTab( tab_base.TabBase ):
         # print( f"{self.little_widget_line_edit_1.isEnabled() = }" )  # setEnabled()
         # print( f"{self.little_widget_qlabel_1.text() = }" )  # setText() ??
         self.append_msg( "<<-- done" )
+
     # ------------------------------------
-    def pb_1_clicked( self ):
+    def pb_1_clickedxxx( self ):
         """
         What it says
         """
@@ -210,11 +209,11 @@ class QLabelTab( tab_base.TabBase ):
         """
         self.append_function_msg( "mutate_0" )
 
-        # msg    = "initial mutate"
-        # self.append_msg( msg, clear = False )
+        self.qlabel_1.setText( "i am qlabel_1" )
+        self.qlabel_2.setText( "i am qlabel_2" )
 
-        # self.q_push_button_1.setDisabled( True )
-        # self.q_push_button_2.setDisabled( False )
+        msg    = "setText to i am "
+        self.append_msg( msg, clear = False )
 
         self.append_msg( tab_base.DONE_MSG )
 
@@ -229,6 +228,15 @@ class QLabelTab( tab_base.TabBase ):
         # widget        = self.q_push_button_1
         # widget.setText( "two\nlines")
         # widget.width     = 200
+
+
+        self.qlabel_1.setText( "i am \nqlabel_1" )
+        self.qlabel_2.setText( "i am \nqlabel_2" )
+
+        msg    = "setText to i am  on 2 lines"
+        self.append_msg( msg, clear = False )
+
+
 
 
         # self.q_push_button_1.setText( "two\nlines")
@@ -301,10 +309,9 @@ class QLabelTab( tab_base.TabBase ):
         """
         what is says
         """
-        self.append_function_msg( "return_pressed" )
+        self.append_function_msg( "return_pressed()" )
 
         self.append_msg( "\n" )
-
 
     # ------------------------
     def show_values(self):

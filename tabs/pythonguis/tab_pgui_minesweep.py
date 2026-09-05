@@ -8,10 +8,10 @@
 KEY_WORDS:      pythonguis Python GUIs Game
 CLASS_NAME:     PguMineSweeperTab
 WIDGETS:        QImage QPainter QPalette QFont
-STATUS:         ??works at first blush
+STATUS:         ??works at first blush -- needs close inspection
 TAB_TITLE:      Minesweeper / Game
 DESCRIPTION:    An minesweeper game from github pythonguis-examples
-HOW_COMPLETE:   10  #  AND A COMMENT -- <10 major probs  <15 runs but <20 fair not finished  <=25 not to shabby
+HOW_COMPLETE:   15  #  AND A COMMENT -- <=10 major probs  <= 15 runs but <=20 fair not finished  <=25 not to shabby
 """
 
 WIKI_LINK      =  "https://github.com/pythonguis/pythonguis-examples/blob/main/pyqt6/demos/minesweeper/README.md"
@@ -448,7 +448,6 @@ class PguMineSweeperTab( tab_base.TabBase ):
         row_layout      = QHBoxLayout(   )
         layout.addLayout( row_layout )
 
-
         # ---- new row, for build_gui_last_buttons
         button_layout   = QHBoxLayout(   )
         layout.addLayout( button_layout, )
@@ -488,7 +487,6 @@ class PguMineSweeperTab( tab_base.TabBase ):
         msg    = "use next mutate to create calculator window "
         self.append_msg( msg, clear = False )
 
-
         self.append_msg( tab_base.DONE_MSG )
 
     # ------------------------------------
@@ -520,10 +518,7 @@ class PguMineSweeperTab( tab_base.TabBase ):
         # self.a_main_window.show()
         self.calc_window.show()
 
-
-
         self.append_msg( tab_base.DONE_MSG )
-
 
     # ------------------------
     def inspect(self):
@@ -538,7 +533,7 @@ class PguMineSweeperTab( tab_base.TabBase ):
         self.append_function_msg( tab_base.INSPECT_MSG )
 
         # we set local variables to make it handy to inspect them
-        self_clock_widget   = self.clock_widget
+        # !! see if we can get something going here
 
         wat_inspector.go(
              msg            = "for your inspection, some locals and globals",

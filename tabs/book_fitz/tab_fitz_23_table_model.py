@@ -10,8 +10,8 @@ CLASS_NAME:     Fitz_23_A_Tab
 WIDGETS:        QTableView() QSqlTableModel
 STATUS:         june 2025 runs_functionally not in good shape
 TAB_TITLE:      Fitz Chapt 23 / TableModel
-DESCRIPTION:    This needs review
-HOW_COMPLETE:   15  #  AND A COMMENT
+DESCRIPTION:    This needs review !!
+HOW_COMPLETE:   10  #  AND A COMMENT
 """
 WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/Documentation-Not-Written"
 """
@@ -40,7 +40,7 @@ looked at
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
-    pass
+    import main  # noqa  stops auto removal by pycln
 # --------------------
 
 

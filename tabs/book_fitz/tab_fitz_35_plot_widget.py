@@ -41,9 +41,8 @@ largely the last
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
-    pass
+    import main  # noqa  stops auto removal by pycln
 # --------------------
-
 
 import os
 
@@ -64,10 +63,7 @@ import tab_base
 
 # ---- end imports
 
-
-
 basedir = os.path.dirname(__file__)
-
 
 #  --------
 class Fitz_6_Tab( tab_base.TabBase ) :
@@ -131,7 +127,7 @@ class Fitz_6_Tab( tab_base.TabBase ) :
 
         # ---- PB clear
         widget = QPushButton("clear_data\n")
-        widget.clicked.connect( self.clear_data        )
+        widget.clicked.connect( self.clear_data )
         row_layout.addWidget( widget,   )
 
         # ---- PB plot
@@ -143,10 +139,7 @@ class Fitz_6_Tab( tab_base.TabBase ) :
         # standard buttons
         self.build_gui_last_buttons( row_layout )
 
-
-
-
-
+    #-------------------------------
     def plot(self,  ):
         """ """
         self.append_function_msg( "plot" )
@@ -161,12 +154,13 @@ class Fitz_6_Tab( tab_base.TabBase ) :
         self.append_msg( tab_base.DONE_MSG )
 
     #-------------------------------
-    def clear_data(self, x, y, plotname, color):
+    def clear_data( self, ):
         """ """
         self.append_function_msg( "clear_data" )
-        self.graphWidget.clear()
-        self.append_msg( "clear_data complete" )
 
+        self.graphWidget.clear()
+
+        self.append_msg( "clear_data complete" )
         self.append_msg( tab_base.DONE_MSG )
 
     #-------------------------------

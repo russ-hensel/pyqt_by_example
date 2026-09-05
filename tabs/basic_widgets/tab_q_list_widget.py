@@ -4,13 +4,12 @@
 # ---- tof
 """
 
-KEY_WORDS:      list widget  dc
+KEY_WORDS:      list widget
 CLASS_NAME:     QListWidgetTab
 WIDGETS:        QListWidget
-STATUS:
-TAB_TITLE:      QListWidget Reference
+STATUS:         Pretty good
+TAB_TITLE:      QListWidget / Reference
 HOW_COMPLETE:   25  #  AND A COMMENT 2025-07-02:DAV
-
 
 """
 WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/Documentation-Not-Written"
@@ -18,10 +17,8 @@ WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/Documenta
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
-    pass
+    import main  # noqa  stops auto removal by pycln
 # --------------------
-
-
 
 
 from qtpy.QtWidgets import (QHBoxLayout,
@@ -101,8 +98,6 @@ class QListWidgetTab( tab_base.TabBase ) :
         # --- buttons
         layout.addLayout( button_layout,  )
 
-        #button_layout.addWidget( widget )
-
         widget = QPushButton("mutate\n")
         self.button_ex_1         = widget
         widget.clicked.connect( lambda: self.mutate( ) )
@@ -151,10 +146,6 @@ class QListWidgetTab( tab_base.TabBase ) :
         """
         self.append_function_msg( "mutate_0" )
 
-        # msg    = "so far not implemented "
-        # self.append_msg( msg, clear = False )
-        #self.list_widget_1  # = widget
-
         msg    = "self.list_widget_1.setMaximumHeight( 50 )"
         self.append_msg( msg, clear = False )
         self.list_widget_1.setMaximumHeight( 50 ) # setMaximumHeight(self, maxh: int)
@@ -189,9 +180,6 @@ class QListWidgetTab( tab_base.TabBase ) :
         """
         self.append_function_msg( "mutate_2" )
 
-        # msg    = "so far not implemented "
-        # self.append_msg( msg, clear = False )
-
         self.append_msg( f"{self.list_widget_1.sortingEnabled=}" )
 
         # msg    = "self.list_widget_1.sortingEnabled=False #"
@@ -216,8 +204,6 @@ class QListWidgetTab( tab_base.TabBase ) :
 
         # msg    = "so far not implemented "
         # self.append_msg( msg, clear = False )
-
-
 
         msg    = "self.list_widget_1.sortItems() #"
         self.append_msg( msg, )
@@ -253,3 +239,5 @@ class QListWidgetTab( tab_base.TabBase ) :
         self.append_msg( "breakpoint done" )
 
 # ---- eof
+
+
