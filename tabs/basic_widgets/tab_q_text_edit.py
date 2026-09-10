@@ -26,7 +26,6 @@ if __name__ == "__main__":
 
 
 
-
 from qtpy import QtCore
 from qtpy.QtGui import QTextCursor, QTextDocument
 # sql
