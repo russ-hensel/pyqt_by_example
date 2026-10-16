@@ -6,7 +6,7 @@
 tab_camera_widget_object.py
 self.help_file_name     =  "tab_camera_widget_object.txt"
 
-KEY_WORDS:      WebCam camera still image video qt6 object oop QMediaCaptureSession reusable widget
+KEY_WORDS:      WebCam camera still image video qt6 object oop QMediaCaptureSession reusable widget  rshlib
 CLASS_NAME:     QCameraWidgetObjectTab
 WIDGETS:        CameraCaptureWidget -- see camera_capture_widget.py, the preview + camera logic
 MORE:               QComboBox x2, QPushButton x5, QLabel -- the controls, this tab's own

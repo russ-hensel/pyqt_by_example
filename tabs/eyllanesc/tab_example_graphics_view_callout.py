@@ -67,13 +67,6 @@ import utils_for_tabs as uft
 
 
 
-
-
-
-
-
-
-
 # ---- end imports
 
 print_func_header   = uft.print_func_header
@@ -246,18 +239,18 @@ class View( QGraphicsView ):
 
         # chart
         self.m_chart = QChart()
-        self.m_chart.setMinimumSize(640, 480)
+        self.m_chart.setMinimumSize( 640, 480 )
         self.m_chart.setTitle(
             "Hover the line to show callout. Click the line to make it stay"
             )
         self.m_chart.legend().hide()
 
         series = QLineSeries()
-        series.append(1, 3)
-        series.append(4, 5)
-        series.append(5, 4.5)
-        series.append(7, 1)
-        series.append(11, 2)
+        series.append(1,  3   )
+        series.append(4,  5   )
+        series.append(5,  4.5 )
+        series.append(7,  1   )
+        series.append(11, 2   )
         self.m_chart.addSeries(series)
 
         series2 = QSplineSeries()
@@ -269,7 +262,7 @@ class View( QGraphicsView ):
         self.m_chart.addSeries(series2)
 
         self.m_chart.createDefaultAxes()
-        self.m_chart.setAcceptHoverEvents(True)
+        self.m_chart.setAcceptHoverEvents( True )
 
         self.setRenderHint(QPainter.Antialiasing)
         self.scene().addItem( self.m_chart )
@@ -331,12 +324,14 @@ class View( QGraphicsView ):
     def keepCallout(self):
         """
         """
-        self.m_callouts.append(self.m_tooltip)
+        self.m_callouts.append( self.m_tooltip )
         self.m_tooltip = Callout( self.m_chart )
 
     # -------------------------------
     def tooltip( self, point, state ):
-        """ """
+        """
+
+        """
         if self.m_tooltip is None:
             self.m_tooltip = Callout( self.m_chart )
 

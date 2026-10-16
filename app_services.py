@@ -25,13 +25,12 @@ def is_imported( module_name,   ):
 
     # return ret
 
+#-------------------------------
 def create_instance( module_name, class_name ):
     """
     assumes no args to create class -
     could add args to this
     """
-
-
     module_name    = module_name.replace( "\\", "." )
     # if module_name == 'tabs\\tab_grid_layout':
     #     pass
@@ -40,8 +39,10 @@ def create_instance( module_name, class_name ):
 
     if not is_imported( module_name, ):
         print( f"create_instance import_module {module_name}")
+
         try:
             module = importlib.import_module( module_name )
+
         except:
             show_path.show_path()
             raise

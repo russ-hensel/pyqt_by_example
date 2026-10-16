@@ -17,7 +17,8 @@ os.environ["GST_PLUGIN_FEATURE_RANK"] = "vaapisink:0,vaapidecodebin:0,vaapidecod
 import adjust_path   # noqa  stops auto removal by pycln
 
 # QtWebEngineWidgets ( used by tabs/experiments/tab_webengine_widget.py ) must be
-# imported -- or Qt.AA_ShareOpenGLContexts set -- before the QApplication is
+# imported -- or Qt.AA_ShareOpenGLContexts set -- before
+# the QApplication is
 # constructed in pyqt_by_example.main(). Import it here, early, as a one line
 # side-effecting import so that later, lazy import doesn't blow up.
 import qtpy.QtWebEngineWidgets   # noqa  import-only, required before QApplication()

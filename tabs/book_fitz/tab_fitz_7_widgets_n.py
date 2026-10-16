@@ -16,7 +16,7 @@ Listing 18. basic/widgets_5.py
 ... /book_pyqt5_src/basic/widgets_2c.py
 
 
-KEY_WORDS:      fitzz chapter book lables with images   7   rsh
+KEY_WORDS:      fitzz chapter book lables with images picture jpg png  7   rsh
 CLASS_NAME:     Fitz_2_Tab
 WIDGETS:        QCheckBox QPixmap QLabel QComboBox
 STATUS:         ** runs   !! runs_correctly      demo_complete_0_10
@@ -95,7 +95,7 @@ class Fitz_2_Tab(  tab_base.TabBase ) :
         self.q_label_text  = widget
         layout.addWidget( widget )
 
-        # ---- QLabel
+        # ---- QLabel for jpg
         widget = QLabel( "a_jpg" )
         self.q_label_jpg  = widget
 

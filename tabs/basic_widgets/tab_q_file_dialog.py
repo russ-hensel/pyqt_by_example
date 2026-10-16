@@ -5,6 +5,7 @@
 # metadata here including WIKI_LINK as Constant ( not comment )
 # this material is used for selection access to the tab module which must
 # be named tab_....py     among other things
+# this does not build any new objects for the file dialog, just qt and python code calling it
 
 KEY_WORDS:      file directory path dialog
 CLASS_NAME:     QFileDialogTab
@@ -24,13 +25,7 @@ if __name__ == "__main__":
 # --------------------------------
 
 # ---- import
-# import inspect
-# import subprocess
-# import os
-# import sys
-# import time
-# from datetime import datetime
-# from functools import partial
+
 from pathlib import Path
 
 #  from qtpy import QtGui
@@ -38,7 +33,7 @@ from pathlib import Path
 # sql
 
 from qtpy.QtWidgets import QPushButton, QVBoxLayout, QFileDialog
-from qtpy.QtWidgets import (QHBoxLayout,
+from qtpy.QtWidgets import ( QHBoxLayout,
                              QPushButton,
                              QVBoxLayout)
 
@@ -173,15 +168,16 @@ class QFileDialogTab( tab_base.TabBase ):
         """
         self.append_msg( "open_file_dialog()" )
 
-        dialog = QFileDialog(self, "Select Files")
+        dialog = QFileDialog( self, "Select Files" )
 
         # --- dialog options ---
-        dialog.setFileMode(QFileDialog.ExistingFiles)     # multiple selection allowed
-        dialog.setViewMode(QFileDialog.Detail)            # list vs detail view
-        dialog.setOption(QFileDialog.DontUseNativeDialog, True)  # force Qt dialog
-        dialog.setOption(QFileDialog.ReadOnly, False)     # allow editing file name
-        dialog.setOption(QFileDialog.DontResolveSymlinks, False)
-        dialog.setOption(QFileDialog.HideNameFilterDetails, False)
+        dialog.setFileMode( QFileDialog.ExistingFiles )     # multiple selection allowed
+        dialog.setViewMode( QFileDialog.Detail )            # list vs detail view
+        dialog.setOption( QFileDialog.DontUseNativeDialog, not self.use_native )
+             # force Qt dialog uses native if self.use_native is true
+        dialog.setOption( QFileDialog.ReadOnly, False )     # allow editing file name
+        dialog.setOption( QFileDialog.DontResolveSymlinks, False )
+        dialog.setOption( QFileDialog.HideNameFilterDetails, False )
 
         # ---- default directory ---
         #dialog.setDirectory("/mnt")  # change as needed
@@ -199,7 +195,7 @@ class QFileDialogTab( tab_base.TabBase ):
         ])
 
         # --- default selected filter ---
-        dialog.selectNameFilter("Images (*.png *.jpg *.jpeg *.bmp *.gif)")
+        dialog.selectNameFilter( "Images (*.png *.jpg *.jpeg *.bmp *.gif)")
         # or
         dialog.selectNameFilter( "All files (*)" )
         # --- default file suggestion ---
@@ -257,8 +253,6 @@ class QFileDialogTab( tab_base.TabBase ):
         self.append_msg( tab_base.DONE_MSG )
 
 
-
-
     # ------------------------------------
     def mutate_0( self ):
         """
@@ -271,6 +265,12 @@ class QFileDialogTab( tab_base.TabBase ):
         read the code for more insight, note messages to app and comments
         """
         self.append_function_msg( "mutate_0()" )
+
+        # ---- change widget
+        msg             = "set use native to False "
+        self.append_msg( msg, )
+        self.use_native  = False
+
 
         # # ---- change widget
         # msg    = "for q_push_button_1 we more or less reset it"
@@ -303,6 +303,12 @@ class QFileDialogTab( tab_base.TabBase ):
         read the code for more insight, note messages to app and comments
         """
         self.append_function_msg( "mutate_1()" )
+
+        # ---- change widget
+        msg             = "set use native to True "
+        self.append_msg( msg, )
+        self.use_native = True
+
         # msg    = "begin implementation"
         # self.append_msg( msg, clear     = False )
         # for self.q_push_button_1

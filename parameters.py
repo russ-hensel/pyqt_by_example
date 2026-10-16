@@ -86,6 +86,7 @@ class Parameters( ):
 
         self.default_search     = "zz"
         self.default_search     = "pythonguis"
+        self.default_search     = "cat"
         self.do_search_on_init  = True
 
         # good for kingholmer
@@ -105,8 +106,7 @@ class Parameters( ):
         self.dir_for_tabs.append( "./tabs/experiments" )
         self.dir_for_tabs.append( "./tabs/eyllanesc" )
         self.dir_for_tabs.append( "./tabs/pythonguis" )
-
-
+        self.dir_for_tabs.append( "/mnt/8ball1/first6_root/russ/0000/python00/python3/_projects/rshlib/rshlib_qt/tabs" )
 
 
     # -------

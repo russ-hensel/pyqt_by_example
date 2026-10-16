@@ -1,0 +1,162 @@
+tab_scale_slider.txt -- help / dev notes for tab_scale_slider.py ( ScaleSliderTab )
+
+
+----------------------- Table of Contents -----------------
+
+---- Purpose/Functionality
+---- Interaction
+---- The split: tab vs widget
+---- Discussion -- why QAbstractSlider and not QWidget
+---- Discussion -- value vs sliderPosition
+---- Discussion -- the two central methods
+---- Discussion -- the pointer text
+---- Gotchas
+---- Qt5 and Qt6
+---- Work still to do
+--------------------------------------------------------
+
+
+---- Purpose/Functionality --------------------------------------------------------------------------
+
+A custom widget: a linear scale of integers, with tick marks and a pointer
+that moves along it.  The model was the way a phone moves a pointer along text.
+
+The widget is scale_slider.ScaleSlider, in tabs/more.  This tab is only
+controls.  A stock QSlider sits under it on the same range, kept in step both
+ways, to show the custom widget has the same api and signals as the stock one.
+
+
+---- Interaction --------------------------------------------------------------------------
+
+On the scale itself:
+
+    drag the pointer       grabs where you press, the pointer does not jump
+    click the track        click_jumps on:  jump there and keep dragging
+                           click_jumps off: one page toward the click,
+                                            hold to repeat until it reaches the mouse
+    escape during a drag   cancel, the pointer goes back where the drag began
+    left / right  up / down   single step
+    page up / page down       page step
+    home / end                minimum / maximum
+    mouse wheel               single step * QApplication.wheelScrollLines() per notch,
+                              3 by default, capped at the page step
+
+The controls under it set range, page step and the tick intervals, and switch
+tracking, click_jumps and enabled.  They are always refilled FROM the widget,
+so if QAbstractSlider clamps something the spin boxes show the clamped value.
+
+"Log every signal" writes each sliderMoved and valueChanged to the message
+box.  Noisy during a drag, but it shows the order the signals come in.
+sliderPressed and sliderReleased are logged always.
+
+
+---- The split: tab vs widget --------------------------------------------------------------------------
+
+Same idea as the image overlay tab.  Everything about painting and the mouse
+lives in scale_slider.py, and it runs on its own:
+
+    python tabs/more/scale_slider.py
+
+The tab only builds controls and talks to the widget through its api.
+
+
+---- Discussion -- why QAbstractSlider and not QWidget --------------------------------------------------------------------------
+
+QAbstractSlider is the base of QSlider, QScrollBar and QDial.  It holds
+minimum, maximum, value, the steps, tracking and orientation, and it emits
+valueChanged, sliderMoved, sliderPressed and sliderReleased.  Its
+keyPressEvent and wheelEvent already do the right thing.  sliderChange()
+calls update(), so any setValue repaints.
+
+So the subclass only has to paint, and handle the mouse.  Starting from
+QWidget would mean writing all of that again, and getting the edge cases
+( clamping, setRange with min > max, tracking ) subtly different from Qt's.
+
+
+---- Discussion -- value vs sliderPosition --------------------------------------------------------------------------
+
+While the pointer is held down these two can differ.
+
+    tracking on  ( default )   value follows every move of the pointer
+    tracking off               value only changes on release
+
+The pointer is painted at sliderPosition, so it follows the mouse either way.
+Turn tracking off ( mutate 3 does ) and watch the readout line during a drag.
+
+On release with tracking off the order is sliderReleased THEN valueChanged,
+so a sliderReleased handler still sees the old value.
+
+
+---- Discussion -- the two central methods --------------------------------------------------------------------------
+
+    value_to_pixel( value )   -> float x on the track
+    pixel_to_value( x )       -> nearest int, clamped to the range
+
+Everything else calls these.  The margin at each end is half the pointer plus
+a little, so the pointer is never clipped at minimum or maximum.  Checked:
+every value in several ranges and widths goes to a pixel and back unchanged.
+
+
+---- Discussion -- the pointer text --------------------------------------------------------------------------
+
+The text over the pointer comes from one method:
+
+    text_from_value( value )  -> str
+
+By default it is str( value ).  Two ways to change it:
+
+    * override it in a subclass -- the same idea as QSpinBox.textFromValue
+
+          class Dollars( scale_slider.ScaleSlider ):
+              def text_from_value( self, value ):
+                  return ( f"${value:,}" )
+
+    * or hand the widget a function, no subclass needed:
+
+          scale.set_text_function( fn )      fn takes an int, returns a str
+          scale.set_text_function( None )    back to the plain number
+
+Returning "" or None hides the readout; the focus frame then fits the pointer.
+The value passed in is sliderPosition, so the text follows a drag even with
+tracking off.  One line only, the readout band is one line high.
+
+The "Pointer text" combo on the tab tries some: percent of range, degrees C,
+month names, musical notes as midi numbers ( 60 is middle C, C4 ), hex, and
+hidden.  Formats with a natural range set it too.  Each function falls back
+to the plain number outside what it knows, so changing the range afterwards
+can not break it.  Percent is a bound method of the tab, not a plain
+function, because it needs the scale's range.  The mutates all reset the
+combo to the plain number.
+
+
+---- Gotchas --------------------------------------------------------------------------
+
+    * setMouseTracking( True ) is needed for hover, otherwise mouseMoveEvent
+      only arrives with a button down.
+
+    * the drag uses its own flag, not event.buttons().  QTest.mouseMove does
+      not carry the buttons, and our own flag is what escape clears.
+
+    * paging on a track click never sets sliderDown, the same as QSlider on
+      its groove, so no sliderPressed / sliderReleased for it.
+
+    * a track click less than a page from the pointer still moves a whole
+      page, past the click.  QSlider does the same.
+
+
+---- Qt5 and Qt6 --------------------------------------------------------------------------
+
+Runs on both unchanged.  Every enum is spelled the scoped way, which both
+bindings accept.  Mouse positions use event.position(), which is Qt6 only,
+but qtpy 2.4 adds it to Qt5 mouse events.  On an older qtpy that would need
+event.localPos() on Qt5.
+
+
+---- Work still to do --------------------------------------------------------------------------
+
+    * tick labels, through a callable int -> str, or None to skip that tick
+    * a magnifier bubble showing the value large while dragging, phone style
+    * vertical orientation is ignored so far
+    * major ticks are always drawn, however dense.  a big range with a small
+      major interval, say 0 .. 50000 every 10, paints a solid black bar.
+      they should be skipped when too close, like the minor ticks are

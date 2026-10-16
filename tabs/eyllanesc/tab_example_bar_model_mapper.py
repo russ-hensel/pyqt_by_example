@@ -13,7 +13,7 @@ WIDGETS:        QAbstractTableModel QTableView QChartView QChart.AnimationOption
 STATUS:         works at first blush
 TAB_TITLE:      BarModelMapper / Example
 DESCRIPTION:    An example of a BarModelMapper from eyllanesc/QtExamples
-HOW_COMPLETE:   10  #  AND A COMMENT -- <10 major probs  <15 runs but <20 fair not finished  <=25 not to shabby
+HOW_COMPLETE:   15  #  AND A COMMENT -- <10 major probs  <15 runs but <20 fair not finished  <=25 not to shabby
 """
 
 WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/Example Bar_Model Mapper"

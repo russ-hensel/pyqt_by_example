@@ -11,7 +11,7 @@ CLASS_NAME:     QDialogsTab
 WIDGETS:        QMessageBox QDialog
 STATUS:         2025 dec draft
 TAB_TITLE:      QDialogsTab / Various
-DESCRIPTION:    A few examples of dialogs simple to custom
+DESCRIPTION:    A few examples of dialogs from simple to custom
 HOW_COMPLETE:   20  #  AND A COMMENT -- <10 major probs  <15 runs but <20 fair not finished  <=25 not to shabby
 """
 WIKI_LINK      =  "https://github.com/russ-hensel/pyqt_by_example/wiki/What-We-Know-About-Misc-Dialogs"
@@ -79,13 +79,13 @@ def ask_user( parent = None, title = "Custom Dialog",
     return ( result_code, values )
 
 
-
 #  --------
 class ClaudeCustomDialog( QDialog ):
     """
     vibe coded with light editing
     this is how claude responds
     a modal dialog that returns one of the RESULT_* codes above
+    need editing prior to any copy
     """
 
     # -----------------------
@@ -269,52 +269,49 @@ class ClaudeCustomDialog( QDialog ):
 #-----------------------------
 class ExQDialog( QDialog ):
     """
-    An example dialog from chat then edited """
+    An example dialog from chat then edited
+    """
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setupUI()
+        self.build_gui()
 
     #-----------------------------
-    def setupUI(self):
+    def build_gui(self):
         # Set the dialog title
-        self.setWindowTitle("My Custom Dialog")
+        self.setWindowTitle( "ExQDialog" )
 
         # Explicitly set the size (width, height)
-        self.resize(400, 250)
+        self.resize( 400, 250 )
 
         # Optional: Set minimum and maximum sizes
         self.setMinimumSize(300, 200)
         self.setMaximumSize(600, 400)
 
-        # Create layout
+        # Create layout Set the layout
         layout = QVBoxLayout()
+        self.setLayout(layout)
 
         # Add some widgets
-        label               = QLabel("Enter your name:")
-        self.name_input     = QLineEdit()
+        widget               = QLabel("Enter your name:")
+        layout.addWidget( widget )
+
+        widget              = QLineEdit()
+        self.name_input     = widget
+        layout.addWidget( widget )
 
         # Add buttons
-        ok_button           = QPushButton("OK")
-        cancel_button       = QPushButton("Cancel")
+        widget           = QPushButton("OK")
+        widget.clicked.connect(self.accept)
+        layout.addWidget( widget )
 
-        # Connect buttons
-        ok_button.clicked.connect(self.accept)
-        cancel_button.clicked.connect(self.reject)
-
-        # Add widgets to layout
-        layout.addWidget(label)
-        layout.addWidget(self.name_input)
-        layout.addWidget(ok_button)
-        layout.addWidget(cancel_button)
-
-        # Set the layout
-        self.setLayout(layout)
+        widget       = QPushButton("Cancel")
+        widget.clicked.connect(self.reject)
+        layout.addWidget( widget )
 
     #-----------------------------
     def get_name(self):
         """Return the entered name"""
         return self.name_input.text()
-
 
 #-----------------------------
 class QDialogsTab( tab_base.TabBase ):

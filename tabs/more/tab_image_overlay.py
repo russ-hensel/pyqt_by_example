@@ -6,11 +6,11 @@
 tab_image_overlay.py
 self.help_file_name     =  "tab_image_overlay.txt"
 
-KEY_WORDS:      image overlay transparency alpha png align QGraphicsView QGraphicsPixmapItem blend
+KEY_WORDS:      image overlay transparency alpha png align QGraphicsView QGraphicsPixmapItem blend graphics
 CLASS_NAME:     ImageOverlayTab
-WIDGETS:        QGraphicsView, QSlider, QSpinBox, QDoubleSpinBox, QComboBox
-STATUS:         works, Qt5 and Qt6 both
-TAB_TITLE:      Image Overlay - align two images
+WIDGETS:        QGraphicsView, QSlider, QSpinBox, QDoubleSpinBox, QComboBox, QPainter, QBrush
+STATUS:         works, use in m_scope
+TAB_TITLE:      Image Overlay / align two images
 DESCRIPTION:    show one image over another, see through the transparent parts
 MORE:               of the top one, and drag / nudge / rotate / scale it into
                 position while watching.  save the composite at full
@@ -98,7 +98,10 @@ class ImageOverlayTab( tab_base.TabBase ):
         self.wiki_link          = WIKI_LINK
 
         self.mutate_dict[0]     = self.mutate_0
-        #self.mutate_dict[1]     = self.mutate_1
+        self.mutate_dict[1]     = self.mutate_1
+        self.mutate_dict[2]     = self.mutate_2
+        self.mutate_dict[3]     = self.mutate_3
+        self.mutate_dict[4]     = self.mutate_4
 
         self.overlay_view       = None      # ImageOverlayView, made in _build_gui_widgets
         self.blink_timer        = None
@@ -445,7 +448,70 @@ class ImageOverlayTab( tab_base.TabBase ):
         """
         self.append_function_msg( "mutate_0" )
 
-        self.append_function_msg( "no code for mutates so far " )
+        #self.append_msg( "no code for mutates so far " )
+        self.append_msg( "fill_overlay_transparent " )
+
+        self.overlay_view.fill_overlay_transparent( )
+
+        self.append_msg( "set_overlay_x_scale( 1 ) " )
+
+        self.overlay_view.set_overlay_x_scale( 1 )
+
+        self.append_msg( "set_overlay_y_scale( 1 ) " )
+
+        self.overlay_view.set_overlay_y_scale( 1 )
+
+        self.append_msg( tab_base.DONE_MSG )
+
+    # ------------------------------------
+    def mutate_1( self ):
+        """
+        read it -- mutate the widgets
+        """
+        self.append_function_msg( "mutate_1" )
+
+        self.append_msg( "set_overlay_y_scale( 10 ) " )
+
+        self.overlay_view.set_overlay_y_scale( 10 )
+
+        self.append_msg( tab_base.DONE_MSG )
+
+    # ------------------------------------
+    def mutate_2( self ):
+        """
+        read it -- mutate the widgets
+        """
+        self.append_function_msg( "mutate_2" )
+
+        self.append_msg( "set_overlay_y_scale( -1 ) " )
+
+        self.overlay_view.set_overlay_y_scale( -1 )
+
+        self.append_msg( tab_base.DONE_MSG )
+
+    # ------------------------------------
+    def mutate_3( self ):
+        """
+        read it -- mutate the widgets
+        """
+        self.append_function_msg( "mutate_3" )
+
+        self.append_msg( "set_overlay_y_scale( 1 ) " )
+
+        self.overlay_view.set_overlay_y_scale( 1 )
+
+        self.append_msg( tab_base.DONE_MSG )
+
+    # ------------------------------------
+    def mutate_4( self ):
+        """
+        read it -- mutate the widgets
+        """
+        self.append_function_msg( "mutate_4" )
+
+        self.append_msg( "set_overlay_x_scale( 10 ) " )
+
+        self.overlay_view.set_overlay_x_scale( 10 )
 
         self.append_msg( tab_base.DONE_MSG )
 

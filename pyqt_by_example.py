@@ -58,7 +58,7 @@ import utils_for_tabs as uft
 import wat_inspector
 import show_parameters
 import tab_base
-import tab_re_base
+#import tab_re_base
 from   app_global import AppGlobal
 
 import app_logging      # /mnt/WIN_D/russ/0000/python00/python3/_projects/rshlib/app_services/app_logging.py
@@ -139,7 +139,7 @@ class PyqtByExample( QMainWindow ):
         self.current_tab_index   = 0   # I need to track in changed
         self.tab_widget.setCurrentIndex( 0 )
 
-        # ---- breakpoint -- not overrid of sys.argv
+        # ---- breakpoint -- not override of sys.argv
         # argv not gettin passed in reliably put in parameters for now
         # if sys.argv[1] = "breakpoint_ok"
         # self.breakpoint_ok
@@ -165,10 +165,10 @@ class PyqtByExample( QMainWindow ):
 
         icon    = QtGui.QIcon(  "./misc/broom_edit_2.png"  )
         #/  !! move to parameters
-        self.setWindowIcon(icon)
+        self.setWindowIcon( icon )
 
         central_widget          = QWidget()
-        self.setCentralWidget(central_widget)
+        self.setCentralWidget( central_widget )
 
         central_widget_layout   =  QVBoxLayout( central_widget )
 
@@ -209,21 +209,21 @@ class PyqtByExample( QMainWindow ):
         central_widget_layout.addLayout( button_layout )
 
     # ------------------------
-    def switch_to_tab_by_class_name( self, class_name,   ):
+    def switch_to_tab_by_class_name( self, class_name, ):
         """
         do action
 
         return tab index or -1
         tab_dict will not work as index is not stable
         """
-        tab_index   = -1
+        tab_index       = -1
         #rint( f"looking for {class_name} = " )
-        tab            =  self.tab_widget
+        tab             =  self.tab_widget
 
         for ix_tab in range( tab.count() ):
-            tab_page       = tab.widget( ix_tab )
-            full_type      = type( tab_page )
-            i_class_name   = full_type.__name__
+            tab_page        = tab.widget( ix_tab )
+            full_type       = type( tab_page )
+            i_class_name    = full_type.__name__
 
             #rint( f"found for {class_name =}   " )
             if class_name == i_class_name:
@@ -253,7 +253,7 @@ class PyqtByExample( QMainWindow ):
         self.tab_widget.addTab( tab, title  )
         tab_index       = self.tab_widget.indexOf( tab  )
         self.tab_widget.setCurrentIndex( tab_index )
-        self.tab_dict[  class_name  ]  = tab_index    # depricate i think
+        self.tab_dict[ class_name  ]  = tab_index    # depricate i think
         #breakpoint()
         # very messy, web links could just be in class this
         # is nonsense
@@ -262,8 +262,6 @@ class PyqtByExample( QMainWindow ):
             #rint( f"yes widgets ==================={widgets}" )
             msg       = f"Widget of interest >> {widgets}"
             tab.class_widget.setText( msg )
-
-            #tab.set_web_link( web_link )
 
         # think next is gone
         elif isinstance( tab, tab_re_base.TabReBase ):
@@ -362,8 +360,6 @@ class PyqtByExample( QMainWindow ):
                     "because it is key to the operation of this app" )
             return
 
-        # if index in [0, 1]:  # Allow closing the first tab
-        #     print(f"Tab {index} cannot be closed.")
         else:
             #rint(f"Tab {index} will be closed.")
             shutdown    = getattr( widget, "shutdown", None )
@@ -374,14 +370,14 @@ class PyqtByExample( QMainWindow ):
             widget.deleteLater()
 
     #----------------------------
-    def not_implemented( self,   ):
+    def not_implemented( self, ):
         """
         what it says read:
         """
         QMessageBox.information(self, "Not Implemented", "Working on this...")
 
     #-------
-    def open_general_help( self,   ):
+    def open_general_help( self, ):
         """
         what it says read:
         """
@@ -391,12 +387,12 @@ class PyqtByExample( QMainWindow ):
 
     # ---- events ------------------------------------------
     #----------------------------
-    def on_tab_changed(self, index):
+    def on_tab_changed( self, index ):
         """
         what it says, read it
         """
         #rint(f"on_tab_changed from { self.current_tab_index = } to {index = }")
-        # !! THINK the widge does this itself
+        # !! THINK the widget does this itself
         self.current_tab_index   = index
         self.tab_page_info()
 
@@ -425,7 +421,7 @@ class PyqtByExample( QMainWindow ):
         self.showMinimized()
 
     #-------
-    def open_tab_help( self,   ):
+    def open_tab_help( self, ):
         """
         what it says read:
         """
@@ -441,14 +437,14 @@ class PyqtByExample( QMainWindow ):
         self.open_txt_file( doc_name )
 
     #-------
-    def open_txt_file( self, file_name  ):
+    def open_txt_file( self, file_name ):
         """
         what it says read
         """
         proc    = subprocess.Popen( [ uft.TEXT_EDITOR, file_name ] )
 
     # -----------------------
-    def show_about_box(self):
+    def show_about_box( self ):
         """
         what it says, but !! more inf
         russ-hensel/qt5_by_example: examples of qt5 code ready for copy and paste
@@ -473,7 +469,7 @@ class PyqtByExample( QMainWindow ):
         QMessageBox.about( self, "About", msg )
 
     # -----------------------
-    def show_parameters(self):
+    def show_parameters( self ):
         """
         what it says,
         """
@@ -483,7 +479,7 @@ class PyqtByExample( QMainWindow ):
             pass
 
     # -----------------------
-    def check_dir(self):
+    def check_dir( self ):
         """
         what it says, make sure there is a place for the db
         """
@@ -510,7 +506,7 @@ class PyqtByExample( QMainWindow ):
         return True
 
     # ------------------------
-    def inspect(self):
+    def inspect( self ):
         """
         the usual
         """

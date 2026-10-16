@@ -62,7 +62,6 @@ class QTableWidgetTab( tab_base.TabBase  ):
 
         self.module_file        = __file__      # save for help file usage
 
-        global WIKI_LINK
         self.wiki_link          = WIKI_LINK
 
         self.mutate_dict[0]     = self.mutate_0
@@ -536,20 +535,20 @@ class QTableWidgetTab( tab_base.TabBase  ):
 
         return
 
-        table               = self.table_widget
+        # table               = self.table_widget
 
-        ix_col_searched     = 2
-        ix_found            = None
-        target_text         = "xyz"
+        # ix_col_searched     = 2
+        # ix_found            = None
+        # target_text         = "xyz"
 
-        matching_items      = table.findItems( target_text, QtCore.Qt.MatchExactly )
-        for item in matching_items:
-            if item.column() == column:
-                ix_found            =  item.row()
+        # matching_items      = table.findItems( target_text, QtCore.Qt.MatchExactly )
+        # for item in matching_items:
+        #     if item.column() == column:
+        #         ix_found            =  item.row()
 
-        print( f"find_row_with_text {ix_found = }")
+        # print( f"find_row_with_text {ix_found = }")
 
-        return ix_found
+        # return ix_found
 
     # ------------------------
     def inspect(self):
