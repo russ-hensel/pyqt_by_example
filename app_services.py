@@ -10,11 +10,11 @@ import show_path
 import importlib
 import sys
 
-
+#-------------------------------
 def is_imported( module_name,   ):
     """what it says
     too simple to live?
-    not working just return false
+    not working just return false !!
     """
     return False
     is_imported   = module_name in sys.modules
@@ -34,7 +34,8 @@ def create_instance( module_name, class_name ):
     module_name    = module_name.replace( "\\", "." )
     # if module_name == 'tabs\\tab_grid_layout':
     #     pass
-    print( f"app_services module name trap {module_name = }" )
+
+    #print( f"app_services module name trap {module_name = }" )
         #module_name = '.\\tabs\\tab_grid_layout'
 
     if not is_imported( module_name, ):

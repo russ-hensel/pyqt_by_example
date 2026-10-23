@@ -313,16 +313,15 @@ Undo/Redo:
         cursor.insertText( a_string )
 
         self.append_msg( "display_string done" )
+
     #  --------
     def print_message(self, text):
         """
         what is says
         """
         self.append_function_msg( "print_message" )
-
-        self.append_msg( "Button clicked:", text)
+        self.append_msg( "Button clicked: " + text )
         self.append_msg( "print_message done" )
-
 
     #----------------------------
     def set_default_context_menu( self, widget ):
@@ -333,8 +332,11 @@ Undo/Redo:
         # Revert to the default context menu
         widget.setContextMenuPolicy(QtCore.Qt.DefaultContextMenu)
 
-        # !! next mamy be needed but may throw error if not connected
-        # widget.customContextMenuRequested.disconnect( self.show_context_menu )
+        # without this each mutate cycle connected show_context_menu one more time
+        try:
+            widget.customContextMenuRequested.disconnect( self.show_context_menu )
+        except ( TypeError, RuntimeError ):
+            pass    # was not connected
 
     #----------------------------
     def set_custom_context_menu( self, widget ):
@@ -448,7 +450,7 @@ Undo/Redo:
         text_edit   = self.text_edit
 
         all_text = text_edit.toPlainText()
-        self.append_msg( "text_edit.toPlainText()  {all_text}" )
+        self.append_msg( f"text_edit.toPlainText()  {all_text}" )
 
         # Save current cursor position
         cursor      = text_edit.textCursor()
@@ -529,12 +531,8 @@ reference—because if you’re going to code in Python on vacation, why not use
 Python Distilled David M. Beazley
         """ )
 
-
         text_edit.setText( a_string )
         #self.text
-        self.append_msg( tab_base.DONE_MSG )
-
-
         self.append_msg( tab_base.DONE_MSG )
 
     #---------------
@@ -552,22 +550,9 @@ Python Distilled David M. Beazley
         for Kitchen,Household,Bathroom and More
 
         """ )
-
         self.text_edit.setText( a_string )
 
         self.append_msg( "set_text_ver_2 done" )
-        self.append_msg( tab_base.DONE_MSG )
-
-    # ----------
-    def set_textxxx(self, a_string ):
-        """
-        """
-        self.append_function_msg( "set_text_ver_2" )
-
-        text_edit       = self.text_edit
-        text_edit.clear()
-        cursor          = text_edit.textCursor()
-        cursor.insertText(a_string)
         self.append_msg( tab_base.DONE_MSG )
 
     #-------------------
@@ -617,39 +602,28 @@ at the cursor ----<<""")
     def copy_n_lines_of_text(self, text_edit, num_lines ):
         """
         copy some number of lines of text to clipboard
-
+        starting at the cursor line, walking the QTextBlock s
+        ( a block is a paragraph, a "line" ending in \\n )
+        no cursor moving at all
+        the old way moved a cursor Down with a selection still
+        anchored, which gave part lines and empty strings
         """
         self.append_function_msg( "copy_n_lines_of_text" )
 
-        cursor = text_edit.textCursor()
+        block   = text_edit.textCursor().block()
+        lines   = []
+        for ix in range( num_lines ):
+            if not block.isValid():
+                break
+            lines.append( block.text() )
+            block   = block.next()
 
-        # Save the original cursor position
-        original_position = cursor.position()
+        QApplication.clipboard().setText( "\n".join( lines ) )
 
-        # Move to the start of the current line
-        cursor.movePosition(cursor.StartOfLine)
-
-        # List to store the next lines
-        lines = []
-
-        # Collect the next `num_lines` lines
-        for _ in range( num_lines ):
-            # Select the line from the start to the end
-            cursor.movePosition(cursor.EndOfLine, cursor.KeepAnchor)
-            line_text = cursor.selectedText()
-
-            # Add the selected line to the list
-            lines.append(line_text)
-
-            # Move to the start of the next line
-            cursor.movePosition(cursor.Down)
-
-        # Restore the original cursor position
-        cursor.setPosition(original_position)
-        text_edit.setTextCursor(cursor)
-
-        # Print or return the list of lines
-        self.append_msg( f"Next {num_lines} lines:", lines)
+        # append_msg( msg, clear ) -- a second arg here would clear the messages
+        self.append_msg( f"Next {num_lines} lines:" )
+        for ix, i_line in enumerate( lines ):
+            self.append_msg( f"{INDENT}{ix} >>{i_line}<<" )
         self.append_msg( tab_base.DONE_MSG )
         return lines
 
@@ -660,27 +634,18 @@ at the cursor ----<<""")
         With a QTextWidge holding some text:
         from the cursor position copy the text from the
         beginning of the line to the end of the line.
+
+        the block way, the whole paragraph, no cursor moving
+        StartOfLine / EndOfLine are the visual line, so with
+        wrap on they gave just the wrapped piece
         """
         self.append_function_msg( "copy_line_of_text" )
 
-        text_edit           = self.text_edit
-        cursor              = text_edit.textCursor()
-        # Save the original cursor position
-        original_position   = cursor.position()
-        cursor.movePosition( cursor.StartOfLine )
+        cursor          = self.text_edit.textCursor()
+        selected_text   = cursor.block().text()
 
-        # Select the text from the beginning to the end of the line
-        cursor.movePosition(cursor.EndOfLine, cursor.KeepAnchor)
-        selected_text = cursor.selectedText()
-        # print(f"Copied text: {selected_text = }")
-
-        # Optionally, copy to the system clipboard
         clipboard = QApplication.clipboard()
         clipboard.setText(selected_text)
-
-        # Restore the original cursor position
-        cursor.setPosition(original_position)
-        self.text_edit.setTextCursor(cursor)
 
         self.append_msg( f"Copied text: {selected_text = }")
         self.append_msg( tab_base.DONE_MSG )

@@ -102,8 +102,8 @@ class QPushButtonTab( tab_base.TabBase ):
         layout              = QHBoxLayout()
         main_layout.addLayout( layout )
 
-        # too clever ??
-        main_layout.addLayout( layout := QVBoxLayout() )
+        # or too clever ??
+        # main_layout.addLayout( layout := QVBoxLayout() )
 
         # # ---- new row c -- testing never used
         # row_layout          = QHBoxLayout(   )
@@ -134,6 +134,17 @@ class QPushButtonTab( tab_base.TabBase ):
         connect_to              = self.pb_1_clicked
         widget.clicked.connect( connect_to )
         row_layout.addWidget( widget )
+
+        # ---- menu for q_push_button_1
+        # build it once here, the mutates attach and detach it with setMenu()
+        # building a new QMenu( self ) in a mutate would leave one more menu
+        # parented to the tab each time the mutate runs
+        menu                    = QMenu( self )
+        self.pb_1_menu          = menu
+        action                  = menu.addAction( "Option 1" )
+        action.triggered.connect( lambda: self.pb_1_menu_picked( "Option 1" ) )
+        action                  = menu.addAction( "Option 2" )
+        action.triggered.connect( lambda: self.pb_1_menu_picked( "Option 2" ) )
 
         widget                  = QLabel( "q_pbutton_2 -> ", alignment=Qt.AlignRight )
         row_layout.addWidget( widget )
@@ -232,6 +243,19 @@ class QPushButtonTab( tab_base.TabBase ):
         self.append_msg( tab_base.DONE_MSG  )
 
     # ------------------------------------
+    def pb_1_menu_picked( self, option ):
+        """
+        What it says
+
+            connected to the actions in self.pb_1_menu, the menu
+            mutate_3 attaches to q_push_button_1
+        """
+        self.append_function_msg( "pb_1_menu_picked()" )
+
+        self.append_msg( f"menu pick: {option}" )
+        self.append_msg( tab_base.DONE_MSG )
+
+    # ------------------------------------
     def mutate_0( self ):
         """
         read it -- mutate the widgets
@@ -241,6 +265,7 @@ class QPushButtonTab( tab_base.TabBase ):
 
         this is important content for the widgets referenced on this tab
         read the code for more insight, note messages to app and comments
+
         """
         self.append_function_msg( "mutate_0()" )
 
@@ -252,9 +277,13 @@ class QPushButtonTab( tab_base.TabBase ):
             # we use this local variable idea in many places
         widget          = self.q_push_button_1
         widget.setText( "text set in mutate_0()" )
-        widget.width    = 300
+        widget.setFixedWidth( 300 )
         widget.setToolTip( None )
         widget.setStyleSheet( "" )
+        widget.setCheckable( False )
+        widget.setEnabled( True )
+        widget.setMenu( None )
+        widget.setVisible( True )
 
         # ---- change widget
         msg             = "for q_push_button_2 no mutations"
@@ -275,9 +304,6 @@ class QPushButtonTab( tab_base.TabBase ):
         read the code for more insight, note messages to app and comments
         """
         self.append_function_msg( "mutate_1()" )
-        # msg    = "begin implementation"
-        # self.append_msg( msg, clear     = False )
-        # for self.q_push_button_1
 
         msg         = "mess with q_push_button_1"
         self.append_msg( msg, )
@@ -293,7 +319,7 @@ class QPushButtonTab( tab_base.TabBase ):
         widget.setToolTip( "this is a tool tip" )
         widget.setText( "text set in \nmutate_1()" )
             # note \n above
-        widget.width     = 200
+        widget.setFixedWidth( 200 )
 
         # ---- change widget
         msg         = "some changes to q_push_button_2"
@@ -301,8 +327,7 @@ class QPushButtonTab( tab_base.TabBase ):
 
         # ---- self.q_push_button_2
         widget      = self.q_push_button_2
-        # msg    = "setChecked(True )"
-        # self.append_msg( msg, )
+        # msg    = "setChecked( True )"
 
         # msg        = f"{self.q_push_button_1.isChecked() = } "
         # self.append_msg( msg, )
@@ -324,7 +349,7 @@ class QPushButtonTab( tab_base.TabBase ):
 
         widget      = self.q_push_button_1
         self.q_push_button_1.setText( "one line")
-        self.q_push_button_1.width     = 500
+        widget.setFixedWidth( 500 )
         self.q_push_button_1.setVisible( False )
 
         msg         = "q_push_button_1 mess with checkable enabled..."
@@ -364,7 +389,7 @@ class QPushButtonTab( tab_base.TabBase ):
         # ---- first widget
         widget      = self.q_push_button_1
         self.q_push_button_1.setText( "one line")
-        self.q_push_button_1.width     = 500
+        #self.q_push_button_1.width     = 500  ovewrites function width()
         self.q_push_button_1.setDisabled( False )
         self.q_push_button_1.setVisible( True )
         self.q_push_button_1.setCheckable( True )
@@ -373,10 +398,8 @@ class QPushButtonTab( tab_base.TabBase ):
         msg    = "add menu to q_push_button_1"
         self.append_msg( msg, clear = False )
 
-        menu        = QMenu(self)
-        menu.addAction("Option 1")
-        menu.addAction("Option 2")
-        widget.setMenu( menu )
+        # the menu was built once in _build_gui_widgets
+        widget.setMenu( self.pb_1_menu )
 
         # ---- change widget
         widget      = self.q_push_button_2
@@ -407,7 +430,7 @@ class QPushButtonTab( tab_base.TabBase ):
 
         widget      = self.q_push_button_1
         self.q_push_button_1.setText( "one line")
-        self.q_push_button_1.width     = 500
+        self.q_push_button_1.setFixedWidth( 500 )
         self.q_push_button_1.setDisabled( False )
         self.q_push_button_1.setVisible( True )
         self.q_push_button_1.setCheckable( True )
@@ -415,12 +438,9 @@ class QPushButtonTab( tab_base.TabBase ):
         # seems to make togable, how to turn off
         #self.q_push_button_1.toggle()
 
-        msg    = "add menu to q_push_button_1"
+        msg    = "remove menu from q_push_button_1"
         self.append_msg( msg, clear = False )
-        menu        = QMenu(self)
-        menu.addAction( "Menu Option 1" )
-        menu.addAction( "Menu Option 2" )
-        # try to clear the menu
+        # detaches the menu, it still exists in self.pb_1_menu
         widget.setMenu( None )
 
         # ---- change widget
@@ -447,7 +467,7 @@ class QPushButtonTab( tab_base.TabBase ):
 
         # we set local variables to make it handy to inspect them
         self_q_push_button_1    = self.q_push_button_1
-        self_q_push_button_2    = self.q_push_button_1
+        self_q_push_button_2    = self.q_push_button_2
 
         wat_inspector.go(
              msg            = "for your inspection, some locals and globals",

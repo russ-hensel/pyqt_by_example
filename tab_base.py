@@ -40,27 +40,13 @@ import global_vars
 
 # ---- end imports
 
-basedir     = os.path.dirname(__file__)
+#basedir     = os.path.dirname(__file__)
 
-tick        = QImage(os.path.join("tick.png"))
+
 
 logger      = logging.getLogger( )
 
-# Color scale, which is taken from colorbrewer2.org.
-# Color range -5 to +5; 0 = light gray
-COLORS = [
-    "#053061",
-    "#2166ac",
-    "#4393c3",
-    "#92c5de",
-    "#d1e5f0",
-    "#f7f7f7",
-    "#fddbc7",
-    "#f4a582",
-    "#d6604d",
-    "#b2182b",
-    "#67001f",
-]
+
 
 DONE_MSG        = ( "<<-- done\n" )
 INSPECT_MSG     = ( "inspect()"  )
@@ -78,9 +64,11 @@ class TabBase( QWidget ):
 
         self.help_file_name     = "unknown.txt"
 
-        self.web_link           = "web_link not set"
+        #self.web_link           = "web_link not set"
+        self.wiki_link           = "https://github.com/russ-hensel/pyqt_by_example/wiki"
+            # or set to None and crash out
         self.mutate_dict        = {}
-        self.mutate_ix          = 0    # set two places by mistake !! ??
+        # self.mutate_ix          = 0    # set two places by mistake !! ??
         self.help_file_set      = set()
         # self.module_file_name   = "not_set"
         # _build_gui(self,   ): call from child
@@ -90,8 +78,7 @@ class TabBase( QWidget ):
         self.build_dict_msg = {}  # a list would suffice
         self.post_build_msg = []
         self.build_ix       = 0
-        self.web_link_text  = "web_link not set"
-        self.web_link       = "confusion continues"
+        #self.web_link_text  = "web_link not set"
         self.tab_layout     = None
         self.class_widget_text = "rebase_not_set"
         #self.help_file_set  = set()
@@ -199,21 +186,22 @@ class TabBase( QWidget ):
          !! move help file to the dir where the class file is
 
          """
-        splits                 = self.module_file.split( "/" )
-        #self.help_file_name    = splits[ 1 ].replace( ".", "__") + ".txt"
-        #self.help_file_name    = splits[ 1 ] + ".txt"
+        file_name              = Path( self.module_file ).with_suffix( ".txt" )
+        # splits                 = self.module_file.split( "/" )
+        # #self.help_file_name    = splits[ 1 ].replace( ".", "__") + ".txt"
+        # #self.help_file_name    = splits[ 1 ] + ".txt"
 
-        file_path           = "/".join( splits[ 0:-1 ]  )
-        print( f"{file_path =}" )
-        file_name           = splits[ -1 ].split( "." )[0] + ".txt"
-        print( f"{file_name =}" )
-        #file_name           =  file_path + "/help/" + file_name
-        file_name           =  file_path +  "/" + file_name
-        print( f"{file_name =}" )
+        # file_path           = "/".join( splits[ 0:-1 ]  )
+        # print( f"{file_path =}" )
+        # file_name           = splits[ -1 ].split( "." )[0] + ".txt"
+        # print( f"{file_name =}" )
+        # #file_name           =  file_path + "/help/" + file_name
+        # file_name           =  file_path +  "/" + file_name
+        # print( f"{file_name =}" )
 
         self.help_file_name =  file_name
 
-        msg    = (f"tab_checkbox.set_help_file_name() we have a "
+        msg    = (f"tab_base.set_help_file_name() we have a "
                   f"help file {self.help_file_name = } ")
         logging.debug( msg )
 
@@ -223,10 +211,7 @@ class TabBase( QWidget ):
         read it
             loop through the mutate functions
         """
-        max_ix          = len( self.mutate_dict)
-        self.mutate_ix   += 1
-        if self.mutate_ix >= max_ix:
-            self.mutate_ix = 0
+        self.mutate_ix  = ( self.mutate_ix + 1 ) % len( self.mutate_dict )
         self.mutate_dict[ self.mutate_ix ]()
 
     #----------------------------
@@ -276,7 +261,7 @@ class TabBase( QWidget ):
             QApplication.processEvents()
 
     #----------------------------
-    def set_web_link( self, web_link ):
+    def set_web_linkxxx( self, web_link ):
         """ """
         self.web_link   = web_link
 

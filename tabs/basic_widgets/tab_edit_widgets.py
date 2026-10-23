@@ -31,16 +31,18 @@ if __name__ == "__main__":
 
 
 # sql
-from qtpy.QtWidgets import (QGroupBox,
+from qtpy.QtWidgets import ( QGroupBox,
                              QHBoxLayout,
                              QLabel,
                              QLineEdit,
-                             QVBoxLayout)
+                             QDateEdit,
+                             QTextEdit,
+                             QVBoxLayout )
 
 
 import utils_for_tabs as uft
 import wat_inspector
-import custom_widgets
+
 import tab_base
 
 # ---- end imports
@@ -164,7 +166,7 @@ class EditWidgetTab( tab_base.TabBase ) :
         widget            = QLabel( "QLineEdit_2")
         b_layout.addWidget( widget,  stretch = lbl_stretch )
 
-        widget            = custom_widgets.QLineEdit(  self,   )
+        widget            = QLineEdit(  self,   )
         self.line_edit_2_widget = widget
         b_layout.addWidget( widget,  stretch = widget_stretch )
 
@@ -175,10 +177,9 @@ class EditWidgetTab( tab_base.TabBase ) :
         widget            = QLabel( "QTextEdit")
         b_layout.addWidget( widget,  stretch = lbl_stretch )
 
-        widget              = custom_widgets.QTextEdit(  self,  )
+        widget              = QTextEdit( self, )
         self.text_edit_widget = widget
         b_layout.addWidget( widget,  stretch = widget_stretch )
-
 
         # ---- CQDateEdit_1
         b_layout        = QHBoxLayout( )
@@ -187,7 +188,7 @@ class EditWidgetTab( tab_base.TabBase ) :
         widget            = QLabel( "QDateEdit_1")
         b_layout.addWidget( widget,  stretch = lbl_stretch )
 
-        widget              = custom_widgets.CQDateEdit(  self,   )
+        widget              = QDateEdit(  self,   )
         self.date_edit_1_widget = widget
         b_layout.addWidget( widget,  stretch = widget_stretch )
 
@@ -198,7 +199,7 @@ class EditWidgetTab( tab_base.TabBase ) :
         widget            = QLabel( "QDateEdit_n:")
         b_layout.addWidget( widget,  stretch = lbl_stretch )
 
-        widget            = custom_widgets.QDateEdit(  self,   )
+        widget            = QDateEdit(  self,   )
         self.date_edit_2_widget = widget
         b_layout.addWidget( widget,  stretch = self.widget_stretch )
 
@@ -265,8 +266,6 @@ class EditWidgetTab( tab_base.TabBase ) :
                 msg     = "self.line_edit_1_widget.setText( None ) raised this "
                 self.append_msg( msg )
 
-
-
         elif self.mutate_ix == 3:
             self.text_edit_widget.set_preped_data( f"{mutate_ix=} set -> xxx -> None" )
 
@@ -275,7 +274,6 @@ class EditWidgetTab( tab_base.TabBase ) :
             raw_data    = self.line_edit_1_widget.get_raw_data(  )
             msg         = f"set then get from text_edit_widget {raw_data = }"
             self.append_msg(  msg )
-
 
             self.line_edit_1_widget.set_preped_data( "xxx" )
             self.line_edit_1_widget.set_preped_data( None )
@@ -294,8 +292,6 @@ class EditWidgetTab( tab_base.TabBase ) :
             msg   = f"hit {max_mutate = } wrap to 0 *******"
             self.append_msg(  msg )
             self.mutate_ix  = 0
-
-
 
     # ------------------------------------
     def mutate_0( self ):

@@ -1,0 +1,98 @@
+Help for the plain text edit tab
+
+
+Status:  working, first version
+
+
+
+----------------------- Table of Contents -----------------
+
+
+---- Purpose/Functionality
+........Widgets included
+---- User interaction
+---- Discussion
+---- QPlainTextEdit vs QTextEdit
+---- Ask a ChatBot
+---- Ideas for Extension
+
+
+
+---- Purpose/Functionality--------------------------------------------------------------------------
+
+    Show the use of a QPlainTextEdit, a multiline plain text widget.
+    Lighter and faster than QTextEdit, the usual choice for logs, code,
+    and any large amount of unformatted text.
+
+---- User interaction
+
+    Type in the widget, move around, the label under it tracks line, column
+    and block count using the cursorPositionChanged and blockCountChanged signals.
+
+    Search up and down, the search wraps around.
+
+    Button labels should give some clue as to what they do.  See the code.
+
+    The mutate button cycles:
+        mutate_0    defaults, default context menu, wrap, no block limit
+        mutate_1    custom context menu ( right click ), no wrap, center on scroll
+        mutate_2    setMaximumBlockCount( 25 ) -- then press append_log_lines
+        mutate_3    read only
+
+    And of course it has the usual inspect and breakpoint features
+
+---- Discussion
+
+    The log viewer pattern: setMaximumBlockCount( n ) plus appendPlainText()
+    keeps only the last n lines, old ones drop off the top.  Setting it to 0
+    removes the limit.
+
+    Lines are "blocks".  cursor.blockNumber() is the 0 based line,
+    document().findBlockByNumber( n ) gets a line, block.next() walks them.
+    With wrap on, one block may show as several screen lines.
+
+    selectedText() uses   ( paragraph separator ) between lines,
+    toPlainText() uses \n.  Easy to trip over.
+
+........Widgets included:
+
+            QPlainTextEdit
+                multiline plain text, a QTextEdit with the rich text parts removed
+
+---- QPlainTextEdit vs QTextEdit
+
+    QTextEdit                       QPlainTextEdit
+    -------------------------       -------------------------
+    setText()                       none -- use setPlainText()
+    append()                        appendPlainText(), appendHtml()
+    insertPlainText()               insertPlainText()
+    setHtml(), toHtml()             none ( appendHtml only, limited )
+    setTextColor() etc              none, per character format via QTextCursor only
+    LineWrapMode has 4 values       NoWrap, WidgetWidth only
+    pixel scrolling                 scrolls by line, faster on big text
+    no limit on lines               setMaximumBlockCount()
+                                    blockCount(), blockCountChanged signal
+                                    centerCursor(), setCenterOnScroll()
+                                    canPaste() ( QTextEdit has it too )
+
+---- Ask a ChatBot
+
+            I have a QPlainTextEdit. What signals is this widget set up to emit and what arguments are emitted for each signal.
+
+            When should I use a QPlainTextEdit instead of a QTextEdit?
+
+            I have a QPlainTextEdit used as a log window, how do I keep it from growing forever?
+
+            I have a QPlainTextEdit. How do I add line numbers in a margin?
+
+---- Ideas for Extension
+
+    line number area -- the Qt "Code Editor" example, uses
+        blockBoundingGeometry(), firstVisibleBlock(), updateRequest signal
+
+    syntax highlighting with QSyntaxHighlighter on document()
+
+    highlight the current line with setExtraSelections()
+
+
+# ---- eof

@@ -1,0 +1,87 @@
+Help for the plain text edit spell check tab
+
+
+Status:  working, first version
+
+
+
+----------------------- Table of Contents -----------------
+
+
+---- Purpose/Functionality
+---- User interaction
+---- Discussion
+---- Using it in your own code
+---- Ideas for Extension
+
+
+
+---- Purpose/Functionality--------------------------------------------------------------------------
+
+    The QPlainTextEdit tab plus local spell checking.
+    Qt has no spell check of its own. This tab uses:
+        pyenchant           the checking and suggestions, local, no web
+                                pip install pyenchant
+                                it uses the system libenchant ( libenchant-2-2 )
+                                and hunspell dictionaries ( hunspell-en-us )
+        QSyntaxHighlighter  draws the red squiggle under bad words
+
+    Without pyenchant the tab still runs, it just says so in the message area.
+
+---- User interaction
+
+    Misspelled words get a red squiggle as you type.
+    Right click a squiggled word for:
+        suggestions                 replace the word, one undo step
+        Ignore 'word'               for this run of the app only
+        Add 'word' to dictionary    permanent, goes to your personal word list
+                                        ~/.config/enchant/en_US.dic
+
+    Buttons, the new ones:
+        set_misspelled_text     some text with mistakes to play with
+        toggle_spell_check      squiggles on / off, text not changed
+        list_misspelled         every bad word with line and column
+        next_misspelled         select the next bad word, wraps
+        show_languages          the dictionaries enchant can find
+
+    The mutate button cycles:
+        mutate_0    defaults, standard context menu + suggestions, wrap, no block limit
+        mutate_1    custom context menu + suggestions, no wrap, center on scroll
+        mutate_2    setMaximumBlockCount( 25 ) -- then press append_log_lines
+        mutate_3    read only, no suggestions in the menu
+
+---- Discussion
+
+    The highlighter only changes how the text is drawn. It does not change the
+    text, the undo stack, or what toPlainText() / toHtml() return.
+
+    Qt calls highlightBlock() one block ( line ) at a time and only for the
+    blocks that changed, so big documents are ok.
+
+    A document can have only one QSyntaxHighlighter. If you already have one
+    ( code coloring ) put the spell check inside it.
+
+    Words are found with a regex, letters with inner apostrophes, so don't and
+    you’re are one word. QTextCursor.WordUnderCursor would split them, so the
+    context menu uses the same regex as the highlighter.
+
+    Gotcha found while writing this: setMaximumBlockCount() turns off undo /
+    redo for the document, even setMaximumBlockCount( 0 ). mutate_0 turns
+    undo back on with setUndoRedoEnabled( True ).
+
+---- Using it in your own code
+
+    Copy WORD_RE and the SpellHighlighter class, then:
+
+        spell_dict      = enchant.Dict( "en_US" )
+        highlighter     = SpellHighlighter( widget.document(), spell_dict )
+
+    keep a reference to highlighter. For the right click suggestions copy
+    word_at(), add_spell_actions() and show_spell_context_menu().
+    It all works the same on a QTextEdit.
+
+---- Ideas for Extension
+
+    a combo box to pick the language
+    skip ALLCAPS words, words with digits, urls
+    pyspellchecker ( pure python ) as a fallback when pyenchant is missing

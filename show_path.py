@@ -24,20 +24,27 @@ import sys
 # ------------------------------------
 def get_path_dirs():
     """
+
+    this get   python's path not the system path
     PATH as a list of strings, may include "" entries
 
     os.pathsep is ":" on linux, ";" on windows, so this is
     the portable split
     """
-    a_path      = os.environ.get( "PATH", "" )
-    return a_path.split( os.pathsep )
+    #a_path      = os.environ.get( "PATH", "" )  # the system path
+    a_path      = sys.path
+
+    return  a_path
+    #return a_path.split( os.pathsep )
 
 
 # ------------------------------------
 def note_for_dir( a_dir ):
     """
-    the "<-- something" tail for one directory, "" when
-    there is nothing to say about it
+    return
+          a note about a dir, not sure why I want
+        the "<-- something" tail for one directory, "" when
+        there is nothing to say about it
     """
     if a_dir == "":
         return ( "  <-- empty entry, means the current directory" )

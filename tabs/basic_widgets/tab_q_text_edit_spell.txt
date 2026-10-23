@@ -1,0 +1,95 @@
+Help for the text edit spell check tab
+
+
+Status:  working, first version
+
+
+
+----------------------- Table of Contents -----------------
+
+
+---- Purpose/Functionality
+---- User interaction
+---- Discussion
+---- Rich text notes
+---- Using it in your own code
+---- Ideas for Extension
+
+
+
+---- Purpose/Functionality--------------------------------------------------------------------------
+
+    The QTextEdit tab plus local spell checking, the rich text twin of
+    tab_q_plain_text_edit_spell.py. Qt has no spell check of its own. This tab uses:
+        pyenchant           the checking and suggestions, local, no web
+                                uv pip install pyenchant
+                                it uses the system libenchant and its
+                                aspell / hunspell dictionaries
+        QSyntaxHighlighter  draws the red squiggle under bad words
+
+---- User interaction
+
+    Misspelled words get a red squiggle as you type.
+    Right click a squiggled word for:
+        suggestions                 replace the word, one undo step, keeps bold ...
+        Ignore 'word'               for this run of the app only
+        Add 'word' to dictionary    permanent, goes to your personal word list
+                                        ~/.config/enchant/en_US.dic
+    Right click a link for Copy Link Location.
+
+    Buttons, the new ones:
+        set_misspelled_text     plain text with mistakes
+        set_misspelled_html     rich text with mistakes in bold, italic, color,
+                                    a link, a list and a table
+        toggle_spell_check      squiggles on / off, text not changed
+        list_misspelled         every bad word with block and column
+        next_misspelled         select the next bad word, wraps
+        show_html               toHtml(), no trace of the squiggles
+        show_languages          the dictionaries enchant can find
+
+    The mutate button cycles:
+        mutate_0    standard context menu + suggestions
+        mutate_1    custom context menu + suggestions, lists the lines
+
+---- Discussion
+
+    The highlighter only changes how the text is drawn. It does not change the
+    text, the undo stack, or what toPlainText() / toHtml() return.
+
+    Qt calls highlightBlock() one block ( paragraph ) at a time and only for
+    the blocks that changed. List items and table cells are blocks too.
+
+    A document can have only one QSyntaxHighlighter.
+
+    The spell code is a copy of the one in tab_q_plain_text_edit_spell.py,
+    kept separate so each example can be copied on its own.
+
+---- Rich text notes
+
+    The squiggle is merged over the existing format: bold stays bold, blue
+    stays blue. A word that is already underlined shows the squiggle instead
+    while it is flagged.
+
+    A suggestion picked from the menu takes the format of the word it replaces.
+
+    Copy Link Location: createStandardContextMenu( pos ) only adds it if the
+    widget has Qt.TextInteractionFlag.LinksAccessibleByMouse, which an editable
+    QTextEdit does not have by default. setup_spell_check() turns it on.
+    pos is in document coordinates, customContextMenuRequested gives viewport
+    coordinates, so the scroll bar values are added.
+
+---- Using it in your own code
+
+    Copy WORD_RE and the SpellHighlighter class, then:
+
+        spell_dict      = enchant.Dict( "en_US" )
+        highlighter     = SpellHighlighter( widget.document(), spell_dict )
+
+    keep a reference to highlighter. For the right click suggestions copy
+    word_at(), add_spell_actions() and show_spell_context_menu().
+
+---- Ideas for Extension
+
+    a combo box to pick the language
+    skip ALLCAPS words, words with digits, urls
+    do not check text inside links or code spans

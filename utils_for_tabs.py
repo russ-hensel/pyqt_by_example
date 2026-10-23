@@ -5,6 +5,7 @@ Created on Sun Nov  3 11:44:12 2024
 
 Utilities and now the resting place of the globals
 which need to move out
+seems a bit of a mess, so perhaps factor out
 
 """
 
@@ -37,9 +38,37 @@ main_window     = None
 
 # for now lets get app globals here is None causeing a problem
 
-# -------------------------------------------------------
-def create_class_from_strings(   module_name, class_name):
+# --------------------------------
+def print_func_header( what ):
     """
+    what it says
+        in use before we have a message area
+    """
+    #what    = "fix_me"
+    print( f"{BEGIN_MARK_1}{what}{BEGIN_MARK_2}")
+
+# --------------------------
+class ColoredFiller(QWidget):
+    """
+    M Fitzpatrick's book,  is source
+    ColoredFiller('red')
+    colored so you can see it, used as a filler object
+        think used one place in misc widgets, consider move
+    """
+    def __init__(self, color):
+        super().__init__()
+        self.setAutoFillBackground( True )
+        palette = self.palette()
+        palette.setColor( QPalette.Window, QColor(color) )
+        self.setPalette( palette )
+
+
+
+
+# -------------------------------------------------------
+def create_class_from_stringsxx( module_name, class_name):
+    """
+    !! same as create instance in app_services, remove dupe
     instance   = uft.create_class_from_strings(   module_name, class_name)
     this will load a class from string names
     this makes it easier to specify classes in the parameter file.
@@ -52,14 +81,16 @@ def create_class_from_strings(   module_name, class_name):
         self.ext_processing =  self.create_class_from_strings( self.parameters.ext_processing_module,
                                                                self.parameters.ext_processing_class  )
     """
-
     a_class    = getattr( importlib.import_module(module_name), class_name )
     instance   = a_class(  )
     return instance
 
 
-def camel_to_snake( camel_str ):
+# ---------------------------
+def camel_to_snakexxx( camel_str ):
     # Add underscores before uppercase letters and convert to lowercase
+    # might be better as s string util
+    # camel_to_snake splits on every capital, so it gives h_t_m_l_parser for HTMLParser. It's unused, so delete it or use the usual two-step regex.
     snake_str = re.sub(r'(?<!^)(?=[A-Z])', '_', camel_str).lower()
     return snake_str
 
@@ -89,25 +120,22 @@ def to_help_file_name( module_name ):
 #         return help_file_name
 
 
-def print_func_header( what ):
-        """
-        what it says
-        """
-        #what    = "fix_me"
-        print( f"{BEGIN_MARK_1}{what}{BEGIN_MARK_2}")
 
 #-----------------------------------------------
-class SeperatorTab( QWidget ):
+class SeparatorTabxxxx( QWidget ):
     """
     utils_for_tabs.py
+    think not currently in use seem to be buggy
     """
-    def __init__(self, msg = None ):
+    def __init__( self, msg = None ):
         """
         """
         super().__init__( )
         if msg is None:
             msg         = "This tab indicates the status of the tabs to the right --->"
-            self.msg    = msg
+
+        self.msg    = msg
+
         self._build_gui()
 
     # ------------------------------
@@ -117,28 +145,16 @@ class SeperatorTab( QWidget ):
         """
         tab_page        = self
 
-        layout          = QVBoxLayout( tab_page )
-        self.layout     = layout
+        a_layout        = QVBoxLayout( tab_page )
+        self.layout     = a_layout
 
         widget  = QLabel( self.msg )
-        layout.addWidget( widget )
+        a_layout.addWidget( widget )
 
-# --------------------------
-class ColoredFiller(QWidget):
-    """
-    M Fitzpatrick's book,  is source
-    ColoredFiller('red')
-    colored so you can see it, used as a filler object
-    """
-    def __init__(self, color):
-        super().__init__()
-        self.setAutoFillBackground(True)
-        palette = self.palette()
-        palette.setColor( QPalette.Window, QColor(color))
-        self.setPalette(palette)
+
 
 # -----------------------
-def show_parameters( ):
+def show_parametersxxx( ):
     """
     what it says,
     """
@@ -147,14 +163,14 @@ def show_parameters( ):
     if dialog.exec_() == QDialog.Accepted:
         pass
 
-
-class DisplayParameters( QDialog ):
+# -----------------------
+class DisplayParametersxxx( QDialog ):
     """
     dialog to display parameters
-
+    # think dup of what is in show parameters so this is dead?
     """
     # ------------------------------------------
-    def __init__(self,  parent ):
+    def __init__(self, parent ):
         """
         Args:
 
@@ -187,18 +203,16 @@ class DisplayParameters( QDialog ):
         """
         what it says, read?
         """
-        layout              = QVBoxLayout( self )
-        self.layout         = layout
+        a_layout            = QVBoxLayout( self )
+        self.layout         = a_layout
 
         # ---- code_gen: edit_fields_for_form  -- end table entries
 
         # Create QTextEdit widget
         text_edit           = QTextEdit()
-        # layout.addWidget(text_edit, 4, 0, 1, 3)  # Row 4, Column 0, RowSpan 1, ColumnSpan 3
+        # a_layout.addWidget(text_edit, 4, 0, 1, 3)  # Row 4, Column 0, RowSpan 1, ColumnSpan 3
         self.text_edit  = text_edit
-        layout.addWidget( text_edit )
-
-
+        a_layout.addWidget( text_edit )
 
         parm_text      = str( parameters )
 
@@ -208,18 +222,13 @@ class DisplayParameters( QDialog ):
         # # ---- buttons
         # self.setLayout( self.layout )
         #self.button_layout      = QVBoxLayout()
-        button_layout           = layout
+        button_layout           = a_layout
 
 
-        a_widget                = QPushButton("OK")
+        a_widget                = QPushButton( "OK" )
         self.save_button        = a_widget
         a_widget.clicked.connect(         self.accept )
         button_layout.addWidget( a_widget )
-
-        # # ----
-        # self.buttons.setLayout( self.button_layout )
-
-        # self.layout.addRow(self.buttons)
 
 
 

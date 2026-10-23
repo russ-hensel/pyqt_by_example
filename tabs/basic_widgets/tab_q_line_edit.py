@@ -171,13 +171,17 @@ class QLineEditTab( tab_base.TabBase ) :
         widget     = self.line_edit_1_widget
         widget.setText( "some text from setText" )
         widget.setEnabled( True )
-        widget.setPlaceholderText( "some placeholder text ")
         widget.setToolTip( "what is a tooltop setToolTip ")
 
         # ---- change widget
         widget     = self.line_edit_2_widget
-        msg     = "leave line_edit_2_widget in this mutation  "
+        msg     = "line_edit_2_widget: clear() and setPlaceholderText()"
         self.append_msg( msg,  )
+
+        # placeholder text only shows while the field is empty,
+        # so clear() first -- type something and it goes away
+        widget.clear()
+        widget.setPlaceholderText( "some placeholder text from mutate_0()" )
 
         self.append_msg( tab_base.DONE_MSG )
 
@@ -200,10 +204,15 @@ class QLineEditTab( tab_base.TabBase ) :
 
         widget.setEnabled( False )
 
-        widget.setPlaceholderText( "some placeholder text mutate_1()")
         widget.setToolTip( "setToolTip for mutate_1()")
 
         # ---- new widget
+        widget     = self.line_edit_2_widget
+        msg        = "line_edit_2_widget: new placeholder, shows only if the field is still empty"
+        self.append_msg( msg, clear = False )
+
+        widget.setPlaceholderText( "some placeholder text from mutate_1()" )
+
         self.append_msg( tab_base.DONE_MSG )
 
     # ------------------------------------
@@ -219,7 +228,7 @@ class QLineEditTab( tab_base.TabBase ) :
         self.append_msg( msg, clear = False )
         # ---- new widget
         widget     = self.line_edit_1_widget
-        widget.setText( "some text from setText in mutate_1()" )
+        widget.setText( "some text from setText in mutate_2()" )
 
         msg    = "enable line edit 1"
         self.append_msg( msg, clear = False )
@@ -238,7 +247,9 @@ class QLineEditTab( tab_base.TabBase ) :
 
         # make some locals for inspection
 
-        parent_window = self.parent( ).parent( ).parent().parent()
+        parent_window = self.window()
+            # top level window at any depth, was self.parent( ).parent( ).parent().parent()
+            # which raised AttributeError when the tab was not 4 levels deep
 
         self_line_edit_1_widget = self.line_edit_1_widget
         self_line_edit_2_widget = self.line_edit_2_widget

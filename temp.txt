@@ -1,0 +1,7 @@
+    17	import adjust_path   # noqa  stops auto removal by pycln^M$
+    19	# QtWebEngineWidgets ( used by tabs/experiments/tab_webengine_widget.py ) must be^M$
+    22	# constructed in pyqt_by_example.main(). Import it here, early, as a one line^M$
+    24	import qtpy.QtWebEngineWidgets   # noqa  import-only, required before QApplication()^M$
+    26	# Get the directory of the current .py file^M$
+    33	import pyqt_by_example^M$
+    38	pyqt_by_example.main()^M$

@@ -5,26 +5,35 @@ source theprof_qt5/bin/activate
 # not a real requirements, mor just comments
 
 # installs -----------------
-one of
-uv pip install  pyqt5
-uv pip install  pyqt6
-and for compatability
-uv pip install qtpy
-
 
 and if you use spyder you will probably get pyqt5
 we like
 uv pip install  spyder
+also is terminal
+uv pip install  spyder-terminal
+
+
+one of
+uv pip install  pyqt5
+uv pip install  pyqt6
+
+and for compatability
+uv pip install qtpy
+
 
 next are required to get everything running
 uv pip install  wat-inspector
 
+# imports may not happen until a particular tab is opened
+# so you may only see that these are missing down the line
+
+
 uv pip install  pyqtgraph
 uv pip install  matplotlib
-
+uv pip install  superqt
 
 # future use -----------------
-uv pip install
+
 uv pip install
 uv pip install
 
@@ -32,7 +41,3 @@ uv pip install
 
 
  # --------------------- notes
-
-
-
-

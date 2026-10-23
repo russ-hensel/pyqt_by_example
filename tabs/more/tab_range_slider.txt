@@ -1,0 +1,85 @@
+tab_range_slider.txt -- help / dev notes for tab_range_slider.py ( RangeSliderTab )
+
+---- what it is
+
+superqt.QRangeSlider is a QSlider with two or more handles.  It is a third
+party package, not part of Qt:
+
+    pip install superqt
+
+    from superqt import QRangeSlider, QLabeledRangeSlider
+
+superqt works through qtpy, so the same code runs on PyQt5 and PyQt6.
+
+---- value is a tuple
+
+    slider.setValue( ( 20, 80 ) )        # two handles
+    slider.setValue( ( 25, 50, 75 ) )    # three handles, no other setting needed
+    low, high   = slider.value()
+
+There is no handle-count property: the number of handles is the length of the
+tuple you last gave setValue.  valueChanged and sliderMoved both carry the
+tuple.  sliderPosition() comes back as a tuple of floats; value() is ints.
+
+minimum(), maximum() and pageStep() also come back as floats, so wrap them in
+int() before giving them to a QSpinBox.
+
+The default range is 0 .. 99, the default value ( 20, 80 ).
+
+---- what carries over from QSlider
+
+setRange, setPageStep, setSingleStep, setTickPosition, setTickInterval,
+setTracking, sliderPressed, sliderReleased, isSliderDown: all as for QSlider,
+except tracking off, below.
+
+setRange clamps handles that fall outside the new range into it.
+
+sliderMoved carries floats, ( -21.0, 20.0 ), even on the int slider.
+
+---- gotcha: tracking off never commits ( superqt 0.8.2 )
+
+With QSlider and tracking off, the value is set from the slider position on
+release.  QRangeSlider does not do this.  Its setSliderDown is the C++ one,
+which commits Qt's internal position, not superqt's Python one.  So the
+handles move, sliderPosition() follows them, and value() never changes.
+Checked on PyQt5 5.15.14, superqt 0.8.2.
+
+The workaround in this tab, in on_slider_released:
+
+    if not slider.hasTracking():
+        slider.setValue( tuple( round( i_pos ) for i_pos in slider.sliderPosition() ) )
+
+---- the bar
+
+The bar is the coloured part between the handles.
+
+    setBarVisible( bool )           hide or show it
+    setBarMovesAllHandles( bool )   True: drag the bar to move the whole range
+                                    False: a bar click moves the nearest handle
+    setBarIsRigid( bool )           True: dragging the bar into an end stops it
+                                    False: the far handle keeps going, the range squeezes
+
+---- the labelled version
+
+QLabeledRangeSlider is a QRangeSlider with an editable spin box per handle
+and labels for the min and max.  It has the same value tuple and signals.
+In this tab it is kept in step with the plain one: each slider's valueChanged
+sets the other with signals blocked, so there is no loop.
+
+Other superqt relatives:
+    QDoubleRangeSlider            float values
+    QLabeledDoubleRangeSlider     float, labelled
+
+---- the tab
+
+The controls are refilled from the slider after every change ( _sync_controls ),
+so they always show what the widget really holds after any clamping.
+
+"Handles" spreads N handles evenly over the range.
+"Log every signal" logs every sliderMoved and valueChanged, so you can see the order.
+
+mutate_0    0 .. 100, two handles
+mutate_1    three handles
+mutate_2    -50 .. 50, tracking off
+mutate_3    bar hidden, bar does not move all handles
+mutate_4    0 .. 1000, bar not rigid

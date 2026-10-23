@@ -24,7 +24,6 @@ import psutil
 
 import os
 import sys
-import functools
 import subprocess
 from   functools import partial
 from   pathlib   import Path
@@ -67,9 +66,8 @@ import app_logging      # /mnt/WIN_D/russ/0000/python00/python3/_projects/rshlib
 # ---- end imports
 
 
-__VERSION__     = "ver_001 - 2026 02 04.01"
-__VERSION__     = "ver_002 - 2026 03 31.01"
-__VERSION__     = "ver_003 - 2026 09 05.01"
+
+__version__     = "ver_003 - 2026 09 05.01"
 
 
 INDENT          = uft.INDENT
@@ -160,7 +158,7 @@ class PyqtByExample( QMainWindow ):
         """
         main gui build method -- for some sub layout use other methods
         """
-        self.setWindowTitle( f"PyqtByExample  {__VERSION__}" )
+        self.setWindowTitle( f"PyqtByExample  {__version__}" )
         self.build_menu( )
 
         icon    = QtGui.QIcon(  "./misc/broom_edit_2.png"  )
@@ -202,7 +200,8 @@ class PyqtByExample( QMainWindow ):
         self.tab_widget.addTab( tab, title  )
         self.tab_help_dict[ title ] = "select_tab.txt"
 
-        self.open_tab_select( "tab_qsql_database", "QSqlDatabaseTab", "QSqlDatabase / QSqlQuery", "web_link", widgets = ""  )
+        self.open_tab_select( "tab_qsql_database", "QSqlDatabaseTab",
+                              "QSqlDatabase / QSqlQuery", "web_link", widgets = ""  )
             #open_tab_select( self, module_name, class_name, title  ):
 
         button_layout = QHBoxLayout(   )
@@ -281,7 +280,7 @@ class PyqtByExample( QMainWindow ):
         a_menu          = menubar.addMenu("Configuration")
 
         open_action     = QAction( "Open Log", self )
-        connect_to      = functools.partial( self.open_txt_file,
+        connect_to      = partial( self.open_txt_file,
                                               parameters.PARAMETERS.pylogging_fn  )
         open_action.triggered.connect( connect_to )
         a_menu.addAction( open_action )
@@ -319,10 +318,11 @@ class PyqtByExample( QMainWindow ):
         action.triggered.connect( connect_to )
         menu_help.addAction( action )
 
-        action          = QAction( "Current Tab Notes...", self )
-        connect_to      = self.open_tab_help
-        action.triggered.connect( connect_to )
-        menu_help.addAction( action )
+        # just use wiki link now, perhaps add as dup of button on tab
+        # action          = QAction( "Current Tab Notes...", self )
+        # connect_to      = self.open_tab_help
+        # action.triggered.connect( connect_to )
+        # menu_help.addAction( action )
 
         action          = QAction( "Developer Notes...", self )
         connect_to      = partial( self.open_txt_file, "readme_rsh.txt" )
@@ -353,9 +353,8 @@ class PyqtByExample( QMainWindow ):
         # tooltip     = tab.tabToolTip(index)
         # icon        = tab.tabIcon(index)
 
-        if ( isinstance( widget,  tab_select_tab.Search_Tab ) or
-             isinstance( widget,  tab_qsql_database.QSqlDatabaseTab )
-            ):
+        if ( isinstance( widget, ( tab_select_tab.Search_Tab,
+                                  tab_qsql_database.QSqlDatabaseTab ) ) ):
             print( f"Tab {index} {type( widget )=} cannot be closed "
                     "because it is key to the operation of this app" )
             return
@@ -452,15 +451,14 @@ class PyqtByExample( QMainWindow ):
 
         """
         mode        = parameters.PARAMETERS.mode
-        version     = f"Version = {__VERSION__}"
-        process_pid = psutil.Process(os.getpid())
-        #rint( f"process.memory_info().rss >>{process.memory_info().rss}<<")  # in bytes
+        version     = f"Version = {__version__}"
+        process     = psutil.Process( os.getpid() )
 
-        msg      =  "get the size this process thru its pid "
-        memory   = process_pid.memory_info().rss/1_000_000
-        memory   = f"Memory = {memory} Mbytes"
-        repo     = "Repo: https://github.com/russ-hensel/pyqt_by_example/tree/main"
-        msg      = ( f"Pyqt By Example {version} {mode}"
+        msg         =  "get the size this process thru its pid "
+        memory      = process.memory_info().rss/1_000_000
+        memory      = f"Memory = {memory:.1f} Mbytes"   # limit resolution
+        repo        = "Repo: https://github.com/russ-hensel/pyqt_by_example/tree/main"
+        msg         = ( f"Pyqt By Example {version} {mode}"
                      f"\n{memory}"
                      f"\n{repo}"
                      "\nSee the book at the repo wiki!"
@@ -493,6 +491,7 @@ class PyqtByExample( QMainWindow ):
                 QMessageBox.information( self, "Problem", error_text )
                 return False
 
+        # could be merged with above, but will leave for now
         file_name   =  parameters.PARAMETERS.tab_db_file_name
 
         if file_name != ":memory:":
@@ -542,10 +541,9 @@ def main():
     """
     yes this is the main app
     """
-    app                 = QApplication( [] )
+    app                 = QApplication( [sys.argv] ) # by convention sys.argv not used in app
     AppGlobal.app       = app
-    #dialog          = wat_inspector.DisplayWat( app )  # Create an instance of your custom QDialog
-    a_wat_inspector     = wat_inspector.WatInspector( app )
+    a_wat_inspector     = wat_inspector.WatInspector( app ) # stop garbage collect
     window              = PyqtByExample()
     window.show()
 
